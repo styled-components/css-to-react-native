@@ -290,6 +290,24 @@ it('transforms font-family without quotes', () => runTest([
   fontFamily: 'Helvetica Neue',
 }));
 
+it('transforms font-family with quotes with otherwise invalid values', () => runTest([
+  ['font-family', '"Goudy Bookletter 1911"'],
+], {
+  fontFamily: 'Goudy Bookletter 1911',
+}));
+
+it('transforms font-family with quotes with escaped values', () => runTest([
+  ['font-family', '"test\\A test"'],
+], {
+  fontFamily: 'test\ntest',
+}));
+
+it('transforms font-family with quotes with escaped quote', () => runTest([
+  ['font-family', '"test\\"test"'],
+], {
+  fontFamily: 'test"test',
+}));
+
 it('does not transform invalid unquoted font-family', () => {
   expect(() => transformCss([['font-family', 'Goudy Bookletter 1911']])).toThrow();
 });

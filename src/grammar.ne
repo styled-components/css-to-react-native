@@ -4,6 +4,7 @@
   const at = index => d => d && d[index];
   const pick = indices => d => indices.map(index => d[index]);
   const text = d => Array.isArray(d) ? d.map(text).join('') : d;
+  const getCharCode = d => String.fromCharCode(parseInt(text(d[1]), 16));
   const transformArg1 = d => ({ [d[0].join('')]: d[2][0] });
   const defaultOptional = (value, defaultValue) => value === null ? defaultValue : value;
 
@@ -49,20 +50,34 @@
   };
 %}
 
+hex -> [a-fA-F0-9] {% text %}
+
 number -> ([0-9]:+) {% d => Number(text(d)) %}
 
 angle -> number ("deg" | "rad") {% text %}
 
 ident -> ("-":? [_A-Za-z] [_A-Za-z0-9-]:*) {% text %}
-# ident -> [^ ]:+ {% text %}
 
 color
-  -> "#" ([a-fA-F0-9]:*) {% text %}
+  -> "#" (hex:*) {% text %}
    | ("rgb" | "hsl" | "hsv") ("a":?) "(" ([^)]:+) ")" {% text %}
    | ([A-Za-z]:+) {% (d, location, reject) => {
        const name = text(d).toLowerCase();
        return cssColorList.indexOf(name) !== -1 ? name : reject;
      } %}
+
+escapeChar
+  -> "\\" (hex) " " {% getCharCode %}
+   | "\\" (hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex hex hex hex) {% getCharCode %}
+   | "\\" [^a-fA-F0-9] {% d => text(d[1]) %}
+
+string
+  -> "\"" (escapeChar | [^"\\]):* "\"" {% d => text(d[1]) %}
+   | "'" (escapeChar | [^'\\]):* "'" {% d => text(d[1]) %}
 
 _ -> [ \t\n\r]:* {% text %}
 __ -> [ \t\n\r]:+ {% text %}
@@ -163,12 +178,9 @@ flex
        return { $merge: { flexGrow, flexShrink, flexBasis } };
      } %}
 
-fontFamilyWithIdent
-  -> (ident (_ ident):* {% text %}) {% text %}
 fontFamily
-  -> "\"" ("\\" . | [^"]):* "\"" {% d => text(d[1]) %}
-   | "'" ("\\" . | [^']):* "'" {% d => text(d[1]) %}
-   | fontFamilyWithIdent {% at(0) %}
+  -> string {% at(0) %}
+   | (ident (_ ident):*) {% text %}
 
 fontFontStyle -> ("normal" | "italic") {% text %}
 fontFontVariantCss21 -> "normal" {% () => [] %} | "small-caps" {% () => ['small-caps'] %}
