@@ -260,3 +260,36 @@ it('omits line height if not specified', () => runTest([
   fontStyle: 'normal',
   fontVariant: [],
 }));
+
+it('transforms font without quotes', () => runTest([
+  ['font', 'bold italic small-caps 16/18 Helvetica Neue'],
+], {
+  fontFamily: 'Helvetica Neue',
+  fontSize: 16,
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+  fontVariant: ['small-caps'],
+  lineHeight: 18,
+}));
+
+it('transforms font-family with double quotes', () => runTest([
+  ['font-family', '"Helvetica Neue"'],
+], {
+  fontFamily: 'Helvetica Neue',
+}));
+
+it('transforms font-family with single quotes', () => runTest([
+  ['font-family', '\'Helvetica Neue\''],
+], {
+  fontFamily: 'Helvetica Neue',
+}));
+
+it('transforms font-family without quotes', () => runTest([
+  ['font-family', 'Helvetica Neue'],
+], {
+  fontFamily: 'Helvetica Neue',
+}));
+
+it('does not transform invalid unquoted font-family', () => {
+  expect(() => transformCss([['font-family', 'Goudy Bookletter 1911']])).toThrow();
+});

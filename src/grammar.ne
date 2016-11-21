@@ -64,8 +64,8 @@ color
        return cssColorList.indexOf(name) !== -1 ? name : reject;
      } %}
 
-_ -> [ \t\n\r]:* {% () => null %}
-__ -> [ \t\n\r]:+ {% () => null %}
+_ -> [ \t\n\r]:* {% text %}
+__ -> [ \t\n\r]:+ {% text %}
 
 anyOrder2[a, b]
   -> $a __ $b {% d => [d[0][0][0], d[2][0][0]] %}
@@ -163,17 +163,21 @@ flex
        return { $merge: { flexGrow, flexShrink, flexBasis } };
      } %}
 
+fontFamilyWithIdent
+  -> (ident (_ ident):* {% text %}) {% text %}
+fontFamily
+  -> "\"" ("\\" . | [^"]):* "\"" {% d => text(d[1]) %}
+   | "'" ("\\" . | [^']):* "'" {% d => text(d[1]) %}
+   | fontFamilyWithIdent {% at(0) %}
+
 fontFontStyle -> ("normal" | "italic") {% text %}
 fontFontVariantCss21 -> "normal" {% () => [] %} | "small-caps" {% () => ['small-caps'] %}
 fontFontWeight -> ("normal" | "bold" | [1-9] "00") {% text %}
-fontFontFamily
-  -> "\"" ("\\" . | [^"]):* "\"" {% d => text(d[1]) %}
-   | "'" ("\\" . | [^']):* "'" {% d => text(d[1]) %}
 
 font
   -> anyOrderOptional3AllowNull[fontFontStyle, fontFontVariantCss21, fontFontWeight] _
      number (_ "/" _ number):? __
-     fontFontFamily {% d => {
+     fontFamily {% d => {
        const options = {
         fontStyle: defaultOptional(d[0][0], 'normal'),
         fontVariant: defaultOptional(d[0][1], []),
