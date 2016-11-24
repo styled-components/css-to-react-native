@@ -226,8 +226,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return [d[0]].concat(d[1]);
       } }, { "name": "borderColor", "symbols": ["color", "borderColor$ebnf$1"], "postprocess": combineClockwiseShorthand('border', undefined, 'Color') }, { "name": "borderRadius$ebnf$1", "symbols": [] }, { "name": "borderRadius$ebnf$1$subexpression$1", "symbols": ["_", "number"] }, { "name": "borderRadius$ebnf$1", "symbols": ["borderRadius$ebnf$1$subexpression$1", "borderRadius$ebnf$1"], "postprocess": function arrconcat(d) {
         return [d[0]].concat(d[1]);
-      } }, { "name": "borderRadius", "symbols": ["number", "borderRadius$ebnf$1"], "postprocess": combineClockwiseShorthand('border', ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'], 'Radius')
-    }, { "name": "flexFlowFlexWrap$subexpression$1$string$1", "symbols": [{ "literal": "n" }, { "literal": "o" }, { "literal": "w" }, { "literal": "r" }, { "literal": "a" }, { "literal": "p" }], "postprocess": function joiner(d) {
+      } }, { "name": "borderRadius", "symbols": ["number", "borderRadius$ebnf$1"], "postprocess": function postprocess(d) {
+        return { $merge: { borderRadius: d[0] } };
+      } }, { "name": "flexFlowFlexWrap$subexpression$1$string$1", "symbols": [{ "literal": "n" }, { "literal": "o" }, { "literal": "w" }, { "literal": "r" }, { "literal": "a" }, { "literal": "p" }], "postprocess": function joiner(d) {
         return d.join('');
       } }, { "name": "flexFlowFlexWrap$subexpression$1", "symbols": ["flexFlowFlexWrap$subexpression$1$string$1"] }, { "name": "flexFlowFlexWrap$subexpression$1$string$2", "symbols": [{ "literal": "w" }, { "literal": "r" }, { "literal": "a" }, { "literal": "p" }], "postprocess": function joiner(d) {
         return d.join('');

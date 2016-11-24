@@ -143,9 +143,7 @@ borderColor
   -> color (_ color):* {% combineClockwiseShorthand('border', undefined, 'Color') %}
 
 borderRadius
-  -> number (_ number):* {%
-       combineClockwiseShorthand('border', ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'], 'Radius')
-     %}
+  -> number (_ number):* {% (d) => ({ $merge: { borderRadius: d[0] } }) %}
 
 flexFlowFlexWrap -> ("nowrap" | "wrap" | "wrap-reverse") {% text %}
 flexFlowFlexDirection -> ("row" | "row-reverse" | "column" | "column-reverse") {% text %}
