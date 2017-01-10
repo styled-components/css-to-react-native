@@ -6,9 +6,6 @@ const grammar = require('./grammar');
 const transforms = [
   'background',
   'border',
-  'borderColor',
-  'borderRadius',
-  'borderWidth',
   'flex',
   'flexFlow',
   'font',
