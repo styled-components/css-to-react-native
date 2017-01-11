@@ -1,5 +1,5 @@
 /* global jest it, expect */
-import transformCss from '.';
+import transformCss, { parseProp } from '.';
 
 const runTest = (inputCss, expectedStyles) => {
   const actualStyles = transformCss(inputCss);
@@ -13,9 +13,36 @@ it('transforms numbers', () => runTest([
   ['bottom', '0'],
 ], { top: 0, left: 0, right: 0, bottom: 0 }));
 
-it('allows decimal values', () => runTest([
-  ['top', '1.5'],
-], { top: 1.5 }));
+it('allows decimal values', () => {
+  expect(parseProp('number', '0.5')).toBe(0.5);
+  expect(parseProp('number', '1.5')).toBe(1.5);
+  expect(parseProp('number', '10.5')).toBe(10.5);
+  expect(parseProp('number', '100.5')).toBe(100.5);
+  expect(parseProp('number', '-0.5')).toBe(-0.5);
+  expect(parseProp('number', '-1.5')).toBe(-1.5);
+  expect(parseProp('number', '-10.5')).toBe(-10.5);
+  expect(parseProp('number', '-100.5')).toBe(-100.5);
+  expect(parseProp('number', '.5')).toBe(0.5);
+  expect(parseProp('number', '-.5')).toBe(-0.5);
+});
+
+it('allows decimal values in transformed values', () => runTest([
+  ['border-radius', '1.5'],
+], {
+  borderTopLeftRadius: 1.5,
+  borderTopRightRadius: 1.5,
+  borderBottomRightRadius: 1.5,
+  borderBottomLeftRadius: 1.5,
+}));
+
+it('allows negative values in transformed values', () => runTest([
+  ['border-radius', '-1.5'],
+], {
+  borderTopLeftRadius: -1.5,
+  borderTopRightRadius: -1.5,
+  borderBottomRightRadius: -1.5,
+  borderBottomLeftRadius: -1.5,
+}));
 
 it('transforms strings', () => runTest([
   ['color', 'red'],
@@ -130,20 +157,20 @@ it('transforms border shorthand missing color & style', () => runTest([
 ], { borderWidth: 2, borderColor: 'black', borderStyle: 'solid' }));
 
 it('transforms margin shorthands using 4 values', () => runTest([
-  ['margin', '1 2 3 4'],
-], { marginTop: 1, marginRight: 2, marginBottom: 3, marginLeft: 4 }));
+  ['margin', '10 20 30 40'],
+], { marginTop: 10, marginRight: 20, marginBottom: 30, marginLeft: 40 }));
 
 it('transforms margin shorthands using 3 values', () => runTest([
-  ['margin', '1 2 3'],
-], { marginTop: 1, marginRight: 2, marginBottom: 3, marginLeft: 2 }));
+  ['margin', '10 20 30'],
+], { marginTop: 10, marginRight: 20, marginBottom: 30, marginLeft: 20 }));
 
 it('transforms margin shorthands using 2 values', () => runTest([
-  ['margin', '1 2'],
-], { marginTop: 1, marginRight: 2, marginBottom: 1, marginLeft: 2 }));
+  ['margin', '10 20'],
+], { marginTop: 10, marginRight: 20, marginBottom: 10, marginLeft: 20 }));
 
 it('transforms margin shorthands using 1 value', () => runTest([
-  ['margin', '1'],
-], { marginTop: 1, marginRight: 1, marginBottom: 1, marginLeft: 1 }));
+  ['margin', '10'],
+], { marginTop: 10, marginRight: 10, marginBottom: 10, marginLeft: 10 }));
 
 it('shorthand with 1 value should override previous values', () => runTest([
   ['margin-top', '2'],
@@ -310,4 +337,9 @@ it('transforms font-family with quotes with escaped quote', () => runTest([
 
 it('does not transform invalid unquoted font-family', () => {
   expect(() => transformCss([['font-family', 'Goudy Bookletter 1911']])).toThrow();
+});
+
+it('allows blacklisting shorthands', () => {
+  const actualStyles = transformCss([['border-radius', '50']], ['borderRadius']);
+  expect(actualStyles).toEqual({ borderRadius: 50 });
 });

@@ -50,9 +50,16 @@
   };
 %}
 
-hex -> [a-fA-F0-9] {% text %}
+int
+  -> "0" | [1-9] [0-9]:*
 
-number -> ([0-9]:+) {% d => Number(text(d)) %}
+decimal
+  -> "." [0-9]:+
+
+number
+  -> "-":? (int decimal | int | decimal) {% d => Number(text(d)) %}
+
+hex -> [a-fA-F0-9] {% text %}
 
 angle -> number ("deg" | "rad") {% text %}
 
@@ -145,19 +152,19 @@ border
      } }) %}
 
 margin
-  -> number (_ number):* {% combineClockwiseShorthand('margin') %}
+  -> number (__ number):* {% combineClockwiseShorthand('margin') %}
 
 padding
-  -> number (_ number):* {% combineClockwiseShorthand('padding') %}
+  -> number (__ number):* {% combineClockwiseShorthand('padding') %}
 
 borderWidth
-  -> number (_ number):* {% combineClockwiseShorthand('border', undefined, 'Width') %}
+  -> number (__ number):* {% combineClockwiseShorthand('border', undefined, 'Width') %}
 
 borderColor
-  -> color (_ color):* {% combineClockwiseShorthand('border', undefined, 'Color') %}
+  -> color (__ color):* {% combineClockwiseShorthand('border', undefined, 'Color') %}
 
 borderRadius
-  -> number (_ number):* {%
+  -> number (__ number):* {%
        combineClockwiseShorthand('border', ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'], 'Radius')
      %}
 
@@ -171,7 +178,7 @@ flexFlow
      } }) %}
 
 flex
-  -> number (_ number):* {% (d, location, reject) => {
+  -> number (__ number):* {% (d, location, reject) => {
        const values = combineHeadTail(d);
        if (values.length > 3) return reject;
        const [flexGrow, flexShrink = 1, flexBasis = 0] = values;
