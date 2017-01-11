@@ -12,6 +12,7 @@ const transforms = [
   'flex',
   'flexFlow',
   'font',
+  'fontFamily',
   'fontVariant',
   'fontWeight',
   'margin',

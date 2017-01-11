@@ -4,6 +4,7 @@
   const at = index => d => d && d[index];
   const pick = indices => d => indices.map(index => d[index]);
   const text = d => Array.isArray(d) ? d.map(text).join('') : d;
+  const getCharCode = d => String.fromCharCode(parseInt(text(d[1]), 16));
   const transformArg1 = d => ({ [d[0].join('')]: d[2][0] });
   const defaultOptional = (value, defaultValue) => value === null ? defaultValue : value;
 
@@ -55,24 +56,48 @@ int
 decimal
   -> "." [0-9]:+
 
+numberToken
+  -> [+-]:? (int decimal | int | decimal) ([Ee] [+-]:? int):? {% text %}
+
 number
-  -> "-":? (int decimal | int | decimal) {% d => Number(text(d)) %}
+  -> numberToken {% Number %}
+
+percent
+  -> numberToken "%" {% text %}
+
+numberOrPercent
+  -> percent {% id %}
+   | number {% id %}
+
+hex -> [a-fA-F0-9] {% text %}
 
 angle -> number ("deg" | "rad") {% text %}
 
 ident -> ("-":? [_A-Za-z] [_A-Za-z0-9-]:*) {% text %}
-# ident -> [^ ]:+ {% text %}
 
 color
-  -> "#" ([a-fA-F0-9]:*) {% text %}
+  -> "#" (hex:*) {% text %}
    | ("rgb" | "hsl" | "hsv") ("a":?) "(" ([^)]:+) ")" {% text %}
    | ([A-Za-z]:+) {% (d, location, reject) => {
        const name = text(d).toLowerCase();
        return cssColorList.indexOf(name) !== -1 ? name : reject;
      } %}
 
-_ -> [ \t\n\r]:* {% () => null %}
-__ -> [ \t\n\r]:+ {% () => null %}
+escapeChar
+  -> "\\" (hex) " " {% getCharCode %}
+   | "\\" (hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex hex hex) " " {% getCharCode %}
+   | "\\" (hex hex hex hex hex hex) {% getCharCode %}
+   | "\\" [^a-fA-F0-9] {% d => text(d[1]) %}
+
+string
+  -> "\"" (escapeChar | [^"\\]):* "\"" {% d => text(d[1]) %}
+   | "'" (escapeChar | [^'\\]):* "'" {% d => text(d[1]) %}
+
+_ -> [ \t\n\r]:* {% text %}
+__ -> [ \t\n\r]:+ {% text %}
 
 anyOrder2[a, b]
   -> $a __ $b {% d => [d[0][0][0], d[2][0][0]] %}
@@ -163,24 +188,39 @@ flexFlow
      } }) %}
 
 flex
-  -> number (__ number):* {% (d, location, reject) => {
-       const values = combineHeadTail(d);
-       if (values.length > 3) return reject;
-       const [flexGrow, flexShrink = 1, flexBasis = 0] = values;
+  -> number __ number __ numberOrPercent {% (d, location, reject) => {
+       const [flexGrow, /* whitespace */, flexShrink, /* whitespace */, flexBasis] = d;
        return { $merge: { flexGrow, flexShrink, flexBasis } };
      } %}
+   | number __ number {% (d, location, reject) => {
+       const [flexGrow, /* whitespace */, flexShrink] = d;
+       return { $merge: { flexGrow, flexShrink, flexBasis: 0 } };
+     } %}
+   | number __ percent {% (d, location, reject) => {
+       const [flexGrow, /* whitespace */, flexBasis] = d;
+       return { $merge: { flexGrow, flexShrink: 1, flexBasis } };
+     } %}
+   | number {% (d, location, reject) => {
+       const [flexGrow] = d;
+       return { $merge: { flexGrow, flexShrink: 1, flexBasis: 0 } };
+     } %}
+   | percent {% (d, location, reject) => {
+       const [flexBasis] = d;
+       return { $merge: { flexGrow: 1, flexShrink: 1, flexBasis } };
+     } %}
+
+fontFamily
+  -> string {% at(0) %}
+   | (ident (_ ident):*) {% text %}
 
 fontFontStyle -> ("normal" | "italic") {% text %}
 fontFontVariantCss21 -> "normal" {% () => [] %} | "small-caps" {% () => ['small-caps'] %}
 fontFontWeight -> ("normal" | "bold" | [1-9] "00") {% text %}
-fontFontFamily
-  -> "\"" ("\\" . | [^"]):* "\"" {% d => text(d[1]) %}
-   | "'" ("\\" . | [^']):* "'" {% d => text(d[1]) %}
 
 font
   -> anyOrderOptional3AllowNull[fontFontStyle, fontFontVariantCss21, fontFontWeight] _
      number (_ "/" _ number):? __
-     fontFontFamily {% d => {
+     fontFamily {% d => {
        const options = {
         fontStyle: defaultOptional(d[0][0], 'normal'),
         fontVariant: defaultOptional(d[0][1], []),
