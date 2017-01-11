@@ -56,8 +56,18 @@ int
 decimal
   -> "." [0-9]:+
 
+numberToken
+  -> [+-]:? (int decimal | int | decimal) ([Ee] [+-]:? int):? {% text %}
+
 number
-  -> "-":? (int decimal | int | decimal) {% d => Number(text(d)) %}
+  -> numberToken {% Number %}
+
+percent
+  -> numberToken "%" {% text %}
+
+numberOrPercent
+  -> percent {% id %}
+   | number {% id %}
 
 hex -> [a-fA-F0-9] {% text %}
 
@@ -178,11 +188,25 @@ flexFlow
      } }) %}
 
 flex
-  -> number (__ number):* {% (d, location, reject) => {
-       const values = combineHeadTail(d);
-       if (values.length > 3) return reject;
-       const [flexGrow, flexShrink = 1, flexBasis = 0] = values;
+  -> number __ number __ numberOrPercent {% (d, location, reject) => {
+       const [flexGrow, /* whitespace */, flexShrink, /* whitespace */, flexBasis] = d;
        return { $merge: { flexGrow, flexShrink, flexBasis } };
+     } %}
+   | number __ number {% (d, location, reject) => {
+       const [flexGrow, /* whitespace */, flexShrink] = d;
+       return { $merge: { flexGrow, flexShrink, flexBasis: 0 } };
+     } %}
+   | number __ percent {% (d, location, reject) => {
+       const [flexGrow, /* whitespace */, flexBasis] = d;
+       return { $merge: { flexGrow, flexShrink: 1, flexBasis } };
+     } %}
+   | number {% (d, location, reject) => {
+       const [flexGrow] = d;
+       return { $merge: { flexGrow, flexShrink: 1, flexBasis: 0 } };
+     } %}
+   | percent {% (d, location, reject) => {
+       const [flexBasis] = d;
+       return { $merge: { flexGrow: 1, flexShrink: 1, flexBasis } };
      } %}
 
 fontFamily

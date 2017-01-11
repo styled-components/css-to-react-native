@@ -13,6 +13,10 @@ it('transforms numbers', () => runTest([
   ['bottom', '0'],
 ], { top: 0, left: 0, right: 0, bottom: 0 }));
 
+it('transforms percentages', () => runTest([
+  ['top', '50%'],
+], { top: '50%' }));
+
 it('allows decimal values', () => {
   expect(parseProp('number', '0.5')).toBe(0.5);
   expect(parseProp('number', '1.5')).toBe(1.5);
@@ -24,6 +28,11 @@ it('allows decimal values', () => {
   expect(parseProp('number', '-100.5')).toBe(-100.5);
   expect(parseProp('number', '.5')).toBe(0.5);
   expect(parseProp('number', '-.5')).toBe(-0.5);
+  expect(parseProp('number', '+.5')).toBe(0.5);
+  expect(parseProp('number', '+5')).toBe(5);
+  expect(parseProp('number', '5e1')).toBe(50);
+  expect(parseProp('number', '5e+1')).toBe(50);
+  expect(parseProp('number', '5e-1')).toBe(0.5);
 });
 
 it('allows decimal values in transformed values', () => runTest([
@@ -188,6 +197,18 @@ it('transforms flex shorthand with 2 values', () => runTest([
 it('transforms flex shorthand with 1 values', () => runTest([
   ['flex', '1'],
 ], { flexGrow: 1, flexShrink: 1, flexBasis: 0 }));
+
+it('transforms flex shorthand with 3 values using percentage flex basis', () => runTest([
+  ['flex', '1 2 30%'],
+], { flexGrow: 1, flexShrink: 2, flexBasis: '30%' }));
+
+it('transforms flex shorthand with 2 values using percentage flex basis', () => runTest([
+  ['flex', '1 20%'],
+], { flexGrow: 1, flexShrink: 1, flexBasis: '20%' }));
+
+it('transforms flex shorthand with 1 value using percentage flex basis', () => runTest([
+  ['flex', '10%'],
+], { flexGrow: 1, flexShrink: 1, flexBasis: '10%' }));
 
 it('transforms flexFlow shorthand with two values', () => runTest([
   ['flex-flow', 'column wrap'],
