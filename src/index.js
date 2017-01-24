@@ -1,41 +1,31 @@
 /* eslint-disable no-param-reassign */
-const nearley = require('nearley');
+const parse = require('postcss-value-parser');
 const camelizeStyleName = require('fbjs/lib/camelizeStyleName');
-const grammar = require('./grammar');
+const transforms = require('./transforms');
+const TokenStream = require('./TokenStream');
 
-const transforms = [
-  'background',
-  'border',
-  'borderColor',
-  'borderRadius',
-  'borderWidth',
-  'flex',
-  'flexFlow',
-  'font',
-  'fontVariant',
-  'fontWeight',
-  'margin',
-  'padding',
-  'shadowOffset',
-  'textShadowOffset',
-  'transform',
-];
+// Note if this is wrong, you'll need to change tokenTypes.js too
+const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/;
 
-const transformRawValue = input => (
-  (input !== '' && !isNaN(input))
-    ? Number(input)
-    : input
-);
-
-export const parseProp = (propName, value) =>
-  new nearley.Parser(grammar.ParserRules, propName).feed(value).results[0];
+// Undocumented export
+export const transformRawValue = (input) => {
+  const value = input.trim().match(numberOrLengthRe);
+  return value ? Number(value[1]) : input;
+};
 
 export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
-  const value = inputValue.trim();
+  // Undocumented: allow ast to be passed in
+  let propValue;
 
-  const propValue = (allowShorthand && transforms.indexOf(propName) !== -1)
-    ? parseProp(propName, value)
-    : transformRawValue(value);
+  const isRawValue = (allowShorthand === false) || !(propName in transforms);
+  if (isRawValue) {
+    const value = typeof inputValue === 'string' ? inputValue : parse.stringify(inputValue);
+    propValue = transformRawValue(value);
+  } else {
+    const ast = typeof inputValue === 'string' ? parse(inputValue.trim()) : inputValue;
+    const tokenStream = new TokenStream(ast.nodes);
+    propValue = transforms[propName](tokenStream);
+  }
 
   return (propValue && propValue.$merge)
     ? propValue.$merge
