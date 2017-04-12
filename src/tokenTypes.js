@@ -27,7 +27,7 @@ const identRe = /(^-?[_a-z][_a-z0-9-]*$)/i;
 // Note if these are wrong, you'll need to change index.js too
 const numberRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)$/;
 // Note lengthRe is sneaky: you can omit units for 0
-const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?=px$))/;
+const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?=(px|pt|em|ex|pc)$))/;
 const angleRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(?:deg|rad))$/;
 const percentRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?%)$/;
 
