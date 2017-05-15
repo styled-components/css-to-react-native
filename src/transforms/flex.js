@@ -16,24 +16,22 @@ module.exports = (tokenStream) => {
     return { $merge: { flexGrow: 0, flexShrink: 0 } };
   }
 
-  let partsParsed = 0;
-  while (partsParsed < 2 && tokenStream.hasTokens()) {
-    if (partsParsed) tokenStream.expect(SPACE);
-
-    if (flexGrow === undefined && tokenStream.match(NUMBER)) {
+  while (tokenStream.hasTokens()) {
+    if (flexGrow === undefined && tokenStream.match(NUMBER) != null) {
       flexGrow = tokenStream.lastValue;
-
-      if (tokenStream.lookahead().match(NUMBER)) {
-        tokenStream.expect(SPACE);
-        flexShrink = tokenStream.match(NUMBER);
-      }
+    } else if (flexShrink === undefined && tokenStream.match(NUMBER) != null) {
+      flexShrink = tokenStream.lastValue;
     } else if (flexBasis === undefined && tokenStream.match(LENGTH)) {
       flexBasis = tokenStream.lastValue;
     } else {
       tokenStream.throw();
     }
 
-    partsParsed += 1;
+    if (tokenStream.hasTokens()) {
+        tokenStream.expect(SPACE);
+    } else {
+        break;
+    }
   }
 
   tokenStream.expectEmpty();
