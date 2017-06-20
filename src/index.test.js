@@ -83,12 +83,21 @@ it('allows color values in transformed border-color values', () => runTest([
 }));
 
 it('allows omitting units for 0', () => runTest([
-  ['margin', '10 5'],
+  ['margin', '10px 0'],
 ], {
   marginTop: 10,
-  marginRight: 5,
+  marginRight: 0,
   marginBottom: 10,
-  marginLeft: 5,
+  marginLeft: 0,
+}));
+
+it('allows omitting units for margin shorthand', () => runTest([
+  ['margin', '6 9'],
+], {
+  marginTop: 6,
+  marginRight: 9,
+  marginBottom: 6,
+  marginLeft: 9,
 }));
 
 it('transforms strings', () => runTest([
