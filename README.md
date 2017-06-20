@@ -69,7 +69,7 @@ Shorthands will only accept values that are supported in React, so `background` 
 
 # API
 
-The API is mostly for implementors. However, the main API may be useful for non-impmentors. The main API is,
+The API is mostly for implementors. However, the main API may be useful for non-implementors. The main API is,
 
 ```js
 import transform from 'css-to-react-native';
