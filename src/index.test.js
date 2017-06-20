@@ -83,12 +83,12 @@ it('allows color values in transformed border-color values', () => runTest([
 }));
 
 it('allows omitting units for 0', () => runTest([
-  ['margin', '10px 0'],
+  ['margin', '10 5'],
 ], {
   marginTop: 10,
-  marginRight: 0,
+  marginRight: 5,
   marginBottom: 10,
-  marginLeft: 0,
+  marginLeft: 5,
 }));
 
 it('transforms strings', () => runTest([
@@ -432,6 +432,6 @@ it('allows blacklisting shorthands', () => {
 });
 
 it('throws useful errors', () => {
-  expect(() => transformCss([['margin', '10']]))
-    .toThrow('Failed to parse declaration "margin: 10"');
+  expect(() => transformCss([['margin', '#fff']]))
+    .toThrow('Failed to parse declaration "margin: #fff');
 });

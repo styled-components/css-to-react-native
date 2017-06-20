@@ -1,9 +1,9 @@
 const { tokens } = require('../tokenTypes');
 
-const { LENGTH, PERCENT, SPACE } = tokens;
+const { LENGTH, PERCENT, NUMBER, SPACE } = tokens;
 
 module.exports.directionFactory = ({
-  types = [LENGTH, PERCENT],
+  types = [LENGTH, PERCENT, NUMBER],
   directions = ['Top', 'Right', 'Bottom', 'Left'],
   prefix = '',
   suffix = '',
