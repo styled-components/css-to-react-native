@@ -91,6 +91,15 @@ it('allows omitting units for 0', () => runTest([
   marginLeft: 0,
 }));
 
+it('allows omitting units for margin shorthand', () => runTest([
+  ['margin', '6 9'],
+], {
+  marginTop: 6,
+  marginRight: 9,
+  marginBottom: 6,
+  marginLeft: 9,
+}));
+
 it('transforms strings', () => runTest([
   ['color', 'red'],
 ], { color: 'red' }));
@@ -432,6 +441,6 @@ it('allows blacklisting shorthands', () => {
 });
 
 it('throws useful errors', () => {
-  expect(() => transformCss([['margin', '10']]))
-    .toThrow('Failed to parse declaration "margin: 10"');
+  expect(() => transformCss([['margin', '#fff']]))
+    .toThrow('Failed to parse declaration "margin: #fff');
 });
