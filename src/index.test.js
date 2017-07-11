@@ -261,6 +261,22 @@ it('transforms flex shorthand with flex-grow/shrink taking priority over basis',
   ['flex', '0 1 0'],
 ], { flexGrow: 0, flexShrink: 1, flexBasis: 0 }));
 
+it('transforms flex shorthand with flex-basis set to auto', () => runTest([
+  ['flex', '0 1 auto'],
+], { flexGrow: 0, flexShrink: 1 }));
+
+it('transforms flex shorthand with flex-basis set to auto appearing first', () => runTest([
+  ['flex', 'auto 0 1'],
+], { flexGrow: 0, flexShrink: 1 }));
+
+it('transforms flex auto keyword', () => runTest([
+  ['flex', 'auto'],
+], { flexGrow: 1, flexShrink: 1 }));
+
+it('transforms flex none keyword', () => runTest([
+  ['flex', 'none'],
+], { flexGrow: 0, flexShrink: 0 }));
+
 it('transforms flexFlow shorthand with two values', () => runTest([
   ['flex-flow', 'column wrap'],
 ], { flexDirection: 'column', flexWrap: 'wrap' }));

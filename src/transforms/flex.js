@@ -16,7 +16,7 @@ module.exports = (tokenStream) => {
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty();
     return { $merge: { flexGrow: 0, flexShrink: 0 } };
-  } else if (tokenStream.matches(AUTO) && !tokenStream.lookAhead().hasTokens()) {
+  } else if (tokenStream.test(AUTO) && !tokenStream.lookAhead().hasTokens()) {
     return { $merge: { flexGrow: 1, flexShrink: 1 } };
   }
 
@@ -27,7 +27,7 @@ module.exports = (tokenStream) => {
     if (flexGrow === undefined && tokenStream.matches(NUMBER)) {
       flexGrow = tokenStream.lastValue;
 
-      if (tokenStream.lookahead().matches(NUMBER)) {
+      if (tokenStream.lookAhead().matches(NUMBER)) {
         tokenStream.expect(SPACE);
         flexShrink = tokenStream.expect(NUMBER);
       }

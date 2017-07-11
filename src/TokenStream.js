@@ -1,3 +1,4 @@
+const SYMBOL_BASE_MATCH = 'SYMBOL_BASE_MATCH';
 const SYMBOL_MATCH = 'SYMBOL_MATCH';
 
 module.exports = class TokenStream {
@@ -16,11 +17,11 @@ module.exports = class TokenStream {
     return this.nodes.length > 0;
   }
 
-  lookahead() {
+  lookAhead() {
     return new TokenStream(this.nodes.slice(1), this.parent);
   }
 
-  [SYMBOL_MATCH](...tokenDescriptors) {
+  [SYMBOL_BASE_MATCH](...tokenDescriptors) {
     const node = this.node;
 
     if (!node) return null;
@@ -28,16 +29,23 @@ module.exports = class TokenStream {
     for (let i = 0; i < tokenDescriptors.length; i += 1) {
       const tokenDescriptor = tokenDescriptors[i];
       const value = tokenDescriptor(node);
-
-      if (value !== null) {
-        this.nodes = this.nodes.slice(1);
-        this.lastFunction = null;
-        this.lastValue = value;
-        return value;
-      }
+      if (value !== null) return value;
     }
 
     return null;
+  }
+
+  [SYMBOL_MATCH](...tokenDescriptors) {
+    const value = this[SYMBOL_BASE_MATCH](...tokenDescriptors);
+    if (value === null) return null;
+    this.nodes = this.nodes.slice(1);
+    this.lastFunction = null;
+    this.lastValue = value;
+    return value;
+  }
+
+  test(...tokenDescriptors) {
+    return this[SYMBOL_BASE_MATCH](...tokenDescriptors) !== null;
   }
 
   matches(...tokenDescriptors) {
