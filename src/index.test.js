@@ -442,6 +442,48 @@ it('does not transform invalid flex', () => {
   expect(() => transformCss([['flex', '1 2px 3']])).toThrow();
 });
 
+it('transforms box-shadow into shadow- properties', () => runTest([
+  ['box-shadow', '10px 20px 30px red'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 30,
+  shadowColor: 'red',
+}));
+
+it('transforms box-shadow without blur-radius', () => runTest([
+  ['box-shadow', '10px 20px red'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'red',
+}));
+
+it('transforms box-shadow without color', () => runTest([
+  ['box-shadow', '10px 20px red'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'red',
+}));
+
+it('transforms box-shadow without blur-radius, color', () => runTest([
+  ['box-shadow', '10px 20px'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'black',
+}));
+
+it('transforms box-shadow enforces offset to be present', () => {
+  expect(() => transformCss([['box-shadow', 'red']]))
+    .toThrow('Failed to parse declaration "boxShadow: red"');
+});
+
+it('transforms box-shadow and enforces offset-y if offset-x present', () => {
+  expect(() => transformCss([['box-shadow', '10px']]))
+    .toThrow('Failed to parse declaration "boxShadow: 10px"');
+});
+
 it('allows blacklisting shorthands', () => {
   const actualStyles = transformCss([['border-radius', '50']], ['borderRadius']);
   expect(actualStyles).toEqual({ borderRadius: 50 });

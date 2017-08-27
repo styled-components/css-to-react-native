@@ -63,6 +63,8 @@ margin: 5px 7px 2px;
 
 Shorthands will only accept values that are supported in React, so `background` will only accept a colour, `backgroundColor`
 
+There is also support for the `box-shadow` shorthand, and this converts into `shadow-` properties. Note that these only work on iOS.
+
 #### Shorthand Notes
 
 `border{Top,Right,Bottom,Left}` shorthands are not supported, because `borderStyle` cannot be applied to individual border sides.

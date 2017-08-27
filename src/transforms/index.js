@@ -1,4 +1,5 @@
 const { regExpToken, tokens } = require('../tokenTypes');
+const boxShadow = require('./boxShadow');
 const flex = require('./flex');
 const font = require('./font');
 const fontFamily = require('./fontFamily');
@@ -56,6 +57,7 @@ module.exports = {
   borderColor,
   borderRadius,
   borderWidth,
+  boxShadow,
   flex,
   flexFlow,
   font,
