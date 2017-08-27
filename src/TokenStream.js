@@ -58,7 +58,7 @@ module.exports = class TokenStream {
     return this.throw();
   }
 
-  matchFunction() {
+  matchesFunction() {
     const node = this.node;
     if (node.type !== 'function') return null;
     const value = new TokenStream(node.nodes, node);
@@ -69,7 +69,7 @@ module.exports = class TokenStream {
   }
 
   expectFunction() {
-    const value = this.matchFunction();
+    const value = this.matchesFunction();
     if (value !== null) return value;
     return this.throw();
   }
