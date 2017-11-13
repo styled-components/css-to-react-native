@@ -17,7 +17,7 @@ it('allows pixels in unspecialized transform', () => runTest([
   ['top', '0px'],
 ], { top: 0 }));
 
-it('allows boolean values values', () => runTest([
+it('allows boolean values', () => runTest([
   ['boolTrue1', 'true'],
   ['boolTrue2', 'TRUE'],
   ['boolFalse1', 'false'],
@@ -27,6 +27,22 @@ it('allows boolean values values', () => runTest([
   boolTrue2: true,
   boolFalse1: false,
   boolFalse2: false,
+}));
+
+it('allows null values', () => runTest([
+  ['null1', 'null'],
+  ['null2', 'NULL'],
+], {
+  null1: null,
+  null2: null,
+}));
+
+it('allows undefined values', () => runTest([
+  ['undefined1', 'undefined'],
+  ['undefined2', 'UNDEFINED'],
+], {
+  undefined1: undefined,
+  undefined2: undefined,
 }));
 
 it('allows percent in unspecialized transform', () => runTest([

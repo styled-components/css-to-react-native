@@ -7,6 +7,8 @@ const TokenStream = require('./TokenStream');
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/i;
 const boolRe = /^true|false$/i;
+const nullRe = /^null$/i;
+const undefinedRe = /^undefined$/i;
 
 // Undocumented export
 export const transformRawValue = (input) => {
@@ -17,6 +19,12 @@ export const transformRawValue = (input) => {
 
   const boolMatch = input.match(boolRe);
   if (boolMatch !== null) return boolMatch[0].toLowerCase() === 'true';
+
+  const nullMatch = input.match(nullRe);
+  if (nullMatch !== null) return null;
+
+  const undefinedMatch = input.match(undefinedRe);
+  if (undefinedMatch !== null) return undefined;
 
   return value;
 };
