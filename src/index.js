@@ -12,9 +12,6 @@ const boolRe = /^true|false$/i;
 export const transformRawValue = (input) => {
   const value = input.trim();
 
-  if (value === 'null') return null
-  if (value === 'undefined') return undefined
-
   const numberMatch = value.match(numberOrLengthRe);
   if (numberMatch !== null) return Number(numberMatch[1]);
 
