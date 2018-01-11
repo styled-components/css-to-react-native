@@ -7,19 +7,14 @@
     "build": "babel src --ignore test.js --out-dir dist",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/styled-components/css-to-react-native.git"
   },
-  "keywords": [
-    "styled-components",
-    "React",
-    "ReactNative",
-    "styles",
-    "CSS"
-  ],
+  "keywords": ["styled-components", "React", "ReactNative", "styles", "CSS"],
   "author": "Jacob Parker",
   "license": "MIT",
   "bugs": {
