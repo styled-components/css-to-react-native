@@ -42,9 +42,9 @@ const baseTransformShorthandValue = (propName, inputValue, ignoreToken) => {
 const transformShorthandValue =
   process.env.NODE_ENV === 'production'
     ? baseTransformShorthandValue
-    : (propName, inputValue) => {
+    : (propName, inputValue, ignoreToken) => {
         try {
-          return baseTransformShorthandValue(propName, inputValue);
+          return baseTransformShorthandValue(propName, inputValue, ignoreToken);
         } catch (e) {
           throw new Error(
             `Failed to parse declaration "${propName}: ${inputValue}"`
