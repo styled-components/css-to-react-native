@@ -47,9 +47,9 @@ var baseTransformShorthandValue = function baseTransformShorthandValue(propName,
   return transforms[propName](tokenStream);
 };
 
-var transformShorthandValue = process.env.NODE_ENV === 'production' ? baseTransformShorthandValue : function (propName, inputValue) {
+var transformShorthandValue = process.env.NODE_ENV === 'production' ? baseTransformShorthandValue : function (propName, inputValue, ignoreToken) {
   try {
-    return baseTransformShorthandValue(propName, inputValue);
+    return baseTransformShorthandValue(propName, inputValue, ignoreToken);
   } catch (e) {
     throw new Error('Failed to parse declaration "' + propName + ': ' + inputValue + '"');
   }
