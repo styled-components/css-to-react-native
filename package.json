@@ -8,7 +8,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepublish": "npm run build",
-    "postinstall": "npm run build"
+    "postinstall": "babel ./src --ignore test.js --out-dir dist"
   },
   "repository": {
     "type": "git",
