@@ -19,7 +19,7 @@ module.exports = class TokenStream {
   }
 
   lookAhead() {
-    return new TokenStream(this.nodes.slice(1), this.parent);
+    return new TokenStream(this.nodes.slice(1), this.parent, this.ignoreToken);
   }
 
   [SYMBOL_BASE_MATCH](...tokenDescriptors) {
@@ -67,7 +67,7 @@ module.exports = class TokenStream {
   matchesFunction() {
     const node = this.node;
     if (node.type !== 'function') return null;
-    const value = new TokenStream(node.nodes, node);
+    const value = new TokenStream(node.nodes, node, this.ignoreToken);
     this.nodes = this.nodes.slice(1);
     this.lastFunction = value;
     this.lastValue = null;
