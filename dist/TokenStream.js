@@ -26,7 +26,7 @@ module.exports = function () {
   }, {
     key: 'lookAhead',
     value: function lookAhead() {
-      return new TokenStream(this.nodes.slice(1), this.parent);
+      return new TokenStream(this.nodes.slice(1), this.parent, this.ignoreToken);
     }
   }, {
     key: SYMBOL_BASE_MATCH,
@@ -80,7 +80,7 @@ module.exports = function () {
     value: function matchesFunction() {
       var node = this.node;
       if (node.type !== 'function') return null;
-      var value = new TokenStream(node.nodes, node);
+      var value = new TokenStream(node.nodes, node, this.ignoreToken);
       this.nodes = this.nodes.slice(1);
       this.lastFunction = value;
       this.lastValue = null;
