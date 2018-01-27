@@ -9,6 +9,7 @@
     "test:watch": "jest --watch",
     "prepublish": "npm run build"
   },
+  "files": ["dist", "src"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/styled-components/css-to-react-native.git"
