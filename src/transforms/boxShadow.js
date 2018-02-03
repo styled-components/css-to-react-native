@@ -1,6 +1,6 @@
 const { tokens } = require('../tokenTypes');
 
-const { NONE, SPACE, WORD, LENGTH } = tokens;
+const { NONE, SPACE, COLOR, LENGTH } = tokens;
 
 module.exports = (tokenStream) => {
   let offsetX;
@@ -28,10 +28,8 @@ module.exports = (tokenStream) => {
         tokenStream.expect(SPACE);
         blurRadius = tokenStream.expect(LENGTH);
       }
-    } else if (color === undefined && (
-      tokenStream.matchesFunction() || tokenStream.matches(WORD)
-    )) {
-      color = String(tokenStream.lastValue);
+    } else if (tokenStream.matches(COLOR)) {
+      color = tokenStream.lastValue;
     } else {
       tokenStream.throw();
     }

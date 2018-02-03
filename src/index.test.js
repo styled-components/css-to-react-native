@@ -475,11 +475,11 @@ it('transforms box-shadow without blur-radius', () => runTest([
 }));
 
 it('transforms box-shadow without color', () => runTest([
-  ['box-shadow', '10px 20px red'],
+  ['box-shadow', '10px 20px 30px'],
 ], {
   shadowOffset: { width: 10, height: 20 },
-  shadowRadius: 0,
-  shadowColor: 'red',
+  shadowRadius: 30,
+  shadowColor: 'black',
 }));
 
 it('transforms box-shadow without blur-radius, color', () => runTest([
@@ -488,6 +488,38 @@ it('transforms box-shadow without blur-radius, color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'black',
+}));
+
+it('transforms box-shadow with rgb color', () => runTest([
+  ['box-shadow', '10px 20px rgb(100, 100, 100)'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'rgb(100, 100, 100)',
+}));
+
+it('transforms box-shadow with rgba color', () => runTest([
+  ['box-shadow', '10px 20px rgba(100, 100, 100, 0.5)'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'rgba(100, 100, 100, 0.5)',
+}));
+
+it('transforms box-shadow with hsl color', () => runTest([
+  ['box-shadow', '10px 20px hsl(120, 100%, 50%)'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'hsl(120, 100%, 50%)',
+}));
+
+it('transforms box-shadow with hsla color', () => runTest([
+  ['box-shadow', '10px 20px hsla(120, 100%, 50%, 0.7)'],
+], {
+  shadowOffset: { width: 10, height: 20 },
+  shadowRadius: 0,
+  shadowColor: 'hsla(120, 100%, 50%, 0.7)',
 }));
 
 it('transforms box-shadow enforces offset to be present', () => {
