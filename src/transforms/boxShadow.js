@@ -11,7 +11,7 @@ module.exports = (tokenStream) => {
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty();
     return {
-      $merge: { shadowOffset: { width: 0, height: 0 }, shadowRadius: 0, shadowColor: 'black' },
+      $merge: { shadowOffset: { width: 0, height: 0 }, shadowRadius: 0, shadowColor: 'black', shadowOpacity: 1 },
     };
   }
 
@@ -43,6 +43,7 @@ module.exports = (tokenStream) => {
     shadowOffset: { width: offsetX, height: offsetY },
     shadowRadius: blurRadius !== undefined ? blurRadius : 0,
     shadowColor: color !== undefined ? color : 'black',
+    shadowOpacity: 1,
   };
   return { $merge };
 };

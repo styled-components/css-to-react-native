@@ -464,6 +464,7 @@ it('transforms box-shadow into shadow- properties', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 30,
   shadowColor: 'red',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow without blur-radius', () => runTest([
@@ -472,6 +473,7 @@ it('transforms box-shadow without blur-radius', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'red',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow without color', () => runTest([
@@ -480,6 +482,7 @@ it('transforms box-shadow without color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 30,
   shadowColor: 'black',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow without blur-radius, color', () => runTest([
@@ -488,6 +491,7 @@ it('transforms box-shadow without blur-radius, color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'black',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow with rgb color', () => runTest([
@@ -496,6 +500,7 @@ it('transforms box-shadow with rgb color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'rgb(100, 100, 100)',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow with rgba color', () => runTest([
@@ -504,6 +509,7 @@ it('transforms box-shadow with rgba color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'rgba(100, 100, 100, 0.5)',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow with hsl color', () => runTest([
@@ -512,6 +518,7 @@ it('transforms box-shadow with hsl color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'hsl(120, 100%, 50%)',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow with hsla color', () => runTest([
@@ -520,6 +527,7 @@ it('transforms box-shadow with hsla color', () => runTest([
   shadowOffset: { width: 10, height: 20 },
   shadowRadius: 0,
   shadowColor: 'hsla(120, 100%, 50%, 0.7)',
+  shadowOpacity: 1,
 }));
 
 it('transforms box-shadow enforces offset to be present', () => {
