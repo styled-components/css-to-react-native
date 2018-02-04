@@ -7,7 +7,10 @@
     "build": "babel src --ignore test.js --out-dir dist",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepublish": "npm run build"
+    "lint": "eslint src",
+    "prepublish": "npm run build",
+    "precommit": "lint-staged",
+    "lint-staged": "lint-staged"
   },
   "files": [
     "dist",
@@ -37,12 +40,20 @@
     "eslint-config-airbnb-base": "^10.0.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "jest": "^17.0.0",
+    "lint-staged": "^6.1.0",
     "prettier": "^1.10.2"
   },
   "dependencies": {
     "css-color-keywords": "^1.0.0",
     "fbjs": "^0.8.5",
     "postcss-value-parser": "^3.3.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
