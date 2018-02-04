@@ -28,7 +28,7 @@ module.exports = (tokenStream) => {
         tokenStream.expect(SPACE);
         blurRadius = tokenStream.expect(LENGTH);
       }
-    } else if (tokenStream.matches(COLOR)) {
+    } else if (color === undefined && tokenStream.matches(COLOR)) {
       color = tokenStream.lastValue;
     } else {
       tokenStream.throw();

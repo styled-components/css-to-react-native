@@ -530,6 +530,11 @@ it('transforms box-shadow with hsla color', () => runTest([
   shadowOpacity: 1,
 }));
 
+it('transforms box-shadow and throws if multiple colors are used', () => {
+  expect(() => transformCss([['box-shadow', '0 0 0 red yellow green blue']]))
+    .toThrow('Failed to parse declaration "boxShadow: 0 0 0 red yellow green blue"');
+});
+
 it('transforms box-shadow enforces offset to be present', () => {
   expect(() => transformCss([['box-shadow', 'red']]))
     .toThrow('Failed to parse declaration "boxShadow: red"');
