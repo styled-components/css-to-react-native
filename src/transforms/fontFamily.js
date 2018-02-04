@@ -1,8 +1,8 @@
-const { tokens } = require('../tokenTypes');
+const { tokens } = require("../tokenTypes");
 
 const { SPACE, IDENT, STRING } = tokens;
 
-module.exports = (tokenStream) => {
+module.exports = tokenStream => {
   let fontFamily;
 
   if (tokenStream.matches(STRING)) {

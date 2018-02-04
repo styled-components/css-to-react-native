@@ -1,8 +1,8 @@
-const { tokens } = require('../tokenTypes');
+const { tokens } = require("../tokenTypes");
 
 const { SPACE, COMMA, LENGTH, NUMBER, ANGLE } = tokens;
 
-const oneOfType = tokenType => (functionStream) => {
+const oneOfType = tokenType => functionStream => {
   const value = functionStream.expect(tokenType);
   functionStream.expectEmpty();
   return value;
@@ -11,7 +11,10 @@ const oneOfType = tokenType => (functionStream) => {
 const singleNumber = oneOfType(NUMBER);
 const singleLength = oneOfType(LENGTH);
 const singleAngle = oneOfType(ANGLE);
-const xyTransformFactory = tokenType => (key, valueIfOmitted) => (functionStream) => {
+const xyTransformFactory = tokenType => (
+  key,
+  valueIfOmitted
+) => functionStream => {
   const x = functionStream.expect(tokenType);
 
   let y;
@@ -36,10 +39,10 @@ const xyAngle = xyTransformFactory(ANGLE);
 
 const partTransforms = {
   perspective: singleNumber,
-  scale: xyNumber('scale'),
+  scale: xyNumber("scale"),
   scaleX: singleNumber,
   scaleY: singleNumber,
-  translate: xyLength('translate', 0),
+  translate: xyLength("translate", 0),
   translateX: singleLength,
   translateY: singleLength,
   rotate: singleAngle,
@@ -48,10 +51,10 @@ const partTransforms = {
   rotateZ: singleAngle,
   skewX: singleAngle,
   skewY: singleAngle,
-  skew: xyAngle('skew', '0deg'),
+  skew: xyAngle("skew", "0deg")
 };
 
-module.exports = (tokenStream) => {
+module.exports = tokenStream => {
   let transforms = [];
 
   let didParseFirst = false;
@@ -59,10 +62,10 @@ module.exports = (tokenStream) => {
     if (didParseFirst) tokenStream.expect(SPACE);
 
     const functionStream = tokenStream.expectFunction();
-    const transformName = functionStream.parent.value;
-    let transformedValues = partTransforms[transformName](functionStream);
+    const { functionName } = functionStream;
+    let transformedValues = partTransforms[functionName](functionStream);
     if (!Array.isArray(transformedValues)) {
-      transformedValues = [{ [transformName]: transformedValues }];
+      transformedValues = [{ [functionName]: transformedValues }];
     }
     transforms = transformedValues.concat(transforms);
 

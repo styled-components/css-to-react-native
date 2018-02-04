@@ -1,4 +1,4 @@
-const { tokens } = require('../tokenTypes');
+const { tokens } = require("../tokenTypes");
 
 const { NONE, AUTO, NUMBER, LENGTH, SPACE } = tokens;
 
@@ -8,7 +8,7 @@ const defaultFlexBasis = 0;
 
 const FLEX_BASIS_AUTO = {}; // Used for reference equality
 
-module.exports = (tokenStream) => {
+module.exports = tokenStream => {
   let flexGrow;
   let flexShrink;
   let flexBasis;
@@ -16,9 +16,13 @@ module.exports = (tokenStream) => {
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty();
     return { $merge: { flexGrow: 0, flexShrink: 0 } };
-  } else if (tokenStream.test(AUTO) && !tokenStream.lookAhead().hasTokens()) {
+  }
+
+  tokenStream.saveRewindPoint();
+  if (tokenStream.matches(AUTO) && !tokenStream.hasTokens()) {
     return { $merge: { flexGrow: 1, flexShrink: 1 } };
   }
+  tokenStream.rewind();
 
   let partsParsed = 0;
   while (partsParsed < 2 && tokenStream.hasTokens()) {
@@ -27,9 +31,11 @@ module.exports = (tokenStream) => {
     if (flexGrow === undefined && tokenStream.matches(NUMBER)) {
       flexGrow = tokenStream.lastValue;
 
-      if (tokenStream.lookAhead().matches(NUMBER)) {
-        tokenStream.expect(SPACE);
-        flexShrink = tokenStream.expect(NUMBER);
+      tokenStream.saveRewindPoint();
+      if (tokenStream.matches(SPACE) && tokenStream.matches(NUMBER)) {
+        flexShrink = tokenStream.lastValue;
+      } else {
+        tokenStream.rewind();
       }
     } else if (flexBasis === undefined && tokenStream.matches(LENGTH)) {
       flexBasis = tokenStream.lastValue;

@@ -1,8 +1,8 @@
-const { tokens } = require('../tokenTypes');
+const { tokens } = require("../tokenTypes");
 
 const { NONE, SPACE, COLOR, LENGTH } = tokens;
 
-module.exports = (tokenStream) => {
+module.exports = tokenStream => {
   let offsetX;
   let offsetY;
   let blurRadius;
@@ -11,7 +11,12 @@ module.exports = (tokenStream) => {
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty();
     return {
-      $merge: { shadowOffset: { width: 0, height: 0 }, shadowRadius: 0, shadowColor: 'black', shadowOpacity: 1 },
+      $merge: {
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 0,
+        shadowColor: "black",
+        shadowOpacity: 1
+      }
     };
   }
 
@@ -24,9 +29,11 @@ module.exports = (tokenStream) => {
       tokenStream.expect(SPACE);
       offsetY = tokenStream.expect(LENGTH);
 
-      if (tokenStream.lookAhead().matches(LENGTH)) {
-        tokenStream.expect(SPACE);
-        blurRadius = tokenStream.expect(LENGTH);
+      tokenStream.saveRewindPoint();
+      if (tokenStream.matches(SPACE) && tokenStream.matches(LENGTH)) {
+        blurRadius = tokenStream.lastValue;
+      } else {
+        tokenStream.rewind();
       }
     } else if (color === undefined && tokenStream.matches(COLOR)) {
       color = tokenStream.lastValue;
@@ -42,8 +49,8 @@ module.exports = (tokenStream) => {
   const $merge = {
     shadowOffset: { width: offsetX, height: offsetY },
     shadowRadius: blurRadius !== undefined ? blurRadius : 0,
-    shadowColor: color !== undefined ? color : 'black',
-    shadowOpacity: 1,
+    shadowColor: color !== undefined ? color : "black",
+    shadowOpacity: 1
   };
   return { $merge };
 };

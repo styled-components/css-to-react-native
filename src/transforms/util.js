@@ -1,13 +1,13 @@
-const { tokens } = require('../tokenTypes');
+const { tokens } = require("../tokenTypes");
 
 const { LENGTH, PERCENT, SPACE } = tokens;
 
 module.exports.directionFactory = ({
   types = [LENGTH, PERCENT],
-  directions = ['Top', 'Right', 'Bottom', 'Left'],
-  prefix = '',
-  suffix = '',
-}) => (tokenStream) => {
+  directions = ["Top", "Right", "Bottom", "Left"],
+  prefix = "",
+  suffix = ""
+}) => tokenStream => {
   const values = [];
 
   // borderWidth doesn't currently allow a percent value, but may do in the future
@@ -28,13 +28,13 @@ module.exports.directionFactory = ({
     [keyFor(0)]: top,
     [keyFor(1)]: right,
     [keyFor(2)]: bottom,
-    [keyFor(3)]: left,
+    [keyFor(3)]: left
   };
 
   return { $merge: output };
 };
 
-module.exports.anyOrderFactory = (properties, delim = SPACE) => (tokenStream) => {
+module.exports.anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
   const propertyNames = Object.keys(properties);
   const values = propertyNames.reduce((accum, propertyName) => {
     accum[propertyName] === undefined; // eslint-disable-line
@@ -45,9 +45,11 @@ module.exports.anyOrderFactory = (properties, delim = SPACE) => (tokenStream) =>
   while (numParsed < propertyNames.length && tokenStream.hasTokens()) {
     if (numParsed) tokenStream.expect(delim);
 
-    const matchedPropertyName = propertyNames.find(propertyName => (
-      values[propertyName] === undefined && tokenStream.matches(properties[propertyName].token)
-    ));
+    const matchedPropertyName = propertyNames.find(
+      propertyName =>
+        values[propertyName] === undefined &&
+        tokenStream.matches(properties[propertyName].token)
+    );
 
     if (!matchedPropertyName) {
       tokenStream.throw();
@@ -60,14 +62,15 @@ module.exports.anyOrderFactory = (properties, delim = SPACE) => (tokenStream) =>
 
   tokenStream.expectEmpty();
 
-  propertyNames.forEach((propertyName) => {
-    if (values[propertyName] === undefined) values[propertyName] = properties[propertyName].default;
+  propertyNames.forEach(propertyName => {
+    if (values[propertyName] === undefined)
+      values[propertyName] = properties[propertyName].default;
   });
 
   return { $merge: values };
 };
 
-module.exports.shadowOffsetFactory = () => (tokenStream) => {
+module.exports.shadowOffsetFactory = () => tokenStream => {
   const width = tokenStream.expect(LENGTH);
   const height = tokenStream.matches(SPACE)
     ? tokenStream.expect(LENGTH)

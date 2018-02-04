@@ -1,5 +1,5 @@
-const parseFontFamily = require('./fontFamily');
-const { regExpToken, tokens } = require('../tokenTypes');
+const parseFontFamily = require("./fontFamily");
+const { regExpToken, tokens } = require("../tokenTypes");
 
 const { SPACE, LENGTH, NUMBER, SLASH } = tokens;
 const NORMAL = regExpToken(/^(normal)$/);
@@ -7,11 +7,11 @@ const STYLE = regExpToken(/^(italic)$/);
 const WEIGHT = regExpToken(/^([1-9]00|bold)$/);
 const VARIANT = regExpToken(/^(small-caps)$/);
 
-const defaultFontStyle = 'normal';
-const defaultFontWeight = 'normal';
+const defaultFontStyle = "normal";
+const defaultFontWeight = "normal";
 const defaultFontVariant = [];
 
-module.exports = (tokenStream) => {
+module.exports = tokenStream => {
   let fontStyle;
   let fontWeight;
   let fontVariant;
