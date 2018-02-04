@@ -1,22 +1,22 @@
-const { tokens } = require('../tokenTypes');
+const { tokens } = require('../tokenTypes')
 
-const { SPACE, IDENT, STRING } = tokens;
+const { SPACE, IDENT, STRING } = tokens
 
-module.exports = (tokenStream) => {
-  let fontFamily;
+module.exports = tokenStream => {
+  let fontFamily
 
   if (tokenStream.matches(STRING)) {
-    fontFamily = tokenStream.lastValue;
+    fontFamily = tokenStream.lastValue
   } else {
-    fontFamily = tokenStream.expect(IDENT);
+    fontFamily = tokenStream.expect(IDENT)
     while (tokenStream.hasTokens()) {
-      tokenStream.expect(SPACE);
-      const nextIdent = tokenStream.expect(IDENT);
-      fontFamily += ` ${nextIdent}`;
+      tokenStream.expect(SPACE)
+      const nextIdent = tokenStream.expect(IDENT)
+      fontFamily += ` ${nextIdent}`
     }
   }
 
-  tokenStream.expectEmpty();
+  tokenStream.expectEmpty()
 
-  return fontFamily;
-};
+  return fontFamily
+}
