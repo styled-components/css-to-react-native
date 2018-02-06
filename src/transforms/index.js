@@ -3,6 +3,7 @@ const boxShadow = require('./boxShadow')
 const flex = require('./flex')
 const font = require('./font')
 const fontFamily = require('./fontFamily')
+const textDecoration = require('./textDecoration')
 const transform = require('./transform')
 const {
   directionFactory,
@@ -74,5 +75,6 @@ module.exports = {
   padding,
   shadowOffset,
   textShadowOffset,
+  textDecoration,
   transform,
 }
