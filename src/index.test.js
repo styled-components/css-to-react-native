@@ -557,6 +557,61 @@ it('transforms box-shadow and enforces offset-y if offset-x present', () => {
   )
 })
 
+it('transforms text-decoration into text-decoration- properties', () =>
+  runTest([['text-decoration', 'underline dotted red']], {
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: 'red',
+  }))
+
+it('transforms text-decoration without color', () =>
+  runTest([['text-decoration', 'underline dotted']], {
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'dotted',
+    textDecorationColor: 'black',
+  }))
+
+it('transforms text-decoration without style', () =>
+  runTest([['text-decoration', 'underline red']], {
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'red',
+  }))
+
+it('transforms text-decoration without style and color', () =>
+  runTest([['text-decoration', 'underline']], {
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'black',
+  }))
+
+it('transforms text-decoration with two line properties', () =>
+  runTest([['text-decoration', 'underline line-through dashed red']], {
+    textDecorationLine: 'underline line-through',
+    textDecorationStyle: 'dashed',
+    textDecorationColor: 'red',
+  }))
+
+it('transforms text-decoration in different order', () =>
+  runTest([['text-decoration', 'dashed red underline line-through']], {
+    textDecorationLine: 'underline line-through',
+    textDecorationStyle: 'dashed',
+    textDecorationColor: 'red',
+  }))
+
+it('transforms text-decoration with none', () =>
+  runTest([['text-decoration', 'none']], {
+    textDecorationLine: 'none',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'black',
+  }))
+
+it('does not transform text-decoration if multiple colors are used', () => {
+  expect(() =>
+    transformCss([['text-decoration', 'underline red yellow']])
+  ).toThrow()
+})
+
 it('allows blacklisting shorthands', () => {
   const actualStyles = transformCss([['border-radius', '50']], ['borderRadius'])
   expect(actualStyles).toEqual({ borderRadius: 50 })
