@@ -612,6 +612,21 @@ it('does not transform text-decoration if multiple colors are used', () => {
   ).toThrow()
 })
 
+it('transforms text-decoration-line with underline line-through', () =>
+  runTest([['text-decoration-line', 'underline line-through']], {
+    textDecorationLine: 'underline line-through',
+  }))
+
+it('transforms text-decoration-line with line-through underline', () =>
+  runTest([['text-decoration-line', 'line-through underline']], {
+    textDecorationLine: 'underline line-through',
+  }))
+
+it('transforms text-decoration-line with none', () =>
+  runTest([['text-decoration-line', 'none']], {
+    textDecorationLine: 'none',
+  }))
+
 it('allows blacklisting shorthands', () => {
   const actualStyles = transformCss([['border-radius', '50']], ['borderRadius'])
   expect(actualStyles).toEqual({ borderRadius: 50 })

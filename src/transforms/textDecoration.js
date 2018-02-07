@@ -1,9 +1,8 @@
 import { regExpToken, tokens } from '../tokenTypes'
 
-const { NONE, SPACE, COLOR } = tokens
+const { NONE, SPACE, LINE, COLOR } = tokens
 
 const STYLE = regExpToken(/^(solid|double|dotted|dashed)$/)
-const LINE = regExpToken(/^(none|underline|line-through)$/)
 
 const defaultTextDecorationLine = 'none'
 const defaultTextDecorationStyle = 'solid'

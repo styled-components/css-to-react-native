@@ -67,4 +67,5 @@ module.exports.tokens = {
   IDENT: regExpToken(identRe),
   STRING: matchString,
   COLOR: matchColor,
+  LINE: regExpToken(/^(none|underline|line-through)$/),
 }
