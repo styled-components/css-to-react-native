@@ -28,9 +28,6 @@ module.exports = tokenStream => {
         tokenStream.matches(LINE)
       ) {
         lines.push(tokenStream.lastValue)
-        if (lines[0] === lines[1]) {
-          throw new Error('Expected two different text decoration line styles')
-        }
         // Underline comes before line-through
         lines.sort().reverse()
       } else {
