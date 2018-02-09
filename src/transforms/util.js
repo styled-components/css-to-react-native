@@ -1,6 +1,6 @@
 const { tokens } = require('../tokenTypes')
 
-const { LENGTH, PERCENT, SPACE } = tokens
+const { LENGTH, PERCENT, COLOR, SPACE, NONE } = tokens
 
 module.exports.directionFactory = ({
   types = [LENGTH, PERCENT],
@@ -75,4 +75,52 @@ module.exports.shadowOffsetFactory = () => tokenStream => {
   const height = tokenStream.matches(SPACE) ? tokenStream.expect(LENGTH) : width
   tokenStream.expectEmpty()
   return { width, height }
+}
+
+module.exports.parseShadow = tokenStream => {
+  let offsetX
+  let offsetY
+  let radius = 0
+  let color
+
+  if (tokenStream.matches(NONE)) {
+    tokenStream.expectEmpty()
+    return {
+      offset: { width: 0, height: 0 },
+      radius: 0,
+      color: 'black',
+    }
+  }
+
+  let didParseFirst = false
+  while (tokenStream.hasTokens()) {
+    if (didParseFirst) tokenStream.expect(SPACE)
+
+    if (offsetX === undefined && tokenStream.matches(LENGTH)) {
+      offsetX = tokenStream.lastValue
+      tokenStream.expect(SPACE)
+      offsetY = tokenStream.expect(LENGTH)
+
+      tokenStream.saveRewindPoint()
+      if (tokenStream.matches(SPACE) && tokenStream.matches(LENGTH)) {
+        radius = tokenStream.lastValue
+      } else {
+        tokenStream.rewind()
+      }
+    } else if (color === undefined && tokenStream.matches(COLOR)) {
+      color = tokenStream.lastValue
+    } else {
+      tokenStream.throw()
+    }
+
+    didParseFirst = true
+  }
+
+  if (offsetX === undefined || color === undefined) tokenStream.throw()
+
+  return {
+    offset: { width: offsetX, height: offsetY },
+    radius,
+    color,
+  }
 }

@@ -1,4 +1,4 @@
-/* global jest it, expect */
+/* global it, expect */
 import transformCss, { getStylesForProperty } from '.'
 
 const runTest = (inputCss, expectedStyles) => {
@@ -489,22 +489,6 @@ it('transforms box-shadow without blur-radius', () =>
     shadowOpacity: 1,
   }))
 
-it('transforms box-shadow without color', () =>
-  runTest([['box-shadow', '10px 20px 30px']], {
-    shadowOffset: { width: 10, height: 20 },
-    shadowRadius: 30,
-    shadowColor: 'black',
-    shadowOpacity: 1,
-  }))
-
-it('transforms box-shadow without blur-radius, color', () =>
-  runTest([['box-shadow', '10px 20px']], {
-    shadowOffset: { width: 10, height: 20 },
-    shadowRadius: 0,
-    shadowColor: 'black',
-    shadowOpacity: 1,
-  }))
-
 it('transforms box-shadow with rgb color', () =>
   runTest([['box-shadow', '10px 20px rgb(100, 100, 100)']], {
     shadowOffset: { width: 10, height: 20 },
@@ -551,10 +535,13 @@ it('transforms box-shadow enforces offset to be present', () => {
   )
 })
 
-it('transforms box-shadow and enforces offset-y if offset-x present', () => {
-  expect(() => transformCss([['box-shadow', '10px']])).toThrow(
-    'Failed to parse declaration "boxShadow: 10px"'
-  )
+it('transforms box-shadow and enforces offset-x and offset-y', () => {
+  expect(() => transformCss([['box-shadow', 'black']])).toThrow()
+  expect(() => transformCss([['box-shadow', '10px black']])).toThrow()
+})
+
+it('transforms box-shadow and enforces color', () => {
+  expect(() => transformCss([['text-decoration', '10px 20px 30px']])).toThrow()
 })
 
 it('transforms text-decoration into text-decoration- properties', () =>

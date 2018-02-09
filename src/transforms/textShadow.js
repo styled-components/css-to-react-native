@@ -4,10 +4,9 @@ module.exports = tokenStream => {
   const { offset, radius, color } = parseShadow(tokenStream)
   return {
     $merge: {
-      shadowOffset: offset,
-      shadowRadius: radius,
-      shadowColor: color,
-      shadowOpacity: 1,
+      textShadowOffset: offset,
+      textShadowRadius: radius,
+      textShadowColor: color,
     },
   }
 }

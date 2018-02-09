@@ -3,6 +3,7 @@ const boxShadow = require('./boxShadow')
 const flex = require('./flex')
 const font = require('./font')
 const fontFamily = require('./fontFamily')
+const textShadow = require('./textShadow')
 const textDecoration = require('./textDecoration')
 const transform = require('./transform')
 const {
@@ -74,6 +75,7 @@ module.exports = {
   margin,
   padding,
   shadowOffset,
+  textShadow,
   textShadowOffset,
   textDecoration,
   transform,
