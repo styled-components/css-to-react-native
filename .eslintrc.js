@@ -4,4 +4,10 @@ module.exports = {
   rules: {
     'prettier/prettier': 2,
   },
+  overrides: [
+    {
+      files: '**/__tests__/*.js',
+      env: { jest: true },
+    },
+  ],
 }
