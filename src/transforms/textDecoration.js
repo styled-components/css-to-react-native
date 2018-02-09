@@ -1,6 +1,6 @@
 import { regExpToken, tokens } from '../tokenTypes'
 
-const { NONE, SPACE, LINE, COLOR } = tokens
+const { SPACE, LINE, COLOR } = tokens
 
 const STYLE = regExpToken(/^(solid|double|dotted|dashed)$/)
 
@@ -13,30 +13,27 @@ module.exports = tokenStream => {
   let style
   let color
 
-  if (tokenStream.matches(NONE)) {
-    tokenStream.expectEmpty()
-    return {
-      $merge: {
-        textDecorationLine: defaultTextDecorationLine,
-        textDecorationStyle: defaultTextDecorationStyle,
-        textDecorationColor: defaultTextDecorationColor,
-      },
-    }
-  }
-
   let didParseFirst = false
   while (tokenStream.hasTokens()) {
     if (didParseFirst) tokenStream.expect(SPACE)
 
     if (line === undefined && tokenStream.matches(LINE)) {
-      line = tokenStream.lastValue
+      const lines = [tokenStream.lastValue]
 
       tokenStream.saveRewindPoint()
-      if (tokenStream.matches(SPACE) && tokenStream.matches(LINE)) {
-        line += ` ${tokenStream.lastValue}`
+      if (
+        lines[0] !== 'none' &&
+        tokenStream.matches(SPACE) &&
+        tokenStream.matches(LINE)
+      ) {
+        lines.push(tokenStream.lastValue)
+        // Underline comes before line-through
+        lines.sort().reverse()
       } else {
         tokenStream.rewind()
       }
+
+      line = lines.join(' ')
     } else if (style === undefined && tokenStream.matches(STYLE)) {
       style = tokenStream.lastValue
     } else if (color === undefined && tokenStream.matches(COLOR)) {

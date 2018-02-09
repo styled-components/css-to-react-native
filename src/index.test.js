@@ -599,11 +599,25 @@ it('transforms text-decoration in different order', () =>
     textDecorationColor: 'red',
   }))
 
+it('transforms text-decoration with ine in different order', () =>
+  runTest([['text-decoration', 'line-through underline']], {
+    textDecorationLine: 'underline line-through',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'black',
+  }))
+
 it('transforms text-decoration with none', () =>
   runTest([['text-decoration', 'none']], {
     textDecorationLine: 'none',
     textDecorationStyle: 'solid',
     textDecorationColor: 'black',
+  }))
+
+it('transforms text-decoration with none as part of multiple terms', () =>
+  runTest([['text-decoration', 'yellow none']], {
+    textDecorationLine: 'none',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'yellow',
   }))
 
 it('does not transform text-decoration if multiple colors are used', () => {
