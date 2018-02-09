@@ -5,6 +5,7 @@ const font = require('./font')
 const fontFamily = require('./fontFamily')
 const textShadow = require('./textShadow')
 const textDecoration = require('./textDecoration')
+const textDecorationLine = require('./textDecorationLine')
 const transform = require('./transform')
 const {
   directionFactory,
@@ -78,5 +79,6 @@ module.exports = {
   textShadow,
   textShadowOffset,
   textDecoration,
+  textDecorationLine,
   transform,
 }
