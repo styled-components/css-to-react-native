@@ -489,6 +489,14 @@ it('transforms box-shadow without blur-radius', () =>
     shadowOpacity: 1,
   }))
 
+it('transforms box-shadow without color', () =>
+  runTest([['box-shadow', '10px 20px']], {
+    shadowOffset: { width: 10, height: 20 },
+    shadowRadius: 0,
+    shadowColor: 'black',
+    shadowOpacity: 1,
+  }))
+
 it('transforms box-shadow with rgb color', () =>
   runTest([['box-shadow', '10px 20px rgb(100, 100, 100)']], {
     shadowOffset: { width: 10, height: 20 },
@@ -524,24 +532,12 @@ it('transforms box-shadow with hsla color', () =>
 it('transforms box-shadow and throws if multiple colors are used', () => {
   expect(() =>
     transformCss([['box-shadow', '0 0 0 red yellow green blue']])
-  ).toThrow(
-    'Failed to parse declaration "boxShadow: 0 0 0 red yellow green blue"'
-  )
+  ).toThrow()
 })
 
 it('transforms box-shadow enforces offset to be present', () => {
-  expect(() => transformCss([['box-shadow', 'red']])).toThrow(
-    'Failed to parse declaration "boxShadow: red"'
-  )
-})
-
-it('transforms box-shadow and enforces offset-x and offset-y', () => {
-  expect(() => transformCss([['box-shadow', 'black']])).toThrow()
-  expect(() => transformCss([['box-shadow', '10px black']])).toThrow()
-})
-
-it('transforms box-shadow and enforces color', () => {
-  expect(() => transformCss([['text-decoration', '10px 20px 30px']])).toThrow()
+  expect(() => transformCss([['box-shadow', 'red']])).toThrow()
+  expect(() => transformCss([['box-shadow', '10px red']])).toThrow()
 })
 
 it('transforms text-decoration into text-decoration- properties', () =>

@@ -80,7 +80,7 @@ module.exports.shadowOffsetFactory = () => tokenStream => {
 module.exports.parseShadow = tokenStream => {
   let offsetX
   let offsetY
-  let radius = 0
+  let radius
   let color
 
   if (tokenStream.matches(NONE)) {
@@ -116,11 +116,11 @@ module.exports.parseShadow = tokenStream => {
     didParseFirst = true
   }
 
-  if (offsetX === undefined || color === undefined) tokenStream.throw()
+  if (offsetX === undefined) tokenStream.throw()
 
   return {
     offset: { width: offsetX, height: offsetY },
-    radius,
-    color,
+    radius: radius !== undefined ? radius : 0,
+    color: color !== undefined ? color : 'black',
   }
 }

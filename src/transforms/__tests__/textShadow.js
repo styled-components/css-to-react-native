@@ -16,6 +16,14 @@ it('textShadow omitting blur', () => {
   })
 })
 
+it('textShadow omitting color', () => {
+  expect(transformCss([['text-shadow', '10px 20px black']])).toEqual({
+    textShadowOffset: { width: 10, height: 20 },
+    textShadowRadius: 0,
+    textShadowColor: 'black',
+  })
+})
+
 it('textShadow omitting blur, offset-y', () => {
   expect(transformCss([['text-shadow', '10px 20px red']])).toEqual({
     textShadowOffset: { width: 10, height: 20 },
@@ -27,8 +35,4 @@ it('textShadow omitting blur, offset-y', () => {
 it('textShadow enforces offset-x and offset-y', () => {
   expect(() => transformCss([['text-shadow', 'red']])).toThrow()
   expect(() => transformCss([['text-shadow', '10px red']])).toThrow()
-})
-
-it('textShadow enforces color', () => {
-  expect(() => transformCss([['text-shadow', '10px 20px']])).toThrow()
 })
