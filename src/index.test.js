@@ -620,11 +620,40 @@ it('transforms text-decoration with none as part of multiple terms', () =>
     textDecorationColor: 'yellow',
   }))
 
+it('transforms text-decoration with none in capitals', () =>
+  runTest([['text-decoration', 'yellow NONE']], {
+    textDecorationLine: 'none',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'yellow',
+  }))
+
+it('transforms text-decoration with style in capitals', () =>
+  runTest([['text-decoration', 'yellow UNDERLINE LINE-THROUGH']], {
+    textDecorationLine: 'underline line-through',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'yellow',
+  }))
+
 it('does not transform text-decoration if multiple colors are used', () => {
   expect(() =>
     transformCss([['text-decoration', 'underline red yellow']])
   ).toThrow()
 })
+
+it('transforms text-decoration-line with underline line-through', () =>
+  runTest([['text-decoration-line', 'underline line-through']], {
+    textDecorationLine: 'underline line-through',
+  }))
+
+it('transforms text-decoration-line with line-through underline', () =>
+  runTest([['text-decoration-line', 'line-through underline']], {
+    textDecorationLine: 'underline line-through',
+  }))
+
+it('transforms text-decoration-line with none', () =>
+  runTest([['text-decoration-line', 'none']], {
+    textDecorationLine: 'none',
+  }))
 
 it('allows blacklisting shorthands', () => {
   const actualStyles = transformCss([['border-radius', '50']], ['borderRadius'])
