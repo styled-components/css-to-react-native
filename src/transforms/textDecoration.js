@@ -18,7 +18,7 @@ module.exports = tokenStream => {
     if (didParseFirst) tokenStream.expect(SPACE)
 
     if (line === undefined && tokenStream.matches(LINE)) {
-      const lines = [tokenStream.lastValue]
+      const lines = [tokenStream.lastValue.toLowerCase()]
 
       tokenStream.saveRewindPoint()
       if (
@@ -26,7 +26,7 @@ module.exports = tokenStream => {
         tokenStream.matches(SPACE) &&
         tokenStream.matches(LINE)
       ) {
-        lines.push(tokenStream.lastValue)
+        lines.push(tokenStream.lastValue.toLowerCase())
         // Underline comes before line-through
         lines.sort().reverse()
       } else {

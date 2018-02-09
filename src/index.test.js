@@ -620,6 +620,20 @@ it('transforms text-decoration with none as part of multiple terms', () =>
     textDecorationColor: 'yellow',
   }))
 
+it('transforms text-decoration with none in capitals', () =>
+  runTest([['text-decoration', 'yellow NONE']], {
+    textDecorationLine: 'none',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'yellow',
+  }))
+
+it('transforms text-decoration with style in capitals', () =>
+  runTest([['text-decoration', 'yellow UNDERLINE LINE-THROUGH']], {
+    textDecorationLine: 'underline line-through',
+    textDecorationStyle: 'solid',
+    textDecorationColor: 'yellow',
+  }))
+
 it('does not transform text-decoration if multiple colors are used', () => {
   expect(() =>
     transformCss([['text-decoration', 'underline red yellow']])

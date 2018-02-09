@@ -9,7 +9,7 @@ module.exports = tokenStream => {
   while (tokenStream.hasTokens()) {
     if (didParseFirst) tokenStream.expect(SPACE)
 
-    lines.push(tokenStream.expect(LINE))
+    lines.push(tokenStream.expect(LINE).toLowerCase())
 
     didParseFirst = true
   }
