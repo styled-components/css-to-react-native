@@ -38,7 +38,7 @@ const borderColor = directionFactory({
   suffix: 'Color',
 })
 const borderRadius = directionFactory({
-  directions: ['TopRight', 'BottomRight', 'BottomLeft', 'TopLeft'],
+  directions: ['TopLeft', 'TopRight', 'BottomRight', 'BottomLeft'],
   prefix: 'border',
   suffix: 'Radius',
 })

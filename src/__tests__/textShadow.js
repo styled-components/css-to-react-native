@@ -1,4 +1,4 @@
-import transformCss from '../..'
+import transformCss from '..'
 
 it('textShadow with all values', () => {
   expect(transformCss([['text-shadow', '10px 20px 30px red']])).toEqual({
