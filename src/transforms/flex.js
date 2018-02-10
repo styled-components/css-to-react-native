@@ -1,4 +1,4 @@
-const { tokens } = require('../tokenTypes')
+import { tokens } from '../tokenTypes'
 
 const { NONE, AUTO, NUMBER, LENGTH, SPACE } = tokens
 
@@ -8,7 +8,7 @@ const defaultFlexBasis = 0
 
 const FLEX_BASIS_AUTO = {} // Used for reference equality
 
-module.exports = tokenStream => {
+export default tokenStream => {
   let flexGrow
   let flexShrink
   let flexBasis

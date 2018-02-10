@@ -1,8 +1,8 @@
-const { tokens } = require('../tokenTypes')
+import { tokens } from '../tokenTypes'
 
 const { SPACE, LINE } = tokens
 
-module.exports = tokenStream => {
+export default tokenStream => {
   const lines = []
 
   let didParseFirst = false

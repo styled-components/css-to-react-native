@@ -1,6 +1,6 @@
-const { parseShadow } = require('./util')
+import { parseShadow } from './util'
 
-module.exports = tokenStream => {
+export default tokenStream => {
   const { offset, radius, color } = parseShadow(tokenStream)
   return {
     $merge: {

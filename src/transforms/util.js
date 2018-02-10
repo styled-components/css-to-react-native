@@ -1,8 +1,8 @@
-const { tokens } = require('../tokenTypes')
+import { tokens } from '../tokenTypes'
 
 const { LENGTH, PERCENT, COLOR, SPACE, NONE } = tokens
 
-module.exports.directionFactory = ({
+export const directionFactory = ({
   types = [LENGTH, PERCENT],
   directions = ['Top', 'Right', 'Bottom', 'Left'],
   prefix = '',
@@ -34,7 +34,7 @@ module.exports.directionFactory = ({
   return { $merge: output }
 }
 
-module.exports.anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
+export const anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
   const propertyNames = Object.keys(properties)
   const values = propertyNames.reduce((accum, propertyName) => {
     accum[propertyName] === undefined // eslint-disable-line
@@ -70,14 +70,14 @@ module.exports.anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
   return { $merge: values }
 }
 
-module.exports.shadowOffsetFactory = () => tokenStream => {
+export const shadowOffsetFactory = () => tokenStream => {
   const width = tokenStream.expect(LENGTH)
   const height = tokenStream.matches(SPACE) ? tokenStream.expect(LENGTH) : width
   tokenStream.expectEmpty()
   return { width, height }
 }
 
-module.exports.parseShadow = tokenStream => {
+export const parseShadow = tokenStream => {
   let offsetX
   let offsetY
   let radius

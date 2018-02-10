@@ -8,7 +8,7 @@ const defaultTextDecorationLine = 'none'
 const defaultTextDecorationStyle = 'solid'
 const defaultTextDecorationColor = 'black'
 
-module.exports = tokenStream => {
+export default tokenStream => {
   let line
   let style
   let color
