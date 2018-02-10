@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import parse from 'postcss-value-parser'
 import camelizeStyleName from 'fbjs/lib/camelizeStyleName'
-import transforms from './transforms'
+import transforms from './transforms/index'
 import TokenStream from './TokenStream'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
