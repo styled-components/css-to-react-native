@@ -1,6 +1,6 @@
 const SYMBOL_MATCH = 'SYMBOL_MATCH'
 
-module.exports = class TokenStream {
+export default class TokenStream {
   constructor(nodes, parent) {
     this.index = 0
     this.nodes = nodes

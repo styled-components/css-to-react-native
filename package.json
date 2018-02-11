@@ -2,9 +2,9 @@
   "name": "css-to-react-native",
   "version": "2.1.1",
   "description": "Convert CSS text to a React Native stylesheet object",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "babel src --ignore test.js --out-dir dist",
+    "build": "rollup ./src/index.js -o index.js --f cjs && babel index.js -o index.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src",
@@ -13,7 +13,7 @@
     "lint-staged": "lint-staged"
   },
   "files": [
-    "dist",
+    "index.js",
     "src"
   ],
   "repository": {
@@ -43,7 +43,8 @@
     "eslint-plugin-prettier": "^2.6.0",
     "jest": "^22.2.2",
     "lint-staged": "^6.1.0",
-    "prettier": "^1.10.2"
+    "prettier": "^1.10.2",
+    "rollup": "^0.55.5"
   },
   "dependencies": {
     "css-color-keywords": "^1.0.0",

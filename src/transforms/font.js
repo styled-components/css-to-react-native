@@ -1,5 +1,5 @@
-const parseFontFamily = require('./fontFamily')
-const { regExpToken, tokens } = require('../tokenTypes')
+import parseFontFamily from './fontFamily'
+import { regExpToken, tokens } from '../tokenTypes'
 
 const { SPACE, LENGTH, NUMBER, SLASH } = tokens
 const NORMAL = regExpToken(/^(normal)$/)
@@ -11,7 +11,7 @@ const defaultFontStyle = 'normal'
 const defaultFontWeight = 'normal'
 const defaultFontVariant = []
 
-module.exports = tokenStream => {
+export default tokenStream => {
   let fontStyle
   let fontWeight
   let fontVariant

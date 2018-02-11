@@ -1,4 +1,4 @@
-const { tokens } = require('../tokenTypes')
+import { tokens } from '../tokenTypes'
 
 const { SPACE, COMMA, LENGTH, NUMBER, ANGLE } = tokens
 
@@ -54,7 +54,7 @@ const partTransforms = {
   skew: xyAngle('skew', '0deg'),
 }
 
-module.exports = tokenStream => {
+export default tokenStream => {
   let transforms = []
 
   let didParseFirst = false

@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-const parse = require('postcss-value-parser')
-const camelizeStyleName = require('fbjs/lib/camelizeStyleName')
-const transforms = require('./transforms')
-const TokenStream = require('./TokenStream')
+import parse from 'postcss-value-parser'
+import camelizeStyleName from 'fbjs/lib/camelizeStyleName'
+import transforms from './transforms/index'
+import TokenStream from './TokenStream'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/i

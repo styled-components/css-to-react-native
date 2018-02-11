@@ -1,17 +1,13 @@
-const { regExpToken, tokens } = require('../tokenTypes')
-const boxShadow = require('./boxShadow')
-const flex = require('./flex')
-const font = require('./font')
-const fontFamily = require('./fontFamily')
-const textShadow = require('./textShadow')
-const textDecoration = require('./textDecoration')
-const textDecorationLine = require('./textDecorationLine')
-const transform = require('./transform')
-const {
-  directionFactory,
-  anyOrderFactory,
-  shadowOffsetFactory,
-} = require('./util')
+import { regExpToken, tokens } from '../tokenTypes'
+import boxShadow from './boxShadow'
+import flex from './flex'
+import font from './font'
+import fontFamily from './fontFamily'
+import textShadow from './textShadow'
+import textDecoration from './textDecoration'
+import textDecorationLine from './textDecorationLine'
+import transform from './transform'
+import { directionFactory, anyOrderFactory, shadowOffsetFactory } from './util'
 
 const { IDENT, WORD, COLOR } = tokens
 
@@ -60,7 +56,7 @@ const fontWeight = tokenStream => tokenStream.expect(WORD) // Also match numbers
 const shadowOffset = shadowOffsetFactory()
 const textShadowOffset = shadowOffsetFactory()
 
-module.exports = {
+export default {
   background,
   border,
   borderColor,

@@ -1,5 +1,5 @@
-const { stringify } = require('postcss-value-parser')
-const cssColorKeywords = require('css-color-keywords')
+import { stringify } from 'postcss-value-parser'
+import cssColorKeywords from 'css-color-keywords'
 
 const matchString = node => {
   if (node.type !== 'string') return null
@@ -40,7 +40,7 @@ const noopToken = predicate => node => (predicate(node) ? '<token>' : null)
 const valueForTypeToken = type => node =>
   node.type === type ? node.value : null
 
-const regExpToken = (regExp, transform = String) => node => {
+export const regExpToken = (regExp, transform = String) => node => {
   if (node.type !== 'word') return null
 
   const match = node.value.match(regExp)
@@ -51,9 +51,7 @@ const regExpToken = (regExp, transform = String) => node => {
   return value
 }
 
-module.exports.regExpToken = regExpToken
-
-module.exports.tokens = {
+export const tokens = {
   SPACE: noopToken(node => node.type === 'space'),
   SLASH: noopToken(node => node.type === 'div' && node.value === '/'),
   COMMA: noopToken(node => node.type === 'div' && node.value === ','),
