@@ -9,7 +9,7 @@ import textDecorationLine from './textDecorationLine'
 import transform from './transform'
 import { directionFactory, anyOrderFactory, shadowOffsetFactory } from './util'
 
-const { IDENT, WORD, COLOR } = tokens
+const { IDENT, WORD, COLOR, LENGTH, PERCENT, AUTO } = tokens
 
 const background = tokenStream => ({
   $merge: { backgroundColor: tokenStream.expect(COLOR) },
@@ -39,7 +39,10 @@ const borderRadius = directionFactory({
   suffix: 'Radius',
 })
 const borderWidth = directionFactory({ prefix: 'border', suffix: 'Width' })
-const margin = directionFactory({ prefix: 'margin' })
+const margin = directionFactory({
+  types: [LENGTH, PERCENT, AUTO],
+  prefix: 'margin',
+})
 const padding = directionFactory({ prefix: 'padding' })
 const flexFlow = anyOrderFactory({
   flexWrap: {

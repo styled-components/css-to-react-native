@@ -84,6 +84,39 @@ it('transforms shorthand and overrides previous values', () => {
   })
 })
 
+it('transforms margin shorthand with auto', () => {
+  expect(transformCss([['margin', 'auto']])).toEqual({
+    marginTop: 'auto',
+    marginRight: 'auto',
+    marginBottom: 'auto',
+    marginLeft: 'auto',
+  })
+  expect(transformCss([['margin', '0 auto']])).toEqual({
+    marginTop: 0,
+    marginRight: 'auto',
+    marginBottom: 0,
+    marginLeft: 'auto',
+  })
+  expect(transformCss([['margin', 'auto 0']])).toEqual({
+    marginTop: 'auto',
+    marginRight: 0,
+    marginBottom: 'auto',
+    marginLeft: 0,
+  })
+  expect(transformCss([['margin', '2px 3px auto']])).toEqual({
+    marginTop: 2,
+    marginRight: 3,
+    marginBottom: 'auto',
+    marginLeft: 3,
+  })
+  expect(transformCss([['margin', '10px auto 4px']])).toEqual({
+    marginTop: 10,
+    marginRight: 'auto',
+    marginBottom: 4,
+    marginLeft: 'auto',
+  })
+})
+
 it('transforms border width', () => {
   expect(transformCss([['border-width', '1px 2px 3px 4px']])).toEqual({
     borderTopWidth: 1,
