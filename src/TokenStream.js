@@ -15,11 +15,15 @@ export default class TokenStream {
   }
 
   [SYMBOL_MATCH](...tokenDescriptors) {
+    const node = this.nodes[this.index]
     if (!this.hasTokens()) return null
 
-    const node = this.nodes[this.index]
-
-    if (this.ignoreToken(node)) {
+    if (
+      node &&
+      node.value &&
+      this.ignoreToken &&
+      this.ignoreToken(node)
+    ) {
       return node.value
     }
 
