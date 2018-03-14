@@ -1,38 +1,41 @@
-const { tokens } = require('../tokenTypes');
+import { tokens } from '../tokenTypes'
 
-const { SPACE, COMMA, LENGTH, NUMBER, ANGLE } = tokens;
+const { SPACE, COMMA, LENGTH, NUMBER, ANGLE } = tokens
 
-const oneOfType = tokenType => (functionStream) => {
-  const value = functionStream.expect(tokenType);
-  functionStream.expectEmpty();
-  return value;
-};
+const oneOfType = tokenType => functionStream => {
+  const value = functionStream.expect(tokenType)
+  functionStream.expectEmpty()
+  return value
+}
 
-const singleNumber = oneOfType(NUMBER);
-const singleLength = oneOfType(LENGTH);
-const singleAngle = oneOfType(ANGLE);
-const xyTransformFactory = tokenType => (key, valueIfOmitted) => (functionStream) => {
-  const x = functionStream.expect(tokenType);
+const singleNumber = oneOfType(NUMBER)
+const singleLength = oneOfType(LENGTH)
+const singleAngle = oneOfType(ANGLE)
+const xyTransformFactory = tokenType => (
+  key,
+  valueIfOmitted
+) => functionStream => {
+  const x = functionStream.expect(tokenType)
 
-  let y;
+  let y
   if (functionStream.hasTokens()) {
-    functionStream.expect(COMMA);
-    y = functionStream.expect(tokenType);
+    functionStream.expect(COMMA)
+    y = functionStream.expect(tokenType)
   } else if (valueIfOmitted !== undefined) {
-    y = valueIfOmitted;
+    y = valueIfOmitted
   } else {
     // Assumption, if x === y, then we can omit XY
     // I.e. scale(5) => [{ scale: 5 }] rather than [{ scaleX: 5 }, { scaleY: 5 }]
-    return x;
+    return x
   }
 
-  functionStream.expectEmpty();
+  functionStream.expectEmpty()
 
-  return [{ [`${key}Y`]: y }, { [`${key}X`]: x }];
-};
-const xyNumber = xyTransformFactory(NUMBER);
-const xyLength = xyTransformFactory(LENGTH);
-const xyAngle = xyTransformFactory(ANGLE);
+  return [{ [`${key}Y`]: y }, { [`${key}X`]: x }]
+}
+const xyNumber = xyTransformFactory(NUMBER)
+const xyLength = xyTransformFactory(LENGTH)
+const xyAngle = xyTransformFactory(ANGLE)
 
 const partTransforms = {
   perspective: singleNumber,
@@ -49,25 +52,25 @@ const partTransforms = {
   skewX: singleAngle,
   skewY: singleAngle,
   skew: xyAngle('skew', '0deg'),
-};
+}
 
-module.exports = (tokenStream) => {
-  let transforms = [];
+export default tokenStream => {
+  let transforms = []
 
-  let didParseFirst = false;
+  let didParseFirst = false
   while (tokenStream.hasTokens()) {
-    if (didParseFirst) tokenStream.expect(SPACE);
+    if (didParseFirst) tokenStream.expect(SPACE)
 
-    const functionStream = tokenStream.expectFunction();
-    const transformName = functionStream.parent.value;
-    let transformedValues = partTransforms[transformName](functionStream);
+    const functionStream = tokenStream.expectFunction()
+    const { functionName } = functionStream
+    let transformedValues = partTransforms[functionName](functionStream)
     if (!Array.isArray(transformedValues)) {
-      transformedValues = [{ [transformName]: transformedValues }];
+      transformedValues = [{ [functionName]: transformedValues }]
     }
-    transforms = transformedValues.concat(transforms);
+    transforms = transformedValues.concat(transforms)
 
-    didParseFirst = true;
+    didParseFirst = true
   }
 
-  return transforms;
-};
+  return transforms
+}

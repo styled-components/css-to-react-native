@@ -1,14 +1,14 @@
 /* eslint-disable no-param-reassign */
-const parse = require('postcss-value-parser');
-const camelizeStyleName = require('fbjs/lib/camelizeStyleName');
-const transforms = require('./transforms');
-const TokenStream = require('./TokenStream');
+import parse from 'postcss-value-parser'
+import camelizeStyleName from 'fbjs/lib/camelizeStyleName'
+import transforms from './transforms/index'
+import TokenStream from './TokenStream'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
-const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/i;
-const boolRe = /^true|false$/i;
-const nullRe = /^null$/i;
-const undefinedRe = /^undefined$/i;
+const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/i
+const boolRe = /^true|false$/i
+const nullRe = /^null$/i
+const undefinedRe = /^undefined$/i
 
 // Undocumented export
 export const transformRawValue = (input, ignoreToken) => {
@@ -21,17 +21,17 @@ export const transformRawValue = (input, ignoreToken) => {
   const numberMatch = value.match(numberOrLengthRe);
   if (numberMatch !== null) return Number(numberMatch[1]);
 
-  const boolMatch = input.match(boolRe);
-  if (boolMatch !== null) return boolMatch[0].toLowerCase() === 'true';
+  const boolMatch = input.match(boolRe)
+  if (boolMatch !== null) return boolMatch[0].toLowerCase() === 'true'
 
-  const nullMatch = input.match(nullRe);
-  if (nullMatch !== null) return null;
+  const nullMatch = input.match(nullRe)
+  if (nullMatch !== null) return null
 
-  const undefinedMatch = input.match(undefinedRe);
-  if (undefinedMatch !== null) return undefined;
+  const undefinedMatch = input.match(undefinedRe)
+  if (undefinedMatch !== null) return undefined
 
-  return value;
-};
+  return value
+}
 
 const baseTransformShorthandValue = (propName, inputValue, ignoreToken) => {
   const ast = parse(inputValue.trim());
@@ -68,7 +68,7 @@ export const getStylesForProperty = (
     : {[propName]: propValue};
 };
 
-export const getPropertyName = camelizeStyleName;
+export const getPropertyName = camelizeStyleName
 
 export default (rules, shorthandBlacklist = [], ignoreToken) =>
   rules.reduce((accum, rule) => {
