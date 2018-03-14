@@ -1,9 +1,17 @@
 'use strict';
 
-var _require = require('postcss-value-parser'),
-    stringify = _require.stringify;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.tokens = exports.regExpToken = undefined;
 
-var cssColorKeywords = require('css-color-keywords');
+var _postcssValueParser = require('postcss-value-parser');
+
+var _cssColorKeywords = require('css-color-keywords');
+
+var _cssColorKeywords2 = _interopRequireDefault(_cssColorKeywords);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var matchString = function matchString(node) {
   if (node.type !== 'string') return null;
@@ -16,10 +24,10 @@ var hexColorRe = /^(#(?:[0-9a-f]{3,4}){1,2})$/i;
 var cssFunctionNameRe = /^(rgba?|hsla?|hwb|lab|lch|gray|color)$/;
 
 var matchColor = function matchColor(node) {
-  if (node.type === 'word' && (hexColorRe.test(node.value) || node.value in cssColorKeywords)) {
+  if (node.type === 'word' && (hexColorRe.test(node.value) || node.value in _cssColorKeywords2.default)) {
     return node.value;
   } else if (node.type === 'function' && cssFunctionNameRe.test(node.value)) {
-    return stringify(node);
+    return (0, _postcssValueParser.stringify)(node);
   }
   return null;
 };
@@ -46,7 +54,7 @@ var valueForTypeToken = function valueForTypeToken(type) {
   };
 };
 
-var regExpToken = function regExpToken(regExp) {
+var regExpToken = exports.regExpToken = function regExpToken(regExp) {
   var transform = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : String;
   return function (node) {
     if (node.type !== 'word') return null;
@@ -60,9 +68,7 @@ var regExpToken = function regExpToken(regExp) {
   };
 };
 
-module.exports.regExpToken = regExpToken;
-
-module.exports.tokens = {
+var tokens = exports.tokens = {
   SPACE: noopToken(function (node) {
     return node.type === 'space';
   }),
@@ -81,5 +87,6 @@ module.exports.tokens = {
   PERCENT: regExpToken(percentRe),
   IDENT: regExpToken(identRe),
   STRING: matchString,
-  COLOR: matchColor
+  COLOR: matchColor,
+  LINE: regExpToken(/^(none|underline|line-through)$/i)
 };

@@ -15,12 +15,13 @@ export default class TokenStream {
   }
 
   [SYMBOL_MATCH](...tokenDescriptors) {
+    if (!this.hasTokens()) return null
+
     const node = this.nodes[this.index]
+
     if (this.ignoreToken(node)) {
       return node.value
     }
-
-    if (!this.hasTokens()) return null
 
     for (let i = 0; i < tokenDescriptors.length; i += 1) {
       const tokenDescriptor = tokenDescriptors[i]

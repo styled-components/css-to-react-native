@@ -1,18 +1,22 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.parseShadow = exports.shadowOffsetFactory = exports.anyOrderFactory = exports.directionFactory = undefined;
+
+var _tokenTypes = require('../tokenTypes');
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var _require = require('../tokenTypes'),
-    tokens = _require.tokens;
-
-var LENGTH = tokens.LENGTH,
-    PERCENT = tokens.PERCENT,
-    SPACE = tokens.SPACE;
-
-
-module.exports.directionFactory = function (_ref) {
+var LENGTH = _tokenTypes.tokens.LENGTH,
+    PERCENT = _tokenTypes.tokens.PERCENT,
+    COLOR = _tokenTypes.tokens.COLOR,
+    SPACE = _tokenTypes.tokens.SPACE,
+    NONE = _tokenTypes.tokens.NONE;
+var directionFactory = exports.directionFactory = function directionFactory(_ref) {
   var _ref$types = _ref.types,
       types = _ref$types === undefined ? [LENGTH, PERCENT] : _ref$types,
       _ref$directions = _ref.directions,
@@ -55,7 +59,7 @@ module.exports.directionFactory = function (_ref) {
   };
 };
 
-module.exports.anyOrderFactory = function (properties) {
+var anyOrderFactory = exports.anyOrderFactory = function anyOrderFactory(properties) {
   var delim = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : SPACE;
   return function (tokenStream) {
     var propertyNames = Object.keys(properties);
@@ -91,11 +95,59 @@ module.exports.anyOrderFactory = function (properties) {
   };
 };
 
-module.exports.shadowOffsetFactory = function () {
+var shadowOffsetFactory = exports.shadowOffsetFactory = function shadowOffsetFactory() {
   return function (tokenStream) {
     var width = tokenStream.expect(LENGTH);
     var height = tokenStream.matches(SPACE) ? tokenStream.expect(LENGTH) : width;
     tokenStream.expectEmpty();
     return { width: width, height: height };
+  };
+};
+
+var parseShadow = exports.parseShadow = function parseShadow(tokenStream) {
+  var offsetX = void 0;
+  var offsetY = void 0;
+  var radius = void 0;
+  var color = void 0;
+
+  if (tokenStream.matches(NONE)) {
+    tokenStream.expectEmpty();
+    return {
+      offset: { width: 0, height: 0 },
+      radius: 0,
+      color: 'black'
+    };
+  }
+
+  var didParseFirst = false;
+  while (tokenStream.hasTokens()) {
+    if (didParseFirst) tokenStream.expect(SPACE);
+
+    if (offsetX === undefined && tokenStream.matches(LENGTH)) {
+      offsetX = tokenStream.lastValue;
+      tokenStream.expect(SPACE);
+      offsetY = tokenStream.expect(LENGTH);
+
+      tokenStream.saveRewindPoint();
+      if (tokenStream.matches(SPACE) && tokenStream.matches(LENGTH)) {
+        radius = tokenStream.lastValue;
+      } else {
+        tokenStream.rewind();
+      }
+    } else if (color === undefined && tokenStream.matches(COLOR)) {
+      color = tokenStream.lastValue;
+    } else {
+      tokenStream.throw();
+    }
+
+    didParseFirst = true;
+  }
+
+  if (offsetX === undefined) tokenStream.throw();
+
+  return {
+    offset: { width: offsetX, height: offsetY },
+    radius: radius !== undefined ? radius : 0,
+    color: color !== undefined ? color : 'black'
   };
 };

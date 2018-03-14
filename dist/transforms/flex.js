@@ -1,13 +1,16 @@
 'use strict';
 
-var _require = require('../tokenTypes'),
-    tokens = _require.tokens;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var NONE = tokens.NONE,
-    AUTO = tokens.AUTO,
-    NUMBER = tokens.NUMBER,
-    LENGTH = tokens.LENGTH,
-    SPACE = tokens.SPACE;
+var _tokenTypes = require('../tokenTypes');
+
+var NONE = _tokenTypes.tokens.NONE,
+    AUTO = _tokenTypes.tokens.AUTO,
+    NUMBER = _tokenTypes.tokens.NUMBER,
+    LENGTH = _tokenTypes.tokens.LENGTH,
+    SPACE = _tokenTypes.tokens.SPACE;
 
 
 var defaultFlexGrow = 1;
@@ -16,7 +19,7 @@ var defaultFlexBasis = 0;
 
 var FLEX_BASIS_AUTO = {}; // Used for reference equality
 
-module.exports = function (tokenStream) {
+exports.default = function (tokenStream) {
   var flexGrow = void 0;
   var flexShrink = void 0;
   var flexBasis = void 0;
@@ -24,9 +27,13 @@ module.exports = function (tokenStream) {
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty();
     return { $merge: { flexGrow: 0, flexShrink: 0 } };
-  } else if (tokenStream.test(AUTO) && !tokenStream.lookAhead().hasTokens()) {
+  }
+
+  tokenStream.saveRewindPoint();
+  if (tokenStream.matches(AUTO) && !tokenStream.hasTokens()) {
     return { $merge: { flexGrow: 1, flexShrink: 1 } };
   }
+  tokenStream.rewind();
 
   var partsParsed = 0;
   while (partsParsed < 2 && tokenStream.hasTokens()) {
@@ -35,9 +42,11 @@ module.exports = function (tokenStream) {
     if (flexGrow === undefined && tokenStream.matches(NUMBER)) {
       flexGrow = tokenStream.lastValue;
 
-      if (tokenStream.lookAhead().matches(NUMBER)) {
-        tokenStream.expect(SPACE);
-        flexShrink = tokenStream.expect(NUMBER);
+      tokenStream.saveRewindPoint();
+      if (tokenStream.matches(SPACE) && tokenStream.matches(NUMBER)) {
+        flexShrink = tokenStream.lastValue;
+      } else {
+        tokenStream.rewind();
       }
     } else if (flexBasis === undefined && tokenStream.matches(LENGTH)) {
       flexBasis = tokenStream.lastValue;

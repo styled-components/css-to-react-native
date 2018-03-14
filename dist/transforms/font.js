@@ -1,26 +1,32 @@
 'use strict';
 
-var parseFontFamily = require('./fontFamily');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _require = require('../tokenTypes'),
-    regExpToken = _require.regExpToken,
-    tokens = _require.tokens;
+var _fontFamily = require('./fontFamily');
 
-var SPACE = tokens.SPACE,
-    LENGTH = tokens.LENGTH,
-    NUMBER = tokens.NUMBER,
-    SLASH = tokens.SLASH;
+var _fontFamily2 = _interopRequireDefault(_fontFamily);
 
-var NORMAL = regExpToken(/^(normal)$/);
-var STYLE = regExpToken(/^(italic)$/);
-var WEIGHT = regExpToken(/^([1-9]00|bold)$/);
-var VARIANT = regExpToken(/^(small-caps)$/);
+var _tokenTypes = require('../tokenTypes');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SPACE = _tokenTypes.tokens.SPACE,
+    LENGTH = _tokenTypes.tokens.LENGTH,
+    NUMBER = _tokenTypes.tokens.NUMBER,
+    SLASH = _tokenTypes.tokens.SLASH;
+
+var NORMAL = (0, _tokenTypes.regExpToken)(/^(normal)$/);
+var STYLE = (0, _tokenTypes.regExpToken)(/^(italic)$/);
+var WEIGHT = (0, _tokenTypes.regExpToken)(/^([1-9]00|bold)$/);
+var VARIANT = (0, _tokenTypes.regExpToken)(/^(small-caps)$/);
 
 var defaultFontStyle = 'normal';
 var defaultFontWeight = 'normal';
 var defaultFontVariant = [];
 
-module.exports = function (tokenStream) {
+exports.default = function (tokenStream) {
   var fontStyle = void 0;
   var fontWeight = void 0;
   var fontVariant = void 0;
@@ -58,7 +64,7 @@ module.exports = function (tokenStream) {
 
   tokenStream.expect(SPACE);
 
-  var fontFamily = parseFontFamily(tokenStream);
+  var fontFamily = (0, _fontFamily2.default)(tokenStream);
 
   if (fontStyle === undefined) fontStyle = defaultFontStyle;
   if (fontWeight === undefined) fontWeight = defaultFontWeight;

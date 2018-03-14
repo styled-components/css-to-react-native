@@ -1,14 +1,16 @@
 'use strict';
 
-var _require = require('../tokenTypes'),
-    tokens = _require.tokens;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var SPACE = tokens.SPACE,
-    IDENT = tokens.IDENT,
-    STRING = tokens.STRING;
+var _tokenTypes = require('../tokenTypes');
 
+var SPACE = _tokenTypes.tokens.SPACE,
+    IDENT = _tokenTypes.tokens.IDENT,
+    STRING = _tokenTypes.tokens.STRING;
 
-module.exports = function (tokenStream) {
+exports.default = function (tokenStream) {
   var fontFamily = void 0;
 
   if (tokenStream.matches(STRING)) {

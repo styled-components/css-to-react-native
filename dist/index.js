@@ -3,14 +3,28 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.getPropertyName = exports.getStylesForProperty = exports.transformRawValue = undefined;
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var _postcssValueParser = require('postcss-value-parser');
 
-/* eslint-disable no-param-reassign */
-var parse = require('postcss-value-parser');
-var camelizeStyleName = require('fbjs/lib/camelizeStyleName');
-var transforms = require('./transforms');
-var TokenStream = require('./TokenStream');
+var _postcssValueParser2 = _interopRequireDefault(_postcssValueParser);
+
+var _camelizeStyleName = require('fbjs/lib/camelizeStyleName');
+
+var _camelizeStyleName2 = _interopRequireDefault(_camelizeStyleName);
+
+var _index = require('./transforms/index');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _TokenStream = require('./TokenStream');
+
+var _TokenStream2 = _interopRequireDefault(_TokenStream);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } /* eslint-disable no-param-reassign */
+
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 var numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/i;
@@ -42,9 +56,9 @@ var transformRawValue = exports.transformRawValue = function transformRawValue(i
 };
 
 var baseTransformShorthandValue = function baseTransformShorthandValue(propName, inputValue, ignoreToken) {
-  var ast = parse(inputValue.trim());
-  var tokenStream = new TokenStream(ast.nodes, null, ignoreToken);
-  return transforms[propName](tokenStream);
+  var ast = (0, _postcssValueParser2.default)(inputValue.trim());
+  var tokenStream = new _TokenStream2.default(ast.nodes, null, ignoreToken);
+  return _index2.default[propName](tokenStream);
 };
 
 var transformShorthandValue = process.env.NODE_ENV === 'production' ? baseTransformShorthandValue : function (propName, inputValue, ignoreToken) {
@@ -56,13 +70,13 @@ var transformShorthandValue = process.env.NODE_ENV === 'production' ? baseTransf
 };
 
 var getStylesForProperty = exports.getStylesForProperty = function getStylesForProperty(propName, inputValue, allowShorthand, ignoreToken) {
-  var isRawValue = allowShorthand === false || !(propName in transforms);
+  var isRawValue = allowShorthand === false || !(propName in _index2.default);
   var propValue = isRawValue ? transformRawValue(inputValue, ignoreToken) : transformShorthandValue(propName, inputValue.trim(), ignoreToken);
 
   return propValue && propValue.$merge ? propValue.$merge : _defineProperty({}, propName, propValue);
 };
 
-var getPropertyName = exports.getPropertyName = camelizeStyleName;
+var getPropertyName = exports.getPropertyName = _camelizeStyleName2.default;
 
 exports.default = function (rules) {
   var shorthandBlacklist = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];

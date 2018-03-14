@@ -1,15 +1,18 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _tokenTypes = require('../tokenTypes');
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _require = require('../tokenTypes'),
-    tokens = _require.tokens;
-
-var SPACE = tokens.SPACE,
-    COMMA = tokens.COMMA,
-    LENGTH = tokens.LENGTH,
-    NUMBER = tokens.NUMBER,
-    ANGLE = tokens.ANGLE;
+var SPACE = _tokenTypes.tokens.SPACE,
+    COMMA = _tokenTypes.tokens.COMMA,
+    LENGTH = _tokenTypes.tokens.LENGTH,
+    NUMBER = _tokenTypes.tokens.NUMBER,
+    ANGLE = _tokenTypes.tokens.ANGLE;
 
 
 var oneOfType = function oneOfType(tokenType) {
@@ -67,7 +70,7 @@ var partTransforms = {
   skew: xyAngle('skew', '0deg')
 };
 
-module.exports = function (tokenStream) {
+exports.default = function (tokenStream) {
   var transforms = [];
 
   var didParseFirst = false;
@@ -75,10 +78,11 @@ module.exports = function (tokenStream) {
     if (didParseFirst) tokenStream.expect(SPACE);
 
     var functionStream = tokenStream.expectFunction();
-    var transformName = functionStream.parent.value;
-    var transformedValues = partTransforms[transformName](functionStream);
+    var functionName = functionStream.functionName;
+
+    var transformedValues = partTransforms[functionName](functionStream);
     if (!Array.isArray(transformedValues)) {
-      transformedValues = [_defineProperty({}, transformName, transformedValues)];
+      transformedValues = [_defineProperty({}, functionName, transformedValues)];
     }
     transforms = transformedValues.concat(transforms);
 
