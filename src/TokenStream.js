@@ -7,7 +7,7 @@ export default class TokenStream {
     this.functionName = parent != null ? parent.value : null
     this.lastValue = null
     this.rewindIndex = -1
-    this.ignoreToken = ignoreToken;
+    this.ignoreToken = ignoreToken
   }
 
   hasTokens() {
@@ -17,7 +17,7 @@ export default class TokenStream {
   [SYMBOL_MATCH](...tokenDescriptors) {
     const node = this.nodes[this.index]
     if (this.ignoreToken(node)) {
-      return node.value;
+      return node.value
     }
 
     if (!this.hasTokens()) return null
