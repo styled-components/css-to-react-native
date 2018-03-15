@@ -773,7 +773,7 @@ var undefinedRe = /^undefined$/i;
 var transformRawValue = function transformRawValue(input, ignoreToken) {
   var value = input.trim();
 
-  if (ignoreToken && ignoreToken(value)) {
+  if (value && ignoreToken && ignoreToken(value)) {
     return value;
   }
 

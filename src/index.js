@@ -14,7 +14,7 @@ const undefinedRe = /^undefined$/i
 export const transformRawValue = (input, ignoreToken) => {
   const value = input.trim()
 
-  if (ignoreToken && ignoreToken(value)) {
+  if (value && ignoreToken && ignoreToken(value)) {
     return value
   }
 
