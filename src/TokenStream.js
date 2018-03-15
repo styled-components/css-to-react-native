@@ -18,13 +18,8 @@ export default class TokenStream {
     const node = this.nodes[this.index]
     if (!this.hasTokens()) return null
 
-    if (
-      node &&
-      node.value &&
-      this.ignoreToken &&
-      this.ignoreToken(node)
-    ) {
-      return node.value
+    if (node && this.ignoreToken && this.ignoreToken(node)) {
+      return node
     }
 
     for (let i = 0; i < tokenDescriptors.length; i += 1) {

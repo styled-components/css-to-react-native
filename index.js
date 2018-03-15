@@ -690,8 +690,8 @@ var TokenStream = function () {
       var node = this.nodes[this.index];
       if (!this.hasTokens()) return null;
 
-      if (node && node.value && this.ignoreToken && this.ignoreToken(node.value)) {
-        return node.value;
+      if (node && this.ignoreToken && this.ignoreToken(node)) {
+        return node;
       }
 
       for (var i = 0; i < arguments.length; i += 1) {
