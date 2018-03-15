@@ -8,7 +8,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src",
-    "prepublish": "npm run build",
+    "postinstall": "npm run build",
     "precommit": "lint-staged",
     "lint-staged": "lint-staged"
   },
@@ -47,6 +47,7 @@
     "rollup": "^0.55.5"
   },
   "dependencies": {
+    "babel-literal-to-ast": "^1.0.0",
     "css-color-keywords": "^1.0.0",
     "fbjs": "^0.8.5",
     "postcss-value-parser": "^3.3.0"

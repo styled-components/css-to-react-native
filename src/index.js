@@ -11,8 +11,12 @@ const nullRe = /^null$/i
 const undefinedRe = /^undefined$/i
 
 // Undocumented export
-export const transformRawValue = input => {
+export const transformRawValue = (input, ignoreToken) => {
   const value = input.trim()
+
+  if (value && ignoreToken && ignoreToken(value)) {
+    return value
+  }
 
   const numberMatch = value.match(numberOrLengthRe)
   if (numberMatch !== null) return Number(numberMatch[1])
@@ -29,18 +33,18 @@ export const transformRawValue = input => {
   return value
 }
 
-const baseTransformShorthandValue = (propName, inputValue) => {
+const baseTransformShorthandValue = (propName, inputValue, ignoreToken) => {
   const ast = parse(inputValue.trim())
-  const tokenStream = new TokenStream(ast.nodes)
+  const tokenStream = new TokenStream(ast.nodes, null, ignoreToken)
   return transforms[propName](tokenStream)
 }
 
 const transformShorthandValue =
   process.env.NODE_ENV === 'production'
     ? baseTransformShorthandValue
-    : (propName, inputValue) => {
+    : (propName, inputValue, ignoreToken) => {
         try {
-          return baseTransformShorthandValue(propName, inputValue)
+          return baseTransformShorthandValue(propName, inputValue, ignoreToken)
         } catch (e) {
           throw new Error(
             `Failed to parse declaration "${propName}: ${inputValue}"`
@@ -48,11 +52,16 @@ const transformShorthandValue =
         }
       }
 
-export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
+export const getStylesForProperty = (
+  propName,
+  inputValue,
+  allowShorthand,
+  ignoreToken
+) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
   const propValue = isRawValue
-    ? transformRawValue(inputValue)
-    : transformShorthandValue(propName, inputValue.trim())
+    ? transformRawValue(inputValue, ignoreToken)
+    : transformShorthandValue(propName, inputValue.trim(), ignoreToken)
 
   return propValue && propValue.$merge
     ? propValue.$merge
@@ -61,13 +70,13 @@ export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
 
 export const getPropertyName = camelizeStyleName
 
-export default (rules, shorthandBlacklist = []) =>
+export default (rules, shorthandBlacklist = [], ignoreToken) =>
   rules.reduce((accum, rule) => {
     const propertyName = getPropertyName(rule[0])
     const value = rule[1]
     const allowShorthand = shorthandBlacklist.indexOf(propertyName) === -1
     return Object.assign(
       accum,
-      getStylesForProperty(propertyName, value, allowShorthand)
+      getStylesForProperty(propertyName, value, allowShorthand, ignoreToken)
     )
   }, {})
