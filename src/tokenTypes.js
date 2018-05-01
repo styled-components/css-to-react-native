@@ -32,6 +32,7 @@ const identRe = /(^-?[_a-z][_a-z0-9-]*$)/i
 const numberRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)$/
 // Note lengthRe is sneaky: you can omit units for 0
 const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?=px$))/
+const unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/
 const angleRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(?:deg|rad))$/
 const percentRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?%)$/
 
@@ -60,6 +61,7 @@ export const tokens = {
   AUTO: regExpToken(autoRe),
   NUMBER: regExpToken(numberRe, Number),
   LENGTH: regExpToken(lengthRe, Number),
+  UNSUPPORTED_LENGTH_UNIT: regExpToken(unsupportedUnitRe),
   ANGLE: regExpToken(angleRe),
   PERCENT: regExpToken(percentRe),
   IDENT: regExpToken(identRe),
