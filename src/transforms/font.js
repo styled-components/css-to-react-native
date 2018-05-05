@@ -1,7 +1,7 @@
 import parseFontFamily from './fontFamily'
 import { regExpToken, tokens } from '../tokenTypes'
 
-const { SPACE, LENGTH, NUMBER, SLASH } = tokens
+const { SPACE, LENGTH, UNSUPPORTED_LENGTH_UNIT, NUMBER, SLASH } = tokens
 const NORMAL = regExpToken(/^(normal)$/)
 const STYLE = regExpToken(/^(italic)$/)
 const WEIGHT = regExpToken(/^([1-9]00|bold)$/)
@@ -37,13 +37,13 @@ export default tokenStream => {
     numStyleWeightVariantMatched += 1
   }
 
-  const fontSize = tokenStream.expect(LENGTH)
+  const fontSize = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
 
   if (tokenStream.matches(SLASH)) {
     if (tokenStream.matches(NUMBER)) {
       lineHeight = fontSize * tokenStream.lastValue
     } else {
-      lineHeight = tokenStream.expect(LENGTH)
+      lineHeight = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
     }
   }
 

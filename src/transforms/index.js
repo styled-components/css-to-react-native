@@ -9,22 +9,30 @@ import textDecorationLine from './textDecorationLine'
 import transform from './transform'
 import { directionFactory, anyOrderFactory, shadowOffsetFactory } from './util'
 
-const { IDENT, WORD, COLOR, LENGTH, PERCENT, AUTO } = tokens
+const {
+  IDENT,
+  WORD,
+  COLOR,
+  LENGTH,
+  UNSUPPORTED_LENGTH_UNIT,
+  PERCENT,
+  AUTO,
+} = tokens
 
 const background = tokenStream => ({
   $merge: { backgroundColor: tokenStream.expect(COLOR) },
 })
 const border = anyOrderFactory({
   borderWidth: {
-    token: tokens.LENGTH,
+    tokens: [LENGTH, UNSUPPORTED_LENGTH_UNIT],
     default: 1,
   },
   borderColor: {
-    token: COLOR,
+    tokens: [COLOR],
     default: 'black',
   },
   borderStyle: {
-    token: regExpToken(/^(solid|dashed|dotted)$/),
+    tokens: [regExpToken(/^(solid|dashed|dotted)$/)],
     default: 'solid',
   },
 })
@@ -40,17 +48,17 @@ const borderRadius = directionFactory({
 })
 const borderWidth = directionFactory({ prefix: 'border', suffix: 'Width' })
 const margin = directionFactory({
-  types: [LENGTH, PERCENT, AUTO],
+  types: [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT, AUTO],
   prefix: 'margin',
 })
 const padding = directionFactory({ prefix: 'padding' })
 const flexFlow = anyOrderFactory({
   flexWrap: {
-    token: regExpToken(/(nowrap|wrap|wrap-reverse)/),
+    tokens: [regExpToken(/(nowrap|wrap|wrap-reverse)/)],
     default: 'nowrap',
   },
   flexDirection: {
-    token: regExpToken(/(row|row-reverse|column|column-reverse)/),
+    tokens: [regExpToken(/(row|row-reverse|column|column-reverse)/)],
     default: 'row',
   },
 })

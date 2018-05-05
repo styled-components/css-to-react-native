@@ -1,9 +1,9 @@
 import { tokens } from '../tokenTypes'
 
-const { LENGTH, PERCENT, COLOR, SPACE, NONE } = tokens
+const { LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT, COLOR, SPACE, NONE } = tokens
 
 export const directionFactory = ({
-  types = [LENGTH, PERCENT],
+  types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
   directions = ['Top', 'Right', 'Bottom', 'Left'],
   prefix = '',
   suffix = '',
@@ -48,7 +48,9 @@ export const anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
     const matchedPropertyName = propertyNames.find(
       propertyName =>
         values[propertyName] === undefined &&
-        tokenStream.matches(properties[propertyName].token)
+        properties[propertyName].tokens.some(token =>
+          tokenStream.matches(token)
+        )
     )
 
     if (!matchedPropertyName) {
@@ -96,13 +98,19 @@ export const parseShadow = tokenStream => {
   while (tokenStream.hasTokens()) {
     if (didParseFirst) tokenStream.expect(SPACE)
 
-    if (offsetX === undefined && tokenStream.matches(LENGTH)) {
+    if (
+      offsetX === undefined &&
+      tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+    ) {
       offsetX = tokenStream.lastValue
       tokenStream.expect(SPACE)
-      offsetY = tokenStream.expect(LENGTH)
+      offsetY = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
 
       tokenStream.saveRewindPoint()
-      if (tokenStream.matches(SPACE) && tokenStream.matches(LENGTH)) {
+      if (
+        tokenStream.matches(SPACE) &&
+        tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+      ) {
         radius = tokenStream.lastValue
       } else {
         tokenStream.rewind()
