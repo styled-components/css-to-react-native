@@ -25,16 +25,28 @@ const matchColor = node => {
   return null
 }
 
+
+const matchTime = node => {
+  if (node.type !== 'word') return null
+
+  const match = node.value.match(timeRe)
+  if (match === null) return null
+
+  return Number(match[1]) * (match[2]==='s' ? 1000 : 1);
+}
+
 const noneRe = /^(none)$/i
 const autoRe = /^(auto)$/i
 const identRe = /(^-?[_a-z][_a-z0-9-]*$)/i
 // Note if these are wrong, you'll need to change index.js too
 const numberRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)$/
-// Note lengthRe is sneaky: you can omit units for 0
+const timeRe = /^((?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(s|ms)$/
 const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?=px$))/
 const unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/
 const angleRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(?:deg|rad))$/
 const percentRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?%)$/
+const timingRe = /^(linear|ease|ease-in|ease-out|ease-in-out|step-start|step-end)$/
+
 
 const noopToken = predicate => node => (predicate(node) ? '<token>' : null)
 
@@ -60,6 +72,8 @@ export const tokens = {
   NONE: regExpToken(noneRe),
   AUTO: regExpToken(autoRe),
   NUMBER: regExpToken(numberRe, Number),
+  TIME: matchTime,
+  TIMING: regExpToken(timingRe),
   LENGTH: regExpToken(lengthRe, Number),
   UNSUPPORTED_LENGTH_UNIT: regExpToken(unsupportedUnitRe),
   ANGLE: regExpToken(angleRe),
