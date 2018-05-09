@@ -109,6 +109,15 @@ it('allows omitting units for 0', () => {
   })
 })
 
+it('allows shorthands without unit', () => {
+  expect(transformCss([['margin', '10 5 0']])).toEqual({
+    marginTop: 10,
+    marginRight: 5,
+    marginBottom: 0,
+    marginLeft: 5,
+  })
+})
+
 it('transforms strings', () => {
   expect(transformCss([['color', 'red']])).toEqual({ color: 'red' })
 })
@@ -153,10 +162,4 @@ it('allows blacklisting shorthands', () => {
     ['borderRadius']
   )
   expect(actualStyles).toEqual({ borderRadius: 50 })
-})
-
-it('throws useful errors', () => {
-  expect(() => transformCss([['margin', '10']])).toThrow(
-    'Failed to parse declaration "margin: 10"'
-  )
 })

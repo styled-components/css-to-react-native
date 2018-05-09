@@ -14,6 +14,7 @@ const {
   WORD,
   COLOR,
   LENGTH,
+  NUMBER,
   UNSUPPORTED_LENGTH_UNIT,
   PERCENT,
   AUTO,
@@ -24,7 +25,7 @@ const background = tokenStream => ({
 })
 const border = anyOrderFactory({
   borderWidth: {
-    tokens: [LENGTH, UNSUPPORTED_LENGTH_UNIT],
+    tokens: [LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT],
     default: 1,
   },
   borderColor: {
@@ -46,12 +47,17 @@ const borderRadius = directionFactory({
   prefix: 'border',
   suffix: 'Radius',
 })
-const borderWidth = directionFactory({ prefix: 'border', suffix: 'Width' })
+const borderWidth = directionFactory({
+  prefix: 'border',
+  suffix: 'Width'
+})
 const margin = directionFactory({
-  types: [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT, AUTO],
+  types: [LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT, PERCENT, AUTO],
   prefix: 'margin',
 })
-const padding = directionFactory({ prefix: 'padding' })
+const padding = directionFactory({
+  prefix: 'padding'
+})
 const flexFlow = anyOrderFactory({
   flexWrap: {
     tokens: [regExpToken(/(nowrap|wrap|wrap-reverse)/)],

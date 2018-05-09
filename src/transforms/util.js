@@ -1,9 +1,9 @@
 import { tokens } from '../tokenTypes'
 
-const { LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT, COLOR, SPACE, NONE } = tokens
+const { LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT, PERCENT, COLOR, SPACE, COMMA, NONE } = tokens
 
 export const directionFactory = ({
-  types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
+  types = [LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT, PERCENT],
   directions = ['Top', 'Right', 'Bottom', 'Left'],
   prefix = '',
   suffix = '',
