@@ -1,26 +1,26 @@
 import { tokens } from '../tokenTypes'
 
-const { SPACE, COMMA, LENGTH, NUMBER, ANGLE } = tokens
+const { SPACE, COMMA, LENGTH, PERCENT, NUMBER, ANGLE } = tokens
 
-const oneOfType = tokenType => functionStream => {
-  const value = functionStream.expect(tokenType)
+const oneOfType = (...tokenTypes) => functionStream => {
+  const value = functionStream.expect(...tokenTypes)
   functionStream.expectEmpty()
   return value
 }
 
 const singleNumber = oneOfType(NUMBER)
-const singleLength = oneOfType(LENGTH)
+const singleLength = oneOfType(LENGTH, PERCENT)
 const singleAngle = oneOfType(ANGLE)
-const xyTransformFactory = tokenType => (
+const xyTransformFactory = (...tokenTypes) => (
   key,
   valueIfOmitted
 ) => functionStream => {
-  const x = functionStream.expect(tokenType)
+  const x = functionStream.expect(...tokenTypes)
 
   let y
   if (functionStream.hasTokens()) {
     functionStream.expect(COMMA)
-    y = functionStream.expect(tokenType)
+    y = functionStream.expect(...tokenTypes)
   } else if (valueIfOmitted !== undefined) {
     y = valueIfOmitted
   } else {
@@ -34,7 +34,7 @@ const xyTransformFactory = tokenType => (
   return [{ [`${key}Y`]: y }, { [`${key}X`]: x }]
 }
 const xyNumber = xyTransformFactory(NUMBER)
-const xyLength = xyTransformFactory(LENGTH)
+const xyLength = xyTransformFactory(LENGTH, PERCENT)
 const xyAngle = xyTransformFactory(ANGLE)
 
 const partTransforms = {
