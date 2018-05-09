@@ -34,6 +34,23 @@ export const directionFactory = ({
   return { $merge: output }
 }
 
+
+export const valuesFactory = (token, delim = SPACE, transform) => tokenStream => {
+  const values = [];
+
+  values.push(tokenStream.expect(token));
+
+  while (tokenStream.hasTokens()) {
+    tokenStream.expect(delim)
+    values.push(tokenStream.expect(token));
+  }
+
+  tokenStream.expectEmpty()
+
+  return transform ? values.map(transform) : values;
+}
+
+
 export const anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
   const propertyNames = Object.keys(properties)
   const values = propertyNames.reduce((accum, propertyName) => {
