@@ -7,6 +7,8 @@ import textShadow from './textShadow'
 import textDecoration from './textDecoration'
 import textDecorationLine from './textDecorationLine'
 import transform from './transform'
+import transition from './transition'
+import animation from './animation'
 import { directionFactory, anyOrderFactory, shadowOffsetFactory } from './util'
 
 const {
@@ -73,7 +75,7 @@ const fontWeight = tokenStream => tokenStream.expect(WORD) // Also match numbers
 const shadowOffset = shadowOffsetFactory()
 const textShadowOffset = shadowOffsetFactory()
 
-export default {
+const transforms = Object.assign({}, {
   background,
   border,
   borderColor,
@@ -94,4 +96,6 @@ export default {
   textDecoration,
   textDecorationLine,
   transform,
-}
+}, transition, animation);
+
+export default transforms
