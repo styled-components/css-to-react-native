@@ -237,13 +237,15 @@ var parseShadow = function parseShadow(tokenStream) {
   var offsetY = void 0;
   var radius = void 0;
   var color = void 0;
+  var opacity = void 0;
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty();
     return {
       offset: { width: 0, height: 0 },
       radius: 0,
-      color: 'black'
+      color: 'black',
+      opacity: 1.0
     };
   }
 
@@ -251,19 +253,21 @@ var parseShadow = function parseShadow(tokenStream) {
   while (tokenStream.hasTokens()) {
     if (didParseFirst) tokenStream.expect(SPACE);
 
-    if (offsetX === undefined && tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)) {
+    if (offsetX === undefined && tokenStream.matches(LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT)) {
       offsetX = tokenStream.lastValue;
       tokenStream.expect(SPACE);
-      offsetY = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT);
+      offsetY = tokenStream.expect(LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT);
 
       tokenStream.saveRewindPoint();
-      if (tokenStream.matches(SPACE) && tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)) {
+      if (tokenStream.matches(SPACE) && tokenStream.matches(LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT)) {
         radius = tokenStream.lastValue;
       } else {
         tokenStream.rewind();
       }
     } else if (color === undefined && tokenStream.matches(COLOR)) {
       color = tokenStream.lastValue;
+    } else if (color && tokenStream.matches(NUMBER)) {
+      opacity = tokenStream.lastValue;
     } else {
       tokenStream.throw();
     }
@@ -276,7 +280,8 @@ var parseShadow = function parseShadow(tokenStream) {
   return {
     offset: { width: offsetX, height: offsetY },
     radius: radius !== undefined ? radius : 0,
-    color: color !== undefined ? color : 'black'
+    color: color !== undefined ? color : 'black',
+    opacity: opacity !== undefined ? opacity : 1.0
   };
 };
 
@@ -292,7 +297,7 @@ var boxShadow = function boxShadow(tokenStream) {
       shadowOffset: offset,
       shadowRadius: radius,
       shadowColor: color,
-      shadowOpacity: opacity,
+      shadowOpacity: opacity
     }
   };
 };

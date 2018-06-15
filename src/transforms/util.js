@@ -119,16 +119,16 @@ export const parseShadow = tokenStream => {
 
     if (
       offsetX === undefined &&
-      tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+      tokenStream.matches(LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT)
     ) {
       offsetX = tokenStream.lastValue
       tokenStream.expect(SPACE)
-      offsetY = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+      offsetY = tokenStream.expect(LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT)
 
       tokenStream.saveRewindPoint()
       if (
         tokenStream.matches(SPACE) &&
-        tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+        tokenStream.matches(LENGTH, NUMBER, UNSUPPORTED_LENGTH_UNIT)
       ) {
         radius = tokenStream.lastValue
       } else {
