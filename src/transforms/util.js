@@ -101,6 +101,7 @@ export const parseShadow = tokenStream => {
   let offsetY
   let radius
   let color
+  let opacity
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
@@ -108,6 +109,7 @@ export const parseShadow = tokenStream => {
       offset: { width: 0, height: 0 },
       radius: 0,
       color: 'black',
+      opacity: 1.0,
     }
   }
 
@@ -134,6 +136,10 @@ export const parseShadow = tokenStream => {
       }
     } else if (color === undefined && tokenStream.matches(COLOR)) {
       color = tokenStream.lastValue
+
+    } else if (color && tokenStream.matches(NUMBER)) {
+      opacity = tokenStream.lastValue
+
     } else {
       tokenStream.throw()
     }
@@ -147,5 +153,6 @@ export const parseShadow = tokenStream => {
     offset: { width: offsetX, height: offsetY },
     radius: radius !== undefined ? radius : 0,
     color: color !== undefined ? color : 'black',
+    opacity: opacity !== undefined ? opacity : 1.0,
   }
 }

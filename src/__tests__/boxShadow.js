@@ -49,6 +49,17 @@ it('transforms box-shadow with rgba color', () => {
   })
 })
 
+it('transforms box-shadow with rgba color and opacity', () => {
+  expect(
+    transformCss([['box-shadow', '10px 20px rgba(100, 100, 100, 0.5) 0.5']])
+  ).toEqual({
+    shadowOffset: { width: 10, height: 20 },
+    shadowRadius: 0,
+    shadowColor: 'rgba(100, 100, 100, 0.5)',
+    shadowOpacity: 0.5,
+  })
+})
+
 it('transforms box-shadow with hsl color', () => {
   expect(
     transformCss([['box-shadow', '10px 20px hsl(120, 100%, 50%)']])

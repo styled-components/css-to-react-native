@@ -284,14 +284,15 @@ var boxShadow = function boxShadow(tokenStream) {
   var _parseShadow = parseShadow(tokenStream),
       offset = _parseShadow.offset,
       radius = _parseShadow.radius,
-      color = _parseShadow.color;
+      color = _parseShadow.color,
+      opacity = _parseShadow.opacity;
 
   return {
     $merge: {
       shadowOffset: offset,
       shadowRadius: radius,
       shadowColor: color,
-      shadowOpacity: 1
+      shadowOpacity: opacity,
     }
   };
 };
