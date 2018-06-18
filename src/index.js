@@ -59,7 +59,13 @@ export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
     : { [propName]: propValue }
 }
 
-export const getPropertyName = camelizeStyleName
+export const getPropertyName = propName => {
+  const isCustomProp = /^--\w+/.test(propName)
+  if (isCustomProp) {
+    return propName
+  }
+  return camelizeStyleName(propName)
+}
 
 export default (rules, shorthandBlacklist = []) =>
   rules.reduce((accum, rule) => {
