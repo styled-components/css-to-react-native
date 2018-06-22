@@ -47,6 +47,10 @@ it('allows undefined values', () => {
   })
 })
 
+it('allows CSS custom properties to pass through', () => {
+  expect(transformCss([['--my-prop', '0%']])).toEqual({ '--my-prop': '0%' })
+})
+
 it('allows percent in unspecialized transform', () => {
   expect(transformCss([['top', '0%']])).toEqual({ top: '0%' })
 })
