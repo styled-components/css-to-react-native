@@ -64,6 +64,8 @@ const flexFlow = anyOrderFactory({
 })
 const fontVariant = tokenStream => [tokenStream.expect(IDENT)]
 const fontWeight = tokenStream => tokenStream.expect(WORD) // Also match numbers as strings
+const lineHeight = tokenStream =>
+  tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
 const shadowOffset = shadowOffsetFactory()
 const textShadowOffset = shadowOffsetFactory()
 
@@ -80,6 +82,7 @@ export default {
   fontFamily,
   fontVariant,
   fontWeight,
+  lineHeight,
   margin,
   padding,
   shadowOffset,
