@@ -11,8 +11,26 @@ const matchString = node => {
 }
 
 const matchVariable = node => {
-  if (node.type !== 'function' && node.value !== 'var') return null
-  return node.value;
+  if (node.type !== 'function' && node.value !== 'var' || node.nodes.length === 0) return null;
+
+  const variableName = node.nodes[0].value;
+
+  if (node.nodes.length === 1) {
+    return `var(${variableName})`;
+  }
+
+  const defaultValues = node.nodes.slice(1).filter(node => node.type !== 'div').map(subnode => {
+    if (subnode.type === 'string') {
+      return `'${matchString(subnode)}'`;
+    }
+    return subnode.value;
+  });
+
+  if (defaultValues.length !== (node.nodes.length - 1) / 2) {
+    return null;
+  }
+
+  return `var(${variableName}, ${defaultValues.join`, `})`;
 }
 
 const hexColorRe = /^(#(?:[0-9a-f]{3,4}){1,2})$/i

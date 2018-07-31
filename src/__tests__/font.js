@@ -120,3 +120,31 @@ it('transforms font without quotes', () => {
     lineHeight: 18,
   })
 })
+
+it('transforms font with css variables', () => {
+  expect(
+    transformCss([['font', 'bold italic small-caps 16px/18px var(--test)']])
+  ).toEqual({
+    fontFamily: 'var(--test)',
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    fontVariant: ['small-caps'],
+    lineHeight: 18,
+  })
+})
+
+it('transforms font with css variables and default value', () => {
+  expect(
+    transformCss([
+      ['font', 'bold italic small-caps 16px/18px var(--test, arial)'],
+    ])
+  ).toEqual({
+    fontFamily: 'var(--test, arial)',
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    fontVariant: ['small-caps'],
+    lineHeight: 18,
+  })
+})
