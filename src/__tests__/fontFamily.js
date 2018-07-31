@@ -55,8 +55,8 @@ it('transforms font-family with css variable and default value', () => {
 })
 
 it('transforms font-family with css variable and default quoted value', () => {
-  expect(transformCss([['font-family', 'var(--test, \'arial\')']])).toEqual({
-    fontFamily: 'var(--test, \'arial\')',
+  expect(transformCss([['font-family', "var(--test, 'arial')"]])).toEqual({
+    fontFamily: "var(--test, 'arial')",
   })
 })
 
@@ -67,13 +67,9 @@ it('transforms font-family with css variable and two default values', () => {
 })
 
 it('does not transform font-family with css variable and invalid default value', () => {
-  expect(() =>
-    transformCss([['font-family', 'var(--test,)']])
-  ).toThrow()
+  expect(() => transformCss([['font-family', 'var(--test,)']])).toThrow()
 })
 
 it('does not transform font-family with multiple bad css variable default values', () => {
-  expect(() =>
-    transformCss([['font-family', 'var(--test,,)']])
-  ).toThrow()
+  expect(() => transformCss([['font-family', 'var(--test,,)']])).toThrow()
 })
