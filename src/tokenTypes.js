@@ -10,6 +10,11 @@ const matchString = node => {
     .replace(/\\/g, '')
 }
 
+const matchVariable = node => {
+  if (node.type !== 'function' && node.value !== 'var') return null
+  return node.value;
+}
+
 const hexColorRe = /^(#(?:[0-9a-f]{3,4}){1,2})$/i
 const cssFunctionNameRe = /^(rgba?|hsla?|hwb|lab|lch|gray|color)$/
 
@@ -68,4 +73,5 @@ export const tokens = {
   STRING: matchString,
   COLOR: matchColor,
   LINE: regExpToken(/^(none|underline|line-through)$/i),
+  VARIABLE: matchVariable,
 }

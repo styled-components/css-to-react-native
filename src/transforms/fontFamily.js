@@ -1,11 +1,11 @@
 import { tokens } from '../tokenTypes'
 
-const { SPACE, IDENT, STRING } = tokens
+const { SPACE, IDENT, STRING, VARIABLE } = tokens
 
 export default tokenStream => {
   let fontFamily
 
-  if (tokenStream.matches(STRING)) {
+  if (tokenStream.matches(STRING) || tokenStream.matches(VARIABLE)) {
     fontFamily = tokenStream.lastValue
   } else {
     fontFamily = tokenStream.expect(IDENT)
