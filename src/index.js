@@ -48,11 +48,27 @@ const transformShorthandValue =
         }
       }
 
+const validateRawValue = (propName, inputValue) {
+  switch (propName) {
+    case 'lineHeight':
+      // validate
+      break
+    default:
+      break
+  }
+}
+
 export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
   const propValue = isRawValue
     ? transformRawValue(inputValue)
     : transformShorthandValue(propName, inputValue.trim())
+  
+  if (__DEV__) {
+    if (isRawValue) {
+      validateRawValue(propName, inputValue)
+    }
+  }
 
   return propValue && propValue.$merge
     ? propValue.$merge
