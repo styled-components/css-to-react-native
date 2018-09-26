@@ -117,16 +117,6 @@ it('transforms strings', () => {
   expect(transformCss([['color', 'red']])).toEqual({ color: 'red' })
 })
 
-it('transforms hex colors', () => {
-  expect(transformCss([['color', '#f00']])).toEqual({ color: '#f00' })
-})
-
-it('transforms rgb colors', () => {
-  expect(transformCss([['color', 'rgb(255, 0, 0)']])).toEqual({
-    color: 'rgb(255, 0, 0)',
-  })
-})
-
 it('converts to camel-case', () => {
   expect(transformCss([['background-color', 'red']])).toEqual({
     backgroundColor: 'red',

@@ -16,7 +16,9 @@ const cssFunctionNameRe = /^(rgba?|hsla?|hwb|lab|lch|gray|color)$/
 const matchColor = node => {
   if (
     node.type === 'word' &&
-    (hexColorRe.test(node.value) || node.value in cssColorKeywords)
+    (hexColorRe.test(node.value) ||
+      node.value in cssColorKeywords ||
+      node.value === 'transparent')
   ) {
     return node.value
   } else if (node.type === 'function' && cssFunctionNameRe.test(node.value)) {
