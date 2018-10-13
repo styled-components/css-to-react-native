@@ -68,7 +68,7 @@ it('transforms bottom direction border shorthand', () => {
   expect(transformCss([['border-bottom', '2px dashed #f00']])).toEqual({
     borderBottomWidth: 2,
     borderBottomColor: '#f00',
-    borderBottomStyle: 'dashed',
+    borderStyle: 'dashed',
   })
 })
 
@@ -76,7 +76,7 @@ it('transforms left direction border shorthand', () => {
   expect(transformCss([['border-left', '2px dashed #f00']])).toEqual({
     borderLeftWidth: 2,
     borderLeftColor: '#f00',
-    borderLeftStyle: 'dashed',
+    borderStyle: 'dashed',
   })
 })
 
@@ -84,7 +84,7 @@ it('transforms right direction border shorthand', () => {
   expect(transformCss([['border-right', '2px dashed #f00']])).toEqual({
     borderRightWidth: 2,
     borderRightColor: '#f00',
-    borderRightStyle: 'dashed',
+    borderStyle: 'dashed',
   })
 })
 
@@ -92,6 +92,6 @@ it('transforms top direction border shorthand', () => {
   expect(transformCss([['border-top', '2px dashed #f00']])).toEqual({
     borderTopWidth: 2,
     borderTopColor: '#f00',
-    borderTopStyle: 'dashed',
+    borderStyle: 'dashed',
   })
 })

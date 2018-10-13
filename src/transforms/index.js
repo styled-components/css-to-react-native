@@ -33,7 +33,7 @@ const createBorderFactory = (direction = '') =>
       tokens: [COLOR],
       default: 'black',
     },
-    [`border${direction}Style`]: {
+    borderStyle: {
       tokens: [regExpToken(/^(solid|dashed|dotted)$/)],
       default: 'solid',
     },
