@@ -22,20 +22,29 @@ const {
 const background = tokenStream => ({
   $merge: { backgroundColor: tokenStream.expect(COLOR) },
 })
-const border = anyOrderFactory({
-  borderWidth: {
-    tokens: [LENGTH, UNSUPPORTED_LENGTH_UNIT],
-    default: 1,
-  },
-  borderColor: {
-    tokens: [COLOR],
-    default: 'black',
-  },
-  borderStyle: {
-    tokens: [regExpToken(/^(solid|dashed|dotted)$/)],
-    default: 'solid',
-  },
-})
+
+const createBorderFactory = (direction = '') =>
+  anyOrderFactory({
+    [`border${direction}Width`]: {
+      tokens: [LENGTH, UNSUPPORTED_LENGTH_UNIT],
+      default: 1,
+    },
+    [`border${direction}Color`]: {
+      tokens: [COLOR],
+      default: 'black',
+    },
+    [`border${direction}Style`]: {
+      tokens: [regExpToken(/^(solid|dashed|dotted)$/)],
+      default: 'solid',
+    },
+  })
+
+const border = createBorderFactory()
+const borderTop = createBorderFactory('Top')
+const borderBottom = createBorderFactory('Bottom')
+const borderLeft = createBorderFactory('Left')
+const borderRight = createBorderFactory('Right')
+
 const borderColor = directionFactory({
   types: [WORD],
   prefix: 'border',
@@ -70,6 +79,10 @@ const textShadowOffset = shadowOffsetFactory()
 export default {
   background,
   border,
+  borderTop,
+  borderBottom,
+  borderLeft,
+  borderRight,
   borderColor,
   borderRadius,
   borderWidth,
