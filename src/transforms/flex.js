@@ -6,8 +6,6 @@ const defaultFlexGrow = 1
 const defaultFlexShrink = 1
 const defaultFlexBasis = 0
 
-const FLEX_BASIS_AUTO = {} // Used for reference equality
-
 export default tokenStream => {
   let flexGrow
   let flexShrink
@@ -15,12 +13,12 @@ export default tokenStream => {
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
-    return { $merge: { flexGrow: 0, flexShrink: 0 } }
+    return { $merge: { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' } }
   }
 
   tokenStream.saveRewindPoint()
   if (tokenStream.matches(AUTO) && !tokenStream.hasTokens()) {
-    return { $merge: { flexGrow: 1, flexShrink: 1 } }
+    return { $merge: { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' } }
   }
   tokenStream.rewind()
 
@@ -40,7 +38,7 @@ export default tokenStream => {
     } else if (flexBasis === undefined && tokenStream.matches(LENGTH)) {
       flexBasis = tokenStream.lastValue
     } else if (flexBasis === undefined && tokenStream.matches(AUTO)) {
-      flexBasis = FLEX_BASIS_AUTO
+      flexBasis = 'auto'
     } else {
       tokenStream.throw()
     }
@@ -54,7 +52,5 @@ export default tokenStream => {
   if (flexShrink === undefined) flexShrink = defaultFlexShrink
   if (flexBasis === undefined) flexBasis = defaultFlexBasis
 
-  return flexBasis !== FLEX_BASIS_AUTO
-    ? { $merge: { flexGrow, flexShrink, flexBasis } }
-    : { $merge: { flexGrow, flexShrink } }
+  return { $merge: { flexGrow, flexShrink, flexBasis } }
 }
