@@ -73,6 +73,7 @@ it('transforms flex shorthand with flex-basis set to auto', () => {
   expect(transformCss([['flex', '0 1 auto']])).toEqual({
     flexGrow: 0,
     flexShrink: 1,
+    flexBasis: 'auto',
   })
 })
 
@@ -80,6 +81,7 @@ it('transforms flex shorthand with flex-basis set to auto appearing first', () =
   expect(transformCss([['flex', 'auto 0 1']])).toEqual({
     flexGrow: 0,
     flexShrink: 1,
+    flexBasis: 'auto',
   })
 })
 
@@ -87,6 +89,7 @@ it('transforms flex auto keyword', () => {
   expect(transformCss([['flex', 'auto']])).toEqual({
     flexGrow: 1,
     flexShrink: 1,
+    flexBasis: 'auto',
   })
 })
 
@@ -94,6 +97,7 @@ it('transforms flex none keyword', () => {
   expect(transformCss([['flex', 'none']])).toEqual({
     flexGrow: 0,
     flexShrink: 0,
+    flexBasis: 'auto',
   })
 })
 
