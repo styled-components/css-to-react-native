@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import parse from 'postcss-value-parser'
-import camelizeStyleName from 'fbjs/lib/camelizeStyleName'
+import camelizeStyleName from 'camelize'
 import transforms from './transforms/index'
 import TokenStream from './TokenStream'
 
