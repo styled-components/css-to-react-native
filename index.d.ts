@@ -1,5 +1,5 @@
 export interface Style {
-	[key: string]: string;
+	[key: string]: string | number | Style;
 }
 
 export function getPropertyName(name: string): string;
