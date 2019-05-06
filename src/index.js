@@ -50,13 +50,11 @@ const transformShorthandValue =
 
 export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
-  const propValue = isRawValue
-    ? transformRawValue(inputValue)
+  const propValues = isRawValue
+    ? { [propName]: transformRawValue(inputValue) }
     : transformShorthandValue(propName, inputValue.trim())
 
-  return propValue && propValue.$merge
-    ? propValue.$merge
-    : { [propName]: propValue }
+  return propValues
 }
 
 export const getPropertyName = propName => {

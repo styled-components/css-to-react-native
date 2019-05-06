@@ -24,55 +24,15 @@ export const directionFactory = ({
 
   const keyFor = n => `${prefix}${directions[n]}${suffix}`
 
-  const output = {
+  return {
     [keyFor(0)]: top,
     [keyFor(1)]: right,
     [keyFor(2)]: bottom,
     [keyFor(3)]: left,
   }
-
-  return { $merge: output }
 }
 
-export const anyOrderFactory = (properties, delim = SPACE) => tokenStream => {
-  const propertyNames = Object.keys(properties)
-  const values = propertyNames.reduce((accum, propertyName) => {
-    accum[propertyName] === undefined // eslint-disable-line
-    return accum
-  }, {})
-
-  let numParsed = 0
-  while (numParsed < propertyNames.length && tokenStream.hasTokens()) {
-    if (numParsed) tokenStream.expect(delim)
-
-    const matchedPropertyName = propertyNames.find(
-      propertyName =>
-        values[propertyName] === undefined &&
-        properties[propertyName].tokens.some(token =>
-          tokenStream.matches(token)
-        )
-    )
-
-    if (!matchedPropertyName) {
-      tokenStream.throw()
-    } else {
-      values[matchedPropertyName] = tokenStream.lastValue
-    }
-
-    numParsed += 1
-  }
-
-  tokenStream.expectEmpty()
-
-  propertyNames.forEach(propertyName => {
-    if (values[propertyName] === undefined)
-      values[propertyName] = properties[propertyName].default
-  })
-
-  return { $merge: values }
-}
-
-export const shadowOffsetFactory = () => tokenStream => {
+export const parseShadowOffset = tokenStream => {
   const width = tokenStream.expect(LENGTH)
   const height = tokenStream.matches(SPACE) ? tokenStream.expect(LENGTH) : width
   tokenStream.expectEmpty()

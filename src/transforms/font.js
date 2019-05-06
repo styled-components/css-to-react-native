@@ -49,7 +49,7 @@ export default tokenStream => {
 
   tokenStream.expect(SPACE)
 
-  const fontFamily = parseFontFamily(tokenStream)
+  const { fontFamily } = parseFontFamily(tokenStream)
 
   if (fontStyle === undefined) fontStyle = defaultFontStyle
   if (fontWeight === undefined) fontWeight = defaultFontWeight
@@ -58,5 +58,5 @@ export default tokenStream => {
   const out = { fontStyle, fontWeight, fontVariant, fontSize, fontFamily }
   if (lineHeight !== undefined) out.lineHeight = lineHeight
 
-  return { $merge: out }
+  return out
 }

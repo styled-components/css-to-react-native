@@ -1,5 +1,13 @@
 import transformCss from '..'
 
+it('transforms border none', () => {
+  expect(transformCss([['border', 'none']])).toEqual({
+    borderWidth: 0,
+    borderColor: 'black',
+    borderStyle: 'solid',
+  })
+})
+
 it('transforms border shorthand', () => {
   expect(transformCss([['border', '2px dashed #f00']])).toEqual({
     borderWidth: 2,
