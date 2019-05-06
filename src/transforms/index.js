@@ -1,13 +1,15 @@
-import { regExpToken, tokens } from '../tokenTypes'
+import { tokens } from '../tokenTypes'
+import border from './border'
 import boxShadow from './boxShadow'
 import flex from './flex'
+import flexFlow from './flexFlow'
 import font from './font'
 import fontFamily from './fontFamily'
 import textShadow from './textShadow'
 import textDecoration from './textDecoration'
 import textDecorationLine from './textDecorationLine'
 import transform from './transform'
-import { directionFactory, anyOrderFactory, shadowOffsetFactory } from './util'
+import { directionFactory, parseShadowOffset } from './util'
 
 const {
   IDENT,
@@ -20,21 +22,7 @@ const {
 } = tokens
 
 const background = tokenStream => ({
-  $merge: { backgroundColor: tokenStream.expect(COLOR) },
-})
-const border = anyOrderFactory({
-  borderWidth: {
-    tokens: [LENGTH, UNSUPPORTED_LENGTH_UNIT],
-    default: 1,
-  },
-  borderColor: {
-    tokens: [COLOR],
-    default: 'black',
-  },
-  borderStyle: {
-    tokens: [regExpToken(/^(solid|dashed|dotted)$/)],
-    default: 'solid',
-  },
+  backgroundColor: tokenStream.expect(COLOR),
 })
 const borderColor = directionFactory({
   types: [WORD],
@@ -52,20 +40,18 @@ const margin = directionFactory({
   prefix: 'margin',
 })
 const padding = directionFactory({ prefix: 'padding' })
-const flexFlow = anyOrderFactory({
-  flexWrap: {
-    tokens: [regExpToken(/(nowrap|wrap|wrap-reverse)/)],
-    default: 'nowrap',
-  },
-  flexDirection: {
-    tokens: [regExpToken(/(row|row-reverse|column|column-reverse)/)],
-    default: 'row',
-  },
+const fontVariant = tokenStream => ({
+  fontVariant: [tokenStream.expect(IDENT)],
 })
-const fontVariant = tokenStream => [tokenStream.expect(IDENT)]
-const fontWeight = tokenStream => tokenStream.expect(WORD) // Also match numbers as strings
-const shadowOffset = shadowOffsetFactory()
-const textShadowOffset = shadowOffsetFactory()
+const fontWeight = tokenStream => ({
+  fontWeight: tokenStream.expect(WORD), // Also match numbers as strings
+})
+const shadowOffset = tokenStream => ({
+  shadowOffset: parseShadowOffset(tokenStream),
+})
+const textShadowOffset = tokenStream => ({
+  textShadowOffset: parseShadowOffset(tokenStream),
+})
 
 export default {
   background,

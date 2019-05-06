@@ -16,5 +16,5 @@ export default tokenStream => {
 
   lines.sort().reverse()
 
-  return lines.join(' ')
+  return { textDecorationLine: lines.join(' ') }
 }

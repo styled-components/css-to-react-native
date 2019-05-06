@@ -13,12 +13,12 @@ export default tokenStream => {
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
-    return { $merge: { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' } }
+    return { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' }
   }
 
   tokenStream.saveRewindPoint()
   if (tokenStream.matches(AUTO) && !tokenStream.hasTokens()) {
-    return { $merge: { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' } }
+    return { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' }
   }
   tokenStream.rewind()
 
@@ -52,5 +52,5 @@ export default tokenStream => {
   if (flexShrink === undefined) flexShrink = defaultFlexShrink
   if (flexBasis === undefined) flexBasis = defaultFlexBasis
 
-  return { $merge: { flexGrow, flexShrink, flexBasis } }
+  return { flexGrow, flexShrink, flexBasis }
 }

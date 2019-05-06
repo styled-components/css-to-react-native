@@ -72,5 +72,5 @@ export default tokenStream => {
     didParseFirst = true
   }
 
-  return transforms
+  return { transform: transforms }
 }

@@ -45,12 +45,11 @@ export default tokenStream => {
     didParseFirst = true
   }
 
-  const $merge = {
+  return {
     textDecorationLine: line !== undefined ? line : defaultTextDecorationLine,
     textDecorationColor:
       color !== undefined ? color : defaultTextDecorationColor,
     textDecorationStyle:
       style !== undefined ? style : defaultTextDecorationStyle,
   }
-  return { $merge }
 }

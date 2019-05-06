@@ -18,5 +18,5 @@ export default tokenStream => {
 
   tokenStream.expectEmpty()
 
-  return fontFamily
+  return { fontFamily }
 }
