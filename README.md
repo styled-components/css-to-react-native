@@ -108,6 +108,6 @@ This can also be done by passing a third argument, `false` to `getStylesForPrope
 
 ## License
 
-Licensed under the MIT License, Copyright © 2016 Jacob Parker and Maximilian Stoiber.
+Licensed under the MIT License, Copyright © 2019 Krister Kari, Jacob Parker, and Maximilian Stoiber.
 
 See [LICENSE.md](./LICENSE.md) for more information.
