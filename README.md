@@ -71,7 +71,7 @@ There is also support for the `box-shadow` shorthand, and this converts into `sh
 
 # API
 
-The API is mostly for implementors. However, the main API may be useful for non-implementors. The main API is,
+The API is mostly for implementors. However, the main API may be useful for non-implementors. The main API is an array of `[property, value]` tuples.
 
 ```js
 import transform from 'css-to-react-native';
@@ -84,7 +84,11 @@ transform([
 ]); // => { fontFamily: 'Helvetica', ... }
 ```
 
-For implementors, there is also,
+We don't provide a way to get these style tuples in this library, so you'll need to do that yourself. I expect most people will use postCSS or another CSS parser. You should try avoid getting these with `string.split`, as that has a lot of edge cases (colons and semi-colons apearing in comments etc.)
+
+For implementors, there is also a few extra APIs available.
+
+These are for specific use-cases, and most people should just be using the API above.
 
 ```js
 import { getPropertyName, getStylesForProperty } from 'css-to-react-native';
