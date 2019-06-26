@@ -16,6 +16,7 @@ const lengthUnits = [
   'in',
   'pc',
   'pt',
+  'rpx'
 ]
 
 lengthUnits.forEach(unit => {
