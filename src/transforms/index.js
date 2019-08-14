@@ -25,7 +25,7 @@ const background = tokenStream => ({
   backgroundColor: tokenStream.expect(COLOR),
 })
 const borderColor = directionFactory({
-  types: [WORD, COLOR],
+  types: [COLOR],
   prefix: 'border',
   suffix: 'Color',
 })
