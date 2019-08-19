@@ -5,9 +5,9 @@ import flex from './flex'
 import flexFlow from './flexFlow'
 import font from './font'
 import fontFamily from './fontFamily'
-import textShadow from './textShadow'
 import textDecoration from './textDecoration'
 import textDecorationLine from './textDecorationLine'
+import textShadow from './textShadow'
 import transform from './transform'
 import { directionFactory, parseShadowOffset } from './util'
 
@@ -25,7 +25,7 @@ const background = tokenStream => ({
   backgroundColor: tokenStream.expect(COLOR),
 })
 const borderColor = directionFactory({
-  types: [WORD],
+  types: [COLOR],
   prefix: 'border',
   suffix: 'Color',
 })
