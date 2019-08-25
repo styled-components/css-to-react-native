@@ -1,8 +1,10 @@
 language: node_js
-dist: trusty
+dist: xenial
 node_js:
   - 6
   - 8
+  - 10
+  - 12
 script:
   - node --version
   - yarn --version
@@ -13,6 +15,5 @@ notifications:
     on_failure: change
 cache:
   yarn: true
-  bundler: true
   directories:
     - node_modules
