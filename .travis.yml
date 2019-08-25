@@ -10,6 +10,8 @@ script:
   - yarn --version
   - yarn run test
   - yarn run lint
+before_install:
+  - npm install -g yarn
 notifications:
   email:
     on_failure: change
