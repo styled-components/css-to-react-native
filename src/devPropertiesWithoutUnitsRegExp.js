@@ -1,6 +1,6 @@
-let propertiesWitouthUnits
+let propertiesWithoutUnits
 if (process.env.NODE_ENV !== 'production') {
-  propertiesWitouthUnits = [
+  propertiesWithoutUnits = [
     'aspectRatio',
     'elevation',
     'flexGrow',
@@ -12,8 +12,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const devPropertiesWithUnitsRegExp =
-  propertiesWitouthUnits != null
-    ? new RegExp(propertiesWitouthUnits.join('|'))
+  propertiesWithoutUnits != null
+    ? new RegExp(propertiesWithoutUnits.join('|'))
     : null
 
 export default devPropertiesWithUnitsRegExp
