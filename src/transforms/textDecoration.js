@@ -1,6 +1,4 @@
-import { regExpToken, tokens } from '../tokenTypes'
-
-const { SPACE, LINE, COLOR } = tokens
+import { regExpToken, SPACE, LINE, COLOR } from '../tokenTypes'
 
 const STYLE = regExpToken(/^(solid|double|dotted|dashed)$/)
 

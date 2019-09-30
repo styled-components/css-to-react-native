@@ -1,6 +1,11 @@
-import { tokens } from '../tokenTypes'
-
-const { LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT, COLOR, SPACE, NONE } = tokens
+import {
+  LENGTH,
+  UNSUPPORTED_LENGTH_UNIT,
+  PERCENT,
+  COLOR,
+  SPACE,
+  NONE,
+} from '../tokenTypes'
 
 export const directionFactory = ({
   types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],

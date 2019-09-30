@@ -1,6 +1,4 @@
-import { tokens } from '../tokenTypes'
-
-const {
+import {
   NONE,
   AUTO,
   NUMBER,
@@ -8,7 +6,7 @@ const {
   UNSUPPORTED_LENGTH_UNIT,
   PERCENT,
   SPACE,
-} = tokens
+} from '../tokenTypes'
 
 const defaultFlexGrow = 1
 const defaultFlexShrink = 1

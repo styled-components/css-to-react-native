@@ -1,6 +1,11 @@
-import { regExpToken, tokens } from '../tokenTypes'
-
-const { NONE, COLOR, LENGTH, UNSUPPORTED_LENGTH_UNIT, SPACE } = tokens
+import {
+  regExpToken,
+  NONE,
+  COLOR,
+  LENGTH,
+  UNSUPPORTED_LENGTH_UNIT,
+  SPACE,
+} from '../tokenTypes'
 
 const BORDER_STYLE = regExpToken(/^(solid|dashed|dotted)$/)
 

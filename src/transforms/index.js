@@ -1,4 +1,12 @@
-import { tokens } from '../tokenTypes'
+import {
+  IDENT,
+  WORD,
+  COLOR,
+  LENGTH,
+  UNSUPPORTED_LENGTH_UNIT,
+  PERCENT,
+  AUTO,
+} from '../tokenTypes'
 import border from './border'
 import boxShadow from './boxShadow'
 import flex from './flex'
@@ -11,16 +19,6 @@ import textDecorationLine from './textDecorationLine'
 import textShadow from './textShadow'
 import transform from './transform'
 import { directionFactory, parseShadowOffset } from './util'
-
-const {
-  IDENT,
-  WORD,
-  COLOR,
-  LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
-  PERCENT,
-  AUTO,
-} = tokens
 
 const background = tokenStream => ({
   backgroundColor: tokenStream.expect(COLOR),

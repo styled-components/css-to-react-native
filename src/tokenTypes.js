@@ -54,20 +54,22 @@ export const regExpToken = (regExp, transform = String) => node => {
   return value
 }
 
-export const tokens = {
-  SPACE: noopToken(node => node.type === 'space'),
-  SLASH: noopToken(node => node.type === 'div' && node.value === '/'),
-  COMMA: noopToken(node => node.type === 'div' && node.value === ','),
-  WORD: valueForTypeToken('word'),
-  NONE: regExpToken(noneRe),
-  AUTO: regExpToken(autoRe),
-  NUMBER: regExpToken(numberRe, Number),
-  LENGTH: regExpToken(lengthRe, Number),
-  UNSUPPORTED_LENGTH_UNIT: regExpToken(unsupportedUnitRe),
-  ANGLE: regExpToken(angleRe),
-  PERCENT: regExpToken(percentRe),
-  IDENT: regExpToken(identRe),
-  STRING: matchString,
-  COLOR: matchColor,
-  LINE: regExpToken(/^(none|underline|line-through)$/i),
-}
+export const SPACE = noopToken(node => node.type === 'space')
+export const SLASH = noopToken(
+  node => node.type === 'div' && node.value === '/'
+)
+export const COMMA = noopToken(
+  node => node.type === 'div' && node.value === ','
+)
+export const WORD = valueForTypeToken('word')
+export const NONE = regExpToken(noneRe)
+export const AUTO = regExpToken(autoRe)
+export const NUMBER = regExpToken(numberRe, Number)
+export const LENGTH = regExpToken(lengthRe, Number)
+export const UNSUPPORTED_LENGTH_UNIT = regExpToken(unsupportedUnitRe)
+export const ANGLE = regExpToken(angleRe)
+export const PERCENT = regExpToken(percentRe)
+export const IDENT = regExpToken(identRe)
+export const STRING = matchString
+export const COLOR = matchColor
+export const LINE = regExpToken(/^(none|underline|line-through)$/i)

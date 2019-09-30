@@ -1,7 +1,13 @@
 import parseFontFamily from './fontFamily'
-import { regExpToken, tokens } from '../tokenTypes'
+import {
+  regExpToken,
+  SPACE,
+  LENGTH,
+  UNSUPPORTED_LENGTH_UNIT,
+  NUMBER,
+  SLASH,
+} from '../tokenTypes'
 
-const { SPACE, LENGTH, UNSUPPORTED_LENGTH_UNIT, NUMBER, SLASH } = tokens
 const NORMAL = regExpToken(/^(normal)$/)
 const STYLE = regExpToken(/^(italic)$/)
 const WEIGHT = regExpToken(/^([1-9]00|bold)$/)

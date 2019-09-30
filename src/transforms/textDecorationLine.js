@@ -1,6 +1,4 @@
-import { tokens } from '../tokenTypes'
-
-const { SPACE, LINE } = tokens
+import { SPACE, LINE } from '../tokenTypes'
 
 export default tokenStream => {
   const lines = []
