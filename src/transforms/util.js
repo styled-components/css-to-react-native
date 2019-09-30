@@ -7,6 +7,10 @@ import {
   NONE,
 } from '../tokenTypes'
 
+// This is the only (current) file where it would make sense to spread an array
+// as function call arguments. We use .apply instead to reduce filesize
+/* eslint-disable prefer-spread */
+
 export const directionFactory = ({
   types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
   directions = ['Top', 'Right', 'Bottom', 'Left'],
@@ -16,11 +20,11 @@ export const directionFactory = ({
   const values = []
 
   // borderWidth doesn't currently allow a percent value, but may do in the future
-  values.push(tokenStream.expect(...types))
+  values.push(tokenStream.expect.apply(tokenStream, types))
 
   while (values.length < 4 && tokenStream.hasTokens()) {
     tokenStream.expect(SPACE)
-    values.push(tokenStream.expect(...types))
+    values.push(tokenStream.expect.apply(tokenStream, types))
   }
 
   tokenStream.expectEmpty()
