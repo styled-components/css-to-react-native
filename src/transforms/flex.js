@@ -1,6 +1,14 @@
 import { tokens } from '../tokenTypes'
 
-const { NONE, AUTO, NUMBER, LENGTH, SPACE } = tokens
+const {
+  NONE,
+  AUTO,
+  NUMBER,
+  LENGTH,
+  UNSUPPORTED_LENGTH_UNIT,
+  PERCENT,
+  SPACE,
+} = tokens
 
 const defaultFlexGrow = 1
 const defaultFlexShrink = 1
@@ -35,7 +43,10 @@ export default tokenStream => {
       } else {
         tokenStream.rewind()
       }
-    } else if (flexBasis === undefined && tokenStream.matches(LENGTH)) {
+    } else if (
+      flexBasis === undefined &&
+      tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT)
+    ) {
       flexBasis = tokenStream.lastValue
     } else if (flexBasis === undefined && tokenStream.matches(AUTO)) {
       flexBasis = 'auto'

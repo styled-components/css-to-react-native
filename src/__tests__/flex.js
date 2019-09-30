@@ -77,6 +77,22 @@ it('transforms flex shorthand with flex-basis set to auto', () => {
   })
 })
 
+it('transforms flex shorthand with flex-basis set to percent', () => {
+  expect(transformCss([['flex', '1 2 30%']])).toEqual({
+    flexGrow: 1,
+    flexShrink: 2,
+    flexBasis: '30%',
+  })
+})
+
+it('transforms flex shorthand with flex-basis set to unsupported unit', () => {
+  expect(transformCss([['flex', '1 2 30em']])).toEqual({
+    flexGrow: 1,
+    flexShrink: 2,
+    flexBasis: '30em',
+  })
+})
+
 it('transforms flex shorthand with flex-basis set to auto appearing first', () => {
   expect(transformCss([['flex', 'auto 0 1']])).toEqual({
     flexGrow: 0,

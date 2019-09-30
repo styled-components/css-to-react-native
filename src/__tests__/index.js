@@ -1,14 +1,31 @@
 import transformCss, { getStylesForProperty } from '..'
 
 it('transforms numbers', () => {
-  expect(
-    transformCss([['top', '0'], ['left', '0'], ['right', '0'], ['bottom', '0']])
-  ).toEqual({
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  })
+  expect(transformCss([['zIndex', '0']])).toEqual({ zIndex: 0 })
+})
+
+it('warns if missing units on unspecialized transform', () => {
+  const consoleSpy = jest
+    .spyOn(global.console, 'warn')
+    .mockImplementation(() => {
+      // Silence the warning from the test output
+    })
+
+  transformCss([['top', '1']])
+  expect(consoleSpy).toHaveBeenCalledWith(
+    'Expected style "top: 1" to contain units'
+  )
+
+  consoleSpy.mockRestore()
+})
+
+it('does not warn for unitless 0 length on unspecialized transform', () => {
+  const consoleSpy = jest.spyOn(global.console, 'warn')
+
+  transformCss([['top', '0']])
+  expect(consoleSpy).not.toHaveBeenCalled()
+
+  consoleSpy.mockRestore()
 })
 
 it('allows pixels in unspecialized transform', () => {

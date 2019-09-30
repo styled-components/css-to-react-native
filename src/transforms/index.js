@@ -5,6 +5,7 @@ import flex from './flex'
 import flexFlow from './flexFlow'
 import font from './font'
 import fontFamily from './fontFamily'
+import placeContent from './placeContent'
 import textDecoration from './textDecoration'
 import textDecorationLine from './textDecorationLine'
 import textShadow from './textShadow'
@@ -68,6 +69,7 @@ export default {
   fontWeight,
   margin,
   padding,
+  placeContent,
   shadowOffset,
   textShadow,
   textShadowOffset,
