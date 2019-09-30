@@ -37,8 +37,8 @@
     "testURL": "http://localhost"
   },
   "devDependencies": {
-    "@babel/cli": "^6.26.0",
-    "@babel/preset-env": "^6.24.1",
+    "@babel/cli": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-prettier": "^2.9.0",
