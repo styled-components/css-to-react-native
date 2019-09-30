@@ -1,7 +1,7 @@
 import transformCss, { getStylesForProperty } from '..'
 
 it('transforms numbers', () => {
-  expect(transformCss([['zIndex', '0']])).toEqual({ zIndex: 0 })
+  expect(transformCss([['z-index', '0']])).toEqual({ zIndex: 0 })
 })
 
 it('warns if missing units on unspecialized transform', () => {
@@ -23,6 +23,30 @@ it('does not warn for unitless 0 length on unspecialized transform', () => {
   const consoleSpy = jest.spyOn(global.console, 'warn')
 
   transformCss([['top', '0']])
+  expect(consoleSpy).not.toHaveBeenCalled()
+
+  consoleSpy.mockRestore()
+})
+
+it('warns if adding etraneous units on unspecialized transform', () => {
+  const consoleSpy = jest
+    .spyOn(global.console, 'warn')
+    .mockImplementation(() => {
+      // Silence the warning from the test output
+    })
+
+  transformCss([['opacity', '1px']])
+  expect(consoleSpy).toHaveBeenCalledWith(
+    'Expected style "opacity: 1px" to be unitless'
+  )
+
+  consoleSpy.mockRestore()
+})
+
+it('does not warn for unitless 0 length on unitless transform', () => {
+  const consoleSpy = jest.spyOn(global.console, 'warn')
+
+  transformCss([['opacity', '0']])
   expect(consoleSpy).not.toHaveBeenCalled()
 
   consoleSpy.mockRestore()

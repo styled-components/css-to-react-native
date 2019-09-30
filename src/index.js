@@ -15,12 +15,15 @@ const undefinedRe = /^undefined$/i
 // Undocumented export
 export const transformRawValue = (propName, value) => {
   if (process.env.NODE_ENV !== 'production') {
-    if (
-      !devPropertiesWithoutUnitsRegExp.test(propName) &&
-      numberOnlyRe.test(value)
-    ) {
+    const needsUnit = !devPropertiesWithoutUnitsRegExp.test(propName)
+    const isNumberWithoutUnit = numberOnlyRe.test(value)
+    if (needsUnit && isNumberWithoutUnit) {
       // eslint-disable-next-line no-console
       console.warn(`Expected style "${propName}: ${value}" to contain units`)
+    }
+    if (!needsUnit && value !== '0' && !isNumberWithoutUnit) {
+      // eslint-disable-next-line no-console
+      console.warn(`Expected style "${propName}: ${value}" to be unitless`)
     }
   }
 
