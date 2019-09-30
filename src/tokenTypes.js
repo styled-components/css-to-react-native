@@ -67,7 +67,7 @@ export const AUTO = regExpToken(autoRe)
 export const NUMBER = regExpToken(numberRe, Number)
 export const LENGTH = regExpToken(lengthRe, Number)
 export const UNSUPPORTED_LENGTH_UNIT = regExpToken(unsupportedUnitRe)
-export const ANGLE = regExpToken(angleRe)
+export const ANGLE = regExpToken(angleRe, angle => angle.toLowerCase())
 export const PERCENT = regExpToken(percentRe)
 export const IDENT = regExpToken(identRe)
 export const STRING = matchString

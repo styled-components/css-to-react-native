@@ -3,7 +3,7 @@ import { SPACE, COMMA, LENGTH, NUMBER, ANGLE } from '../tokenTypes'
 const oneOfType = tokenType => functionStream => {
   const value = functionStream.expect(tokenType)
   functionStream.expectEmpty()
-  return typeof value === 'string' ? value.toLowerCase() : value
+  return value
 }
 
 const singleNumber = oneOfType(NUMBER)
