@@ -127,6 +127,13 @@ it('allows negative values in transformed values', () => {
   })
 })
 
+it('allows uppercase units', () => {
+  expect(transformCss([['top', '0PX']])).toEqual({ top: 0 })
+  expect(transformCss([['transform', 'rotate(30DEG)']])).toEqual({
+    transform: [{ rotate: '30deg' }],
+  })
+})
+
 it('allows percent values in transformed values', () => {
   expect(transformCss([['margin', '10%']])).toEqual({
     marginTop: '10%',

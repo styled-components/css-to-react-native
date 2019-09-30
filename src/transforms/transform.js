@@ -5,7 +5,7 @@ const { SPACE, COMMA, LENGTH, NUMBER, ANGLE } = tokens
 const oneOfType = tokenType => functionStream => {
   const value = functionStream.expect(tokenType)
   functionStream.expectEmpty()
-  return value
+  return typeof value === 'string' ? value.toLowerCase() : value
 }
 
 const singleNumber = oneOfType(NUMBER)
