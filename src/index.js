@@ -6,11 +6,11 @@ import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
-const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/i
+const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?:px)?$/
+const numberOnlyRe = /^[+-]?(?:\d*\.\d*|[1-9]\d*)(?:[Ee][+-]?\d+)?$/
 const boolRe = /^true|false$/i
 const nullRe = /^null$/i
 const undefinedRe = /^undefined$/i
-const numberOnlyRe = /^[1-9.-][\d.Ee+-]*$/
 
 // Undocumented export
 export const transformRawValue = (propName, value) => {
