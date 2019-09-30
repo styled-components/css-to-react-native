@@ -15,5 +15,5 @@ it('transforms place content with one value', () => {
 })
 
 it('does not allow justify content without align content', () => {
-  expect(() => transformCss([['place-content', 'space-everly']])).toThrow()
+  expect(() => transformCss([['place-content', 'space-evenly']])).toThrow()
 })
