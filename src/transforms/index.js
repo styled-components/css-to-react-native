@@ -1,17 +1,4 @@
-import { tokens } from '../tokenTypes'
-import border from './border'
-import boxShadow from './boxShadow'
-import flex from './flex'
-import flexFlow from './flexFlow'
-import font from './font'
-import fontFamily from './fontFamily'
-import textDecoration from './textDecoration'
-import textDecorationLine from './textDecorationLine'
-import textShadow from './textShadow'
-import transform from './transform'
-import { directionFactory, parseShadowOffset } from './util'
-
-const {
+import {
   IDENT,
   WORD,
   COLOR,
@@ -19,7 +6,19 @@ const {
   UNSUPPORTED_LENGTH_UNIT,
   PERCENT,
   AUTO,
-} = tokens
+} from '../tokenTypes'
+import border from './border'
+import boxShadow from './boxShadow'
+import flex from './flex'
+import flexFlow from './flexFlow'
+import font from './font'
+import fontFamily from './fontFamily'
+import placeContent from './placeContent'
+import textDecoration from './textDecoration'
+import textDecorationLine from './textDecorationLine'
+import textShadow from './textShadow'
+import transform from './transform'
+import { directionFactory, parseShadowOffset } from './util'
 
 const background = tokenStream => ({
   backgroundColor: tokenStream.expect(COLOR),
@@ -68,6 +67,7 @@ export default {
   fontWeight,
   margin,
   padding,
+  placeContent,
   shadowOffset,
   textShadow,
   textShadowOffset,

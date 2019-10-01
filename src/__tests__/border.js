@@ -71,3 +71,15 @@ it('transforms border shorthand missing color & style', () => {
     borderStyle: 'solid',
   })
 })
+
+it('transforms border for unsupported units', () => {
+  expect(transformCss([['border', '3em solid black']])).toEqual({
+    borderWidth: '3em',
+    borderColor: 'black',
+    borderStyle: 'solid',
+  })
+})
+
+it('does not transform border with percentage width', () => {
+  expect(() => transformCss([['border', '3% solid black']])).toThrow()
+})

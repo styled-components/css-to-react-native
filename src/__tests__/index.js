@@ -1,14 +1,55 @@
 import transformCss, { getStylesForProperty } from '..'
 
 it('transforms numbers', () => {
-  expect(
-    transformCss([['top', '0'], ['left', '0'], ['right', '0'], ['bottom', '0']])
-  ).toEqual({
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  })
+  expect(transformCss([['z-index', '0']])).toEqual({ zIndex: 0 })
+})
+
+it('warns if missing units on unspecialized transform', () => {
+  const consoleSpy = jest
+    .spyOn(global.console, 'warn')
+    .mockImplementation(() => {
+      // Silence the warning from the test output
+    })
+
+  transformCss([['top', '1']])
+  expect(consoleSpy).toHaveBeenCalledWith(
+    'Expected style "top: 1" to contain units'
+  )
+
+  consoleSpy.mockRestore()
+})
+
+it('does not warn for unitless 0 length on unspecialized transform', () => {
+  const consoleSpy = jest.spyOn(global.console, 'warn')
+
+  transformCss([['top', '0']])
+  expect(consoleSpy).not.toHaveBeenCalled()
+
+  consoleSpy.mockRestore()
+})
+
+it('warns if adding etraneous units on unspecialized transform', () => {
+  const consoleSpy = jest
+    .spyOn(global.console, 'warn')
+    .mockImplementation(() => {
+      // Silence the warning from the test output
+    })
+
+  transformCss([['opacity', '1px']])
+  expect(consoleSpy).toHaveBeenCalledWith(
+    'Expected style "opacity: 1px" to be unitless'
+  )
+
+  consoleSpy.mockRestore()
+})
+
+it('does not warn for unitless 0 length on unitless transform', () => {
+  const consoleSpy = jest.spyOn(global.console, 'warn')
+
+  transformCss([['opacity', '0']])
+  expect(consoleSpy).not.toHaveBeenCalled()
+
+  consoleSpy.mockRestore()
 })
 
 it('allows pixels in unspecialized transform', () => {
@@ -83,6 +124,13 @@ it('allows negative values in transformed values', () => {
     borderTopRightRadius: -1.5,
     borderBottomRightRadius: -1.5,
     borderBottomLeftRadius: -1.5,
+  })
+})
+
+it('allows uppercase units', () => {
+  expect(transformCss([['top', '0PX']])).toEqual({ top: 0 })
+  expect(transformCss([['transform', 'rotate(30DEG)']])).toEqual({
+    transform: [{ rotate: '30deg' }],
   })
 })
 

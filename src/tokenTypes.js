@@ -31,12 +31,12 @@ const noneRe = /^(none)$/i
 const autoRe = /^(auto)$/i
 const identRe = /(^-?[_a-z][_a-z0-9-]*$)/i
 // Note if these are wrong, you'll need to change index.js too
-const numberRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)$/
+const numberRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)$/i
 // Note lengthRe is sneaky: you can omit units for 0
-const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?)(?=px$))/
-const unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/
-const angleRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(?:deg|rad))$/
-const percentRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?%)$/
+const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?=px$))/i
+const unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/i
+const angleRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(?:deg|rad))$/i
+const percentRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?%)$/i
 
 const noopToken = predicate => node => (predicate(node) ? '<token>' : null)
 
@@ -54,20 +54,22 @@ export const regExpToken = (regExp, transform = String) => node => {
   return value
 }
 
-export const tokens = {
-  SPACE: noopToken(node => node.type === 'space'),
-  SLASH: noopToken(node => node.type === 'div' && node.value === '/'),
-  COMMA: noopToken(node => node.type === 'div' && node.value === ','),
-  WORD: valueForTypeToken('word'),
-  NONE: regExpToken(noneRe),
-  AUTO: regExpToken(autoRe),
-  NUMBER: regExpToken(numberRe, Number),
-  LENGTH: regExpToken(lengthRe, Number),
-  UNSUPPORTED_LENGTH_UNIT: regExpToken(unsupportedUnitRe),
-  ANGLE: regExpToken(angleRe),
-  PERCENT: regExpToken(percentRe),
-  IDENT: regExpToken(identRe),
-  STRING: matchString,
-  COLOR: matchColor,
-  LINE: regExpToken(/^(none|underline|line-through)$/i),
-}
+export const SPACE = noopToken(node => node.type === 'space')
+export const SLASH = noopToken(
+  node => node.type === 'div' && node.value === '/'
+)
+export const COMMA = noopToken(
+  node => node.type === 'div' && node.value === ','
+)
+export const WORD = valueForTypeToken('word')
+export const NONE = regExpToken(noneRe)
+export const AUTO = regExpToken(autoRe)
+export const NUMBER = regExpToken(numberRe, Number)
+export const LENGTH = regExpToken(lengthRe, Number)
+export const UNSUPPORTED_LENGTH_UNIT = regExpToken(unsupportedUnitRe)
+export const ANGLE = regExpToken(angleRe, angle => angle.toLowerCase())
+export const PERCENT = regExpToken(percentRe)
+export const IDENT = regExpToken(identRe)
+export const STRING = matchString
+export const COLOR = matchColor
+export const LINE = regExpToken(/^(none|underline|line-through)$/i)
