@@ -4,7 +4,6 @@ import {
   SPACE,
   LENGTH,
   UNSUPPORTED_LENGTH_UNIT,
-  NUMBER,
   SLASH,
 } from '../tokenTypes'
 
@@ -46,11 +45,7 @@ export default tokenStream => {
   const fontSize = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
 
   if (tokenStream.matches(SLASH)) {
-    if (tokenStream.matches(NUMBER)) {
-      lineHeight = fontSize * tokenStream.lastValue
-    } else {
-      lineHeight = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
-    }
+    lineHeight = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
   }
 
   tokenStream.expect(SPACE)

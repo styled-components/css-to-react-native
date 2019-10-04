@@ -97,15 +97,10 @@ it('omits line height if not specified', () => {
   })
 })
 
-it('allows line height as multiple', () => {
-  expect(transformCss([['font', '16px/1.5 "Helvetica"']])).toEqual({
-    fontFamily: 'Helvetica',
-    fontSize: 16,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    fontVariant: [],
-    lineHeight: 24,
-  })
+it('does not allow line height as multiple', () => {
+  expect(() => {
+    transformCss([['font', '16px/1.5 "Helvetica"']])
+  }).toThrow()
 })
 
 it('transforms font without quotes', () => {
