@@ -2,7 +2,8 @@ import transformCss from '..'
 
 // List of units from:
 // https://developer.mozilla.org/en-US/docs/Web/CSS/length
-const lengthUnits = [
+
+describe.each([
   'ch',
   'em',
   'ex',
@@ -16,9 +17,7 @@ const lengthUnits = [
   'in',
   'pc',
   'pt',
-]
-
-lengthUnits.forEach(unit => {
+])('Handles unit: %s', unit => {
   const value = `2${unit}`
 
   it('allows CSS length units in transformed values', () => {
@@ -56,14 +55,26 @@ lengthUnits.forEach(unit => {
 
   it('allows units to be used with border shorthand property', () => {
     expect(transformCss([['border', `#f00 ${value} dashed`]])).toEqual({
-      borderWidth: value,
-      borderColor: '#f00',
+      borderTopWidth: value,
+      borderRightWidth: value,
+      borderBottomWidth: value,
+      borderLeftWidth: value,
+      borderTopColor: '#f00',
+      borderRightColor: '#f00',
+      borderBottomColor: '#f00',
+      borderLeftColor: '#f00',
       borderStyle: 'dashed',
     })
 
     expect(transformCss([['border', value]])).toEqual({
-      borderWidth: value,
-      borderColor: 'black',
+      borderTopWidth: value,
+      borderRightWidth: value,
+      borderBottomWidth: value,
+      borderLeftWidth: value,
+      borderTopColor: 'black',
+      borderRightColor: 'black',
+      borderBottomColor: 'black',
+      borderLeftColor: 'black',
       borderStyle: 'solid',
     })
   })

@@ -13,7 +13,7 @@ const defaultBorderWidth = 1
 const defaultBorderColor = 'black'
 const defaultBorderStyle = 'solid'
 
-export default tokenStream => {
+const baseParse = (tokenStream, allowBorderStyle) => {
   let borderWidth
   let borderColor
   let borderStyle
@@ -47,7 +47,52 @@ export default tokenStream => {
 
   if (borderWidth === undefined) borderWidth = defaultBorderWidth
   if (borderColor === undefined) borderColor = defaultBorderColor
-  if (borderStyle === undefined) borderStyle = defaultBorderStyle
+  if (borderStyle === undefined) {
+    borderStyle = defaultBorderStyle
+  } else if (!allowBorderStyle) {
+    throw new Error(
+      'Setting a border style on a single border side is not supported'
+    )
+  }
 
   return { borderWidth, borderColor, borderStyle }
+}
+
+export default tokenStream => {
+  // eslint-disable-next-line prefer-const
+  let { borderWidth, borderColor, borderStyle } = baseParse(tokenStream, true)
+
+  if (borderStyle === undefined) borderStyle = defaultBorderStyle
+
+  return {
+    borderTopWidth: borderWidth,
+    borderRightWidth: borderWidth,
+    borderBottomWidth: borderWidth,
+    borderLeftWidth: borderWidth,
+    borderTopColor: borderColor,
+    borderRightColor: borderColor,
+    borderBottomColor: borderColor,
+    borderLeftColor: borderColor,
+    borderStyle,
+  }
+}
+
+export const borderTop = tokenStream => {
+  const { borderWidth, borderColor } = baseParse(tokenStream, false)
+  return { borderTopWidth: borderWidth, borderTopColor: borderColor }
+}
+
+export const borderRight = tokenStream => {
+  const { borderWidth, borderColor } = baseParse(tokenStream, false)
+  return { borderRightWidth: borderWidth, borderRightColor: borderColor }
+}
+
+export const borderBottom = tokenStream => {
+  const { borderWidth, borderColor } = baseParse(tokenStream, false)
+  return { borderBottomWidth: borderWidth, borderBottomColor: borderColor }
+}
+
+export const borderLeft = tokenStream => {
+  const { borderWidth, borderColor } = baseParse(tokenStream, false)
+  return { borderLeftWidth: borderWidth, borderLeftColor: borderColor }
 }
