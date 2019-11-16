@@ -7,12 +7,7 @@ import {
   PERCENT,
   AUTO,
 } from '../tokenTypes'
-import border, {
-  borderTop,
-  borderRight,
-  borderBottom,
-  borderLeft,
-} from './border'
+import border from './border'
 import boxShadow from './boxShadow'
 import flex from './flex'
 import flexFlow from './flexFlow'
@@ -60,12 +55,8 @@ const textShadowOffset = tokenStream => ({
 export default {
   background,
   border,
-  borderBottom,
   borderColor,
-  borderLeft,
   borderRadius,
-  borderRight,
-  borderTop,
   borderWidth,
   boxShadow,
   flex,
