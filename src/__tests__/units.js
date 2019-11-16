@@ -66,7 +66,7 @@ describe.each([
       borderStyle: 'dashed',
     })
 
-    expect(transformCss([['border', value]])).toEqual({
+    expect(transformCss([['border', `${value} solid`]])).toEqual({
       borderTopWidth: value,
       borderRightWidth: value,
       borderBottomWidth: value,

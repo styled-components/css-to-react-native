@@ -11,16 +11,25 @@ const BORDER_STYLE = regExpToken(/^(solid|dashed|dotted)$/)
 
 const defaultBorderWidth = 1
 const defaultBorderColor = 'black'
-const defaultBorderStyle = 'solid'
 
-const baseParse = (tokenStream, allowBorderStyle) => {
+export default tokenStream => {
   let borderWidth
   let borderColor
   let borderStyle
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
-    return { borderWidth: 0, borderColor: 'black', borderStyle: 'solid' }
+    return {
+      borderTopWidth: 0,
+      borderRightWidth: 0,
+      borderBottomWidth: 0,
+      borderLeftWidth: 0,
+      borderTopColor: 'black',
+      borderRightColor: 'black',
+      borderBottomColor: 'black',
+      borderLeftColor: 'black',
+      borderStyle: 'solid',
+    }
   }
 
   let partsParsed = 0
@@ -48,21 +57,10 @@ const baseParse = (tokenStream, allowBorderStyle) => {
   if (borderWidth === undefined) borderWidth = defaultBorderWidth
   if (borderColor === undefined) borderColor = defaultBorderColor
   if (borderStyle === undefined) {
-    borderStyle = defaultBorderStyle
-  } else if (!allowBorderStyle) {
     throw new Error(
-      'Setting a border style on a single border side is not supported'
+      'You must define a border style in the border shorthand (e.g. solid)'
     )
   }
-
-  return { borderWidth, borderColor, borderStyle }
-}
-
-export default tokenStream => {
-  // eslint-disable-next-line prefer-const
-  let { borderWidth, borderColor, borderStyle } = baseParse(tokenStream, true)
-
-  if (borderStyle === undefined) borderStyle = defaultBorderStyle
 
   return {
     borderTopWidth: borderWidth,
@@ -75,24 +73,4 @@ export default tokenStream => {
     borderLeftColor: borderColor,
     borderStyle,
   }
-}
-
-export const borderTop = tokenStream => {
-  const { borderWidth, borderColor } = baseParse(tokenStream, false)
-  return { borderTopWidth: borderWidth, borderTopColor: borderColor }
-}
-
-export const borderRight = tokenStream => {
-  const { borderWidth, borderColor } = baseParse(tokenStream, false)
-  return { borderRightWidth: borderWidth, borderRightColor: borderColor }
-}
-
-export const borderBottom = tokenStream => {
-  const { borderWidth, borderColor } = baseParse(tokenStream, false)
-  return { borderBottomWidth: borderWidth, borderBottomColor: borderColor }
-}
-
-export const borderLeft = tokenStream => {
-  const { borderWidth, borderColor } = baseParse(tokenStream, false)
-  return { borderLeftWidth: borderWidth, borderLeftColor: borderColor }
 }
