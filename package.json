@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "Convert CSS text to a React Native stylesheet object",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "rollup ./src/index.js -o index.js --f cjs && babel index.js -o index.js",
     "test": "jest",
