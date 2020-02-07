@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
     'elevation',
     'flexGrow',
     'flexShrink',
+    'lineHeight',
     'opacity',
     'shadowOpacity',
     'zIndex',
