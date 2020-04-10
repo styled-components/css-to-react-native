@@ -1,5 +1,17 @@
 import transformCss from '..'
 
+it('transforms with viewport units', () => {
+  expect(
+    transformCss([['flex', '1 2 10vw']], undefined, {
+      vw: 3.2,
+    })
+  ).toEqual({
+    flexGrow: 1,
+    flexShrink: 2,
+    flexBasis: 32,
+  })
+})
+
 it('transforms flex shorthand with 3 values', () => {
   expect(transformCss([['flex', '1 2 3px']])).toEqual({
     flexGrow: 1,

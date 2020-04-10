@@ -3,7 +3,7 @@ import {
   regExpToken,
   SPACE,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  USER_LENGTH_UNIT,
   SLASH,
 } from '../tokenTypes'
 
@@ -42,10 +42,10 @@ export default tokenStream => {
     numStyleWeightVariantMatched += 1
   }
 
-  const fontSize = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+  const fontSize = tokenStream.expect(LENGTH, USER_LENGTH_UNIT)
 
   if (tokenStream.matches(SLASH)) {
-    lineHeight = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
+    lineHeight = tokenStream.expect(LENGTH, USER_LENGTH_UNIT)
   }
 
   tokenStream.expect(SPACE)

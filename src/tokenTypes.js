@@ -34,7 +34,7 @@ const identRe = /(^-?[_a-z][_a-z0-9-]*$)/i
 const numberRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)$/i
 // Note lengthRe is sneaky: you can omit units for 0
 const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?=px$))/i
-const unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/i
+export const userUnitRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt)$/i
 const angleRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(?:deg|rad))$/i
 const percentRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?%)$/i
 
@@ -66,7 +66,16 @@ export const NONE = regExpToken(noneRe)
 export const AUTO = regExpToken(autoRe)
 export const NUMBER = regExpToken(numberRe, Number)
 export const LENGTH = regExpToken(lengthRe, Number)
-export const UNSUPPORTED_LENGTH_UNIT = regExpToken(unsupportedUnitRe)
+export const USER_LENGTH_UNIT = (node, units) => {
+  if (node.type !== 'word') return null
+
+  const match = node.value.match(userUnitRe)
+  if (match === null) return null
+
+  const { 1: length, 2: unit } = match
+
+  return unit in units ? Number(length) * units[unit] : null
+}
 export const ANGLE = regExpToken(angleRe, angle => angle.toLowerCase())
 export const PERCENT = regExpToken(percentRe)
 export const IDENT = regExpToken(identRe)
