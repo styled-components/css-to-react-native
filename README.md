@@ -34,7 +34,7 @@ transform: translate(10px, 5px) scale(5);
   fontVariant: ['small-caps'],
   // Fixes backwards transform order
   transform: [
-    { translateY: 10 },
+    { translateY: 5 },
     { translateX: 10 },
     { scale: 5 },
   ]
