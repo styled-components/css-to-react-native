@@ -3,7 +3,7 @@ import {
   WORD,
   COLOR,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  USER_LENGTH_UNIT,
   PERCENT,
   AUTO,
 } from '../tokenTypes'
@@ -35,7 +35,7 @@ const borderRadius = directionFactory({
 })
 const borderWidth = directionFactory({ prefix: 'border', suffix: 'Width' })
 const margin = directionFactory({
-  types: [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT, AUTO],
+  types: [LENGTH, USER_LENGTH_UNIT, PERCENT, AUTO],
   prefix: 'margin',
 })
 const padding = directionFactory({ prefix: 'padding' })

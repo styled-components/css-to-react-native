@@ -3,7 +3,7 @@ import {
   AUTO,
   NUMBER,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  USER_LENGTH_UNIT,
   PERCENT,
   SPACE,
 } from '../tokenTypes'
@@ -43,7 +43,7 @@ export default tokenStream => {
       }
     } else if (
       flexBasis === undefined &&
-      tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT)
+      tokenStream.matches(LENGTH, USER_LENGTH_UNIT, PERCENT)
     ) {
       flexBasis = tokenStream.lastValue
     } else if (flexBasis === undefined && tokenStream.matches(AUTO)) {

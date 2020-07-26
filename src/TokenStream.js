@@ -1,9 +1,10 @@
 const SYMBOL_MATCH = 'SYMBOL_MATCH'
 
 export default class TokenStream {
-  constructor(nodes, parent) {
+  constructor(nodes, units, parent) {
     this.index = 0
     this.nodes = nodes
+    this.units = units
     this.functionName = parent != null ? parent.value : null
     this.lastValue = null
     this.rewindIndex = -1
@@ -20,7 +21,7 @@ export default class TokenStream {
 
     for (let i = 0; i < tokenDescriptors.length; i += 1) {
       const tokenDescriptor = tokenDescriptors[i]
-      const value = tokenDescriptor(node)
+      const value = tokenDescriptor(node, this.units)
       if (value !== null) {
         this.index += 1
         this.lastValue = value
@@ -43,7 +44,7 @@ export default class TokenStream {
   matchesFunction() {
     const node = this.nodes[this.index]
     if (node.type !== 'function') return null
-    const value = new TokenStream(node.nodes, node)
+    const value = new TokenStream(node.nodes, this.units, node)
     this.index += 1
     this.lastValue = null
     return value

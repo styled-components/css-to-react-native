@@ -4,6 +4,7 @@ import camelizeStyleName from 'camelize'
 import transforms from './transforms/index'
 import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
+import { userUnitRe } from './tokenTypes'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?:px)?$/i
@@ -13,7 +14,7 @@ const nullRe = /^null$/i
 const undefinedRe = /^undefined$/i
 
 // Undocumented export
-export const transformRawValue = (propName, value) => {
+export const transformRawValue = (propName, value, units) => {
   if (process.env.NODE_ENV !== 'production') {
     const needsUnit = !devPropertiesWithoutUnitsRegExp.test(propName)
     const isNumberWithoutUnit = numberOnlyRe.test(value)
@@ -30,6 +31,12 @@ export const transformRawValue = (propName, value) => {
   const numberMatch = value.match(numberOrLengthRe)
   if (numberMatch !== null) return Number(numberMatch[1])
 
+  const userUnitsMatch = value.match(userUnitRe)
+  if (userUnitsMatch != null) {
+    const { 1: length, 2: unit } = userUnitsMatch
+    return unit in units ? Number(length) * units[unit] : null
+  }
+
   const boolMatch = value.match(boolRe)
   if (boolMatch !== null) return boolMatch[0].toLowerCase() === 'true'
 
@@ -42,30 +49,35 @@ export const transformRawValue = (propName, value) => {
   return value
 }
 
-const baseTransformShorthandValue = (propName, value) => {
+const baseTransformShorthandValue = (propName, value, units) => {
   const ast = parse(value)
-  const tokenStream = new TokenStream(ast.nodes)
+  const tokenStream = new TokenStream(ast.nodes, units)
   return transforms[propName](tokenStream)
 }
 
 const transformShorthandValue =
   process.env.NODE_ENV === 'production'
     ? baseTransformShorthandValue
-    : (propName, value) => {
+    : (propName, value, units) => {
         try {
-          return baseTransformShorthandValue(propName, value)
+          return baseTransformShorthandValue(propName, value, units)
         } catch (e) {
           throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
         }
       }
 
-export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
+export const getStylesForProperty = (
+  propName,
+  inputValue,
+  allowShorthand,
+  units
+) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
   const value = inputValue.trim()
 
   const propValues = isRawValue
-    ? { [propName]: transformRawValue(propName, value) }
-    : transformShorthandValue(propName, value)
+    ? { [propName]: transformRawValue(propName, value, units) }
+    : transformShorthandValue(propName, value, units)
 
   return propValues
 }
@@ -78,13 +90,13 @@ export const getPropertyName = propName => {
   return camelizeStyleName(propName)
 }
 
-export default (rules, shorthandBlacklist = []) =>
+export default (rules, shorthandBlacklist = [], units = {}) =>
   rules.reduce((accum, rule) => {
     const propertyName = getPropertyName(rule[0])
     const value = rule[1]
     const allowShorthand = shorthandBlacklist.indexOf(propertyName) === -1
     return Object.assign(
       accum,
-      getStylesForProperty(propertyName, value, allowShorthand)
+      getStylesForProperty(propertyName, value, allowShorthand, units)
     )
   }, {})
