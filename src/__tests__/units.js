@@ -1,4 +1,4 @@
-import transformCss from '..'
+import transformCss, { declareCustomUnit } from '..'
 
 // List of units from:
 // https://developer.mozilla.org/en-US/docs/Web/CSS/length
@@ -122,6 +122,22 @@ lengthUnits.forEach(unit => {
       shadowColor: 'red',
       shadowOpacity: 1,
     })
+  })
+
+  it('allows custom units with function scaler', () => {
+    // Set rpx to scale factor 0.5
+    declareCustomUnit('rpx', size => 0.5 * size)
+
+    // Test that 2em == 28px
+    expect(transformCss([['font-size', '20rpx']])).toEqual({ fontSize: 10 })
+  })
+
+  it('allows custom units with constant scaler', () => {
+    // Set 1mpx to 14px
+    declareCustomUnit('mpx', 14)
+
+    // Test that 2mpx == 28px
+    expect(transformCss([['font-size', '2mpx']])).toEqual({ fontSize: 28 })
   })
 })
 

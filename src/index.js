@@ -4,6 +4,7 @@ import camelizeStyleName from 'camelize'
 import transforms from './transforms/index'
 import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
+import { matchesCustomUnit, declareCustomUnit } from './customUnits'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?:px)?$/i
@@ -26,6 +27,9 @@ export const transformRawValue = (propName, value) => {
       console.warn(`Expected style "${propName}: ${value}" to be unitless`)
     }
   }
+
+  const customUnitMatch = matchesCustomUnit(value)
+  if (customUnitMatch !== null) return customUnitMatch
 
   const numberMatch = value.match(numberOrLengthRe)
   if (numberMatch !== null) return Number(numberMatch[1])
@@ -88,3 +92,5 @@ export default (rules, shorthandBlacklist = []) =>
       getStylesForProperty(propertyName, value, allowShorthand)
     )
   }, {})
+
+export { declareCustomUnit }
