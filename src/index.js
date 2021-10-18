@@ -4,6 +4,7 @@ import camelizeStyleName from 'camelize'
 import transforms from './transforms/index'
 import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
+import validStyles from './validStyles'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?:px)?$/i
@@ -62,6 +63,10 @@ const transformShorthandValue =
 export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
   const value = inputValue.trim()
+
+  if (isRawValue && !validStyles.includes(propName)) {
+    return {}
+  }
 
   const propValues = isRawValue
     ? { [propName]: transformRawValue(propName, value) }

@@ -59,23 +59,23 @@ it('allows pixels in unspecialized transform', () => {
 it('allows boolean values', () => {
   expect(
     transformCss([
-      ['boolTrue1', 'true'],
-      ['boolTrue2', 'TRUE'],
-      ['boolFalse1', 'false'],
-      ['boolFalse2', 'FALSE'],
+      ['top', 'true'],
+      ['bottom', 'TRUE'],
+      ['left', 'false'],
+      ['right', 'FALSE'],
     ])
   ).toEqual({
-    boolTrue1: true,
-    boolTrue2: true,
-    boolFalse1: false,
-    boolFalse2: false,
+    top: true,
+    bottom: true,
+    left: false,
+    right: false,
   })
 })
 
 it('allows null values', () => {
-  expect(transformCss([['null1', 'null'], ['null2', 'NULL']])).toEqual({
-    null1: null,
-    null2: null,
+  expect(transformCss([['top', 'null'], ['bottom', 'NULL']])).toEqual({
+    top: null,
+    bottom: null,
   })
 })
 
@@ -88,8 +88,8 @@ it('allows undefined values', () => {
   })
 })
 
-it('allows CSS custom properties to pass through', () => {
-  expect(transformCss([['--my-prop', '0%']])).toEqual({ '--my-prop': '0%' })
+it("don't allow CSS custom properties to pass through", () => {
+  expect(transformCss([['--my-prop', '0%']])).toEqual({})
 })
 
 it('allows percent in unspecialized transform', () => {
@@ -201,4 +201,16 @@ it('throws useful errors', () => {
   expect(() => transformCss([['margin', '10']])).toThrow(
     'Failed to parse declaration "margin: 10"'
   )
+})
+
+it('ignores not supported declarations', () => {
+  const actualStyles = transformCss([
+    ['background-color', 'transparent'],
+    ['background-repeat', 'no-repeat'],
+    ['white-space', 'no-wrap'],
+    ['text-overflow', 'ellipsis'],
+    ['text-indent', '10px'],
+  ])
+
+  expect(actualStyles).toEqual({ backgroundColor: 'transparent' })
 })
