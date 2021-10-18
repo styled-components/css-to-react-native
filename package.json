@@ -11,7 +11,8 @@
     "lint": "eslint src",
     "prepublish": "npm run build",
     "precommit": "lint-staged",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "postinstall": "rollup ./src/index.js -o index.js --f cjs && babel index.js -o index.js"
   },
   "files": [
     "index.js",
