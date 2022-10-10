@@ -86,7 +86,7 @@ transform([
 ]); // => { fontFamily: 'Helvetica', ... }
 ```
 
-We don't provide a way to get these style tuples in this library, so you'll need to do that yourself. I expect most people will use postCSS or another CSS parser. You should try avoid getting these with `string.split`, as that has a lot of edge cases (colons and semi-colons apearing in comments etc.)
+We don't provide a way to get these style tuples in this library, so you'll need to do that yourself. I expect most people will use postCSS or another CSS parser. You should try avoid getting these with `string.split`, as that has a lot of edge cases (colons and semi-colons appearing in comments etc.)
 
 For implementors, there is also a few extra APIs available.
 
