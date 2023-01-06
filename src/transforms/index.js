@@ -1,11 +1,10 @@
 import {
-  IDENT,
-  WORD,
+  AUTO,
   COLOR,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
   PERCENT,
-  AUTO,
+  UNSUPPORTED_LENGTH_UNIT,
+  WORD,
 } from '../tokenTypes'
 import border from './border'
 import boxShadow from './boxShadow'
@@ -13,6 +12,7 @@ import flex from './flex'
 import flexFlow from './flexFlow'
 import font from './font'
 import fontFamily from './fontFamily'
+import fontVariant from './fontVariant'
 import placeContent from './placeContent'
 import textDecoration from './textDecoration'
 import textDecorationLine from './textDecorationLine'
@@ -39,9 +39,7 @@ const margin = directionFactory({
   prefix: 'margin',
 })
 const padding = directionFactory({ prefix: 'padding' })
-const fontVariant = tokenStream => ({
-  fontVariant: [tokenStream.expect(IDENT)],
-})
+
 const fontWeight = tokenStream => ({
   fontWeight: tokenStream.expect(WORD), // Also match numbers as strings
 })
