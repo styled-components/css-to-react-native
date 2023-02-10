@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
     'opacity',
     'shadowOpacity',
     'zIndex',
+    'lineHeight',
   ]
 }
 
