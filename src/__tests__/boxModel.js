@@ -15,6 +15,19 @@ it('transforms margin, padding with 1 value', () => {
   })
 })
 
+// RTL
+it('transforms margin-inline-start with marginStart', () => {
+  expect(transformCss([['margin-inline-start', '1px']])).toEqual({
+    marginStart: 1,
+  })
+})
+
+it('transforms start with start', () => {
+  expect(transformCss([['start', '1px']])).toEqual({
+    start: 1,
+  })
+})
+
 it('transforms margin, padding with 2 values', () => {
   expect(transformCss([['margin', '1px 2px']])).toEqual({
     marginTop: 1,
@@ -116,6 +129,8 @@ it('transforms margin shorthand with auto', () => {
     marginLeft: 'auto',
   })
 })
+
+
 
 it('transforms border width', () => {
   expect(transformCss([['border-width', '1px 2px 3px 4px']])).toEqual({
