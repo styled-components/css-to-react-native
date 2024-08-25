@@ -18,9 +18,15 @@ it('transforms transparent color', () => {
 
 it('transforms border shorthand with transparent color', () => {
   expect(transformCss([['border', '2px dashed transparent']])).toEqual({
-    borderColor: 'transparent',
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
     borderStyle: 'dashed',
-    borderWidth: 2,
   })
 })
 
