@@ -1,24 +1,24 @@
-import { SPACE, COMMA, LENGTH, NUMBER, ANGLE } from '../tokenTypes'
+import { SPACE, COMMA, LENGTH, NUMBER, ANGLE, PERCENT } from '../tokenTypes'
 
-const oneOfType = tokenType => functionStream => {
-  const value = functionStream.expect(tokenType)
+const oneOfTypes = tokenTypes => functionStream => {
+  const value = functionStream.expect(...tokenTypes)
   functionStream.expectEmpty()
   return value
 }
 
-const singleNumber = oneOfType(NUMBER)
-const singleLength = oneOfType(LENGTH)
-const singleAngle = oneOfType(ANGLE)
-const xyTransformFactory = tokenType => (
+const singleNumber = oneOfTypes([NUMBER])
+const singleLengthOrPercent = oneOfTypes([LENGTH, PERCENT])
+const singleAngle = oneOfTypes([ANGLE])
+const xyTransformFactory = tokenTypes => (
   key,
   valueIfOmitted
 ) => functionStream => {
-  const x = functionStream.expect(tokenType)
+  const x = functionStream.expect(...tokenTypes)
 
   let y
   if (functionStream.hasTokens()) {
     functionStream.expect(COMMA)
-    y = functionStream.expect(tokenType)
+    y = functionStream.expect(...tokenTypes)
   } else if (valueIfOmitted !== undefined) {
     y = valueIfOmitted
   } else {
@@ -31,18 +31,18 @@ const xyTransformFactory = tokenType => (
 
   return [{ [`${key}Y`]: y }, { [`${key}X`]: x }]
 }
-const xyNumber = xyTransformFactory(NUMBER)
-const xyLength = xyTransformFactory(LENGTH)
-const xyAngle = xyTransformFactory(ANGLE)
+const xyNumber = xyTransformFactory([NUMBER])
+const xyLengthOrPercent = xyTransformFactory([LENGTH, PERCENT])
+const xyAngle = xyTransformFactory([ANGLE])
 
 const partTransforms = {
   perspective: singleNumber,
   scale: xyNumber('scale'),
   scaleX: singleNumber,
   scaleY: singleNumber,
-  translate: xyLength('translate', 0),
-  translateX: singleLength,
-  translateY: singleLength,
+  translate: xyLengthOrPercent('translate', 0),
+  translateX: singleLengthOrPercent,
+  translateY: singleLengthOrPercent,
   rotate: singleAngle,
   rotateX: singleAngle,
   rotateY: singleAngle,
