@@ -52,12 +52,12 @@ const transformShorthandValue =
   process.env.NODE_ENV === 'production'
     ? baseTransformShorthandValue
     : (propName, value) => {
-        try {
-          return baseTransformShorthandValue(propName, value)
-        } catch (e) {
-          throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
-        }
+      try {
+        return baseTransformShorthandValue(propName, value)
+      } catch (e) {
+        throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
       }
+    }
 
 export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
@@ -70,12 +70,21 @@ export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   return propValues
 }
 
+const cssRtLToNativeCamelized = {
+  "margin-inline-start": "marginStart",
+  "margin-inline-end": "marginEnd",
+  "padding-inline-start": "paddingStart",
+  "padding-inline-end": "paddingEnd",
+  "inset-inline-start": "start",
+  "inset-inline-end": "end"
+}
+
 export const getPropertyName = propName => {
   const isCustomProp = /^--\w+/.test(propName)
   if (isCustomProp) {
     return propName
   }
-  return camelizeStyleName(propName)
+  return cssRtLToNativeCamelized[propName] || camelizeStyleName(propName)
 }
 
 export default (rules, shorthandBlacklist = []) =>
