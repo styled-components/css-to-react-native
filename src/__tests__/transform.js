@@ -12,6 +12,20 @@ it('transforms a single transform value with string', () => {
   })
 })
 
+it('transforms a single transform value with percentage', () => {
+  expect(transformCss([['transform', 'translate(100%, 100%)']])).toEqual({
+    transform: [{ translateY: '100%' }, { translateX: '100%' }],
+  })
+})
+
+it('transforms multiple transform values with percentage', () => {
+  expect(
+    transformCss([['transform', 'translateY(100%) translateX(100%)']])
+  ).toEqual({
+    transform: [{ translateX: '100%' }, { translateY: '100%' }],
+  })
+})
+
 it('transforms multiple transform values', () => {
   expect(transformCss([['transform', 'scaleX(5) skewX(1deg)']])).toEqual({
     transform: [{ skewX: '1deg' }, { scaleX: 5 }],
