@@ -11,7 +11,6 @@ const BORDER_STYLE = regExpToken(/^(solid|dashed|dotted)$/)
 
 const defaultBorderWidth = 1
 const defaultBorderColor = 'black'
-const defaultBorderStyle = 'solid'
 
 export default tokenStream => {
   let borderWidth
@@ -20,7 +19,17 @@ export default tokenStream => {
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
-    return { borderWidth: 0, borderColor: 'black', borderStyle: 'solid' }
+    return {
+      borderTopWidth: 0,
+      borderRightWidth: 0,
+      borderBottomWidth: 0,
+      borderLeftWidth: 0,
+      borderTopColor: 'black',
+      borderRightColor: 'black',
+      borderBottomColor: 'black',
+      borderLeftColor: 'black',
+      borderStyle: 'solid',
+    }
   }
 
   let partsParsed = 0
@@ -47,7 +56,21 @@ export default tokenStream => {
 
   if (borderWidth === undefined) borderWidth = defaultBorderWidth
   if (borderColor === undefined) borderColor = defaultBorderColor
-  if (borderStyle === undefined) borderStyle = defaultBorderStyle
+  if (borderStyle === undefined) {
+    throw new Error(
+      'You must define a border style in the border shorthand (e.g. solid)'
+    )
+  }
 
-  return { borderWidth, borderColor, borderStyle }
+  return {
+    borderTopWidth: borderWidth,
+    borderRightWidth: borderWidth,
+    borderBottomWidth: borderWidth,
+    borderLeftWidth: borderWidth,
+    borderTopColor: borderColor,
+    borderRightColor: borderColor,
+    borderBottomColor: borderColor,
+    borderLeftColor: borderColor,
+    borderStyle,
+  }
 }

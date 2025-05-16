@@ -2,82 +2,112 @@ import transformCss from '..'
 
 it('transforms border none', () => {
   expect(transformCss([['border', 'none']])).toEqual({
-    borderWidth: 0,
-    borderColor: 'black',
+    borderTopWidth: 0,
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+    borderLeftWidth: 0,
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
     borderStyle: 'solid',
   })
 })
 
 it('transforms border shorthand', () => {
   expect(transformCss([['border', '2px dashed #f00']])).toEqual({
-    borderWidth: 2,
-    borderColor: '#f00',
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderTopColor: '#f00',
+    borderRightColor: '#f00',
+    borderBottomColor: '#f00',
+    borderLeftColor: '#f00',
     borderStyle: 'dashed',
   })
 })
 
 it('transforms border shorthand in other order', () => {
   expect(transformCss([['border', '#f00 2px dashed']])).toEqual({
-    borderWidth: 2,
-    borderColor: '#f00',
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderTopColor: '#f00',
+    borderRightColor: '#f00',
+    borderBottomColor: '#f00',
+    borderLeftColor: '#f00',
     borderStyle: 'dashed',
   })
 })
 
 it('transforms border shorthand missing color', () => {
   expect(transformCss([['border', '2px dashed']])).toEqual({
-    borderWidth: 2,
-    borderColor: 'black',
+    borderTopWidth: 2,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
     borderStyle: 'dashed',
-  })
-})
-
-it('transforms border shorthand missing style', () => {
-  expect(transformCss([['border', '2px #f00']])).toEqual({
-    borderWidth: 2,
-    borderColor: '#f00',
-    borderStyle: 'solid',
   })
 })
 
 it('transforms border shorthand missing width', () => {
   expect(transformCss([['border', '#f00 dashed']])).toEqual({
-    borderWidth: 1,
-    borderColor: '#f00',
+    borderTopWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderTopColor: '#f00',
+    borderRightColor: '#f00',
+    borderBottomColor: '#f00',
+    borderLeftColor: '#f00',
     borderStyle: 'dashed',
   })
 })
 
 it('transforms border shorthand missing color & width', () => {
   expect(transformCss([['border', 'dashed']])).toEqual({
-    borderWidth: 1,
-    borderColor: 'black',
+    borderTopWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
     borderStyle: 'dashed',
-  })
-})
-
-it('transforms border shorthand missing style & width', () => {
-  expect(transformCss([['border', '#f00']])).toEqual({
-    borderWidth: 1,
-    borderColor: '#f00',
-    borderStyle: 'solid',
-  })
-})
-
-it('transforms border shorthand missing color & style', () => {
-  expect(transformCss([['border', '2px']])).toEqual({
-    borderWidth: 2,
-    borderColor: 'black',
-    borderStyle: 'solid',
   })
 })
 
 it('transforms border for unsupported units', () => {
   expect(transformCss([['border', '3em solid black']])).toEqual({
-    borderWidth: '3em',
-    borderColor: 'black',
+    borderTopWidth: '3em',
+    borderRightWidth: '3em',
+    borderBottomWidth: '3em',
+    borderLeftWidth: '3em',
+    borderTopColor: 'black',
+    borderRightColor: 'black',
+    borderBottomColor: 'black',
+    borderLeftColor: 'black',
     borderStyle: 'solid',
   })
+})
+
+it('does not transform border shorthand missing style', () => {
+  expect(() => transformCss([['border', '2px #f00']])).toThrow()
+})
+
+it('does not transform border shorthand missing style & width', () => {
+  expect(() => transformCss([['border', '#f00']])).toThrow()
+})
+
+it('does not transforms border shorthand missing color & style', () => {
+  expect(() => transformCss([['border', '2px']])).toThrow()
 })
 
 it('does not transform border with percentage width', () => {
