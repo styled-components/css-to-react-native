@@ -13,7 +13,7 @@ const defaultBorderWidth = 1
 const defaultBorderColor = 'black'
 const defaultBorderStyle = 'solid'
 
-export default tokenStream => {
+export default (tokenStream, key) => {
   let borderWidth
   let borderColor
   let borderStyle
@@ -49,5 +49,9 @@ export default tokenStream => {
   if (borderColor === undefined) borderColor = defaultBorderColor
   if (borderStyle === undefined) borderStyle = defaultBorderStyle
 
-  return { borderWidth, borderColor, borderStyle }
+  return {
+    [`${key}Width`]: borderWidth,
+    [`${key}Color`]: borderColor,
+    [`${key}Style`]: borderStyle,
+  }
 }

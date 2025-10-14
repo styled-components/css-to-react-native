@@ -4,7 +4,6 @@ import camelizeStyleName from 'camelize'
 import transforms from './transforms/index'
 import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
-
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?:px)?$/i
 const numberOnlyRe = /^[+-]?(?:\d*\.\d*|[1-9]\d*)(?:e[+-]?\d+)?$/i
@@ -45,19 +44,19 @@ export const transformRawValue = (propName, value) => {
 const baseTransformShorthandValue = (propName, value) => {
   const ast = parse(value)
   const tokenStream = new TokenStream(ast.nodes)
-  return transforms[propName](tokenStream)
+  return transforms[propName](tokenStream, propName)
 }
 
 const transformShorthandValue =
   process.env.NODE_ENV === 'production'
     ? baseTransformShorthandValue
     : (propName, value) => {
-        try {
-          return baseTransformShorthandValue(propName, value)
-        } catch (e) {
-          throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
-        }
+      try {
+        return baseTransformShorthandValue(propName, value)
+      } catch (e) {
+        throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
       }
+    }
 
 export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   const isRawValue = allowShorthand === false || !(propName in transforms)

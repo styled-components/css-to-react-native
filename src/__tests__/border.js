@@ -83,3 +83,33 @@ it('transforms border for unsupported units', () => {
 it('does not transform border with percentage width', () => {
   expect(() => transformCss([['border', '3% solid black']])).toThrow()
 })
+
+it('transforms border-bottom', () => {
+  expect(transformCss([['border-bottom', '1px solid black']])).toEqual({
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    borderBottomStyle: 'solid',
+  })
+})
+it('transforms border-top', () => {
+  expect(transformCss([['border-top', '1px solid black']])).toEqual({
+    borderTopWidth: 1,
+    borderTopColor: 'black',
+    borderTopStyle: 'solid',
+  })
+})
+it('transforms border-left', () => {
+  expect(transformCss([['border-left', '1px solid black']])).toEqual({
+    borderLeftWidth: 1,
+    borderLeftColor: 'black',
+    borderLeftStyle: 'solid',
+  })
+})
+
+it('transforms border-right', () => {
+  expect(transformCss([['border-right', '1px solid black']])).toEqual({
+    borderRightWidth: 1,
+    borderRightColor: 'black',
+    borderRightStyle: 'solid',
+  })
+})
