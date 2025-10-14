@@ -52,6 +52,6 @@ export default (tokenStream, key) => {
   return {
     [`${key}Width`]: borderWidth,
     [`${key}Color`]: borderColor,
-    [`${key}Style`]: borderStyle,
+    borderStyle,
   }
 }
