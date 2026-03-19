@@ -63,9 +63,10 @@ margin: 5px 7px 2px;
 }
 ```
 
-Shorthands will only accept values that are supported in React, so `background` will only accept a colour, `backgroundColor`
+Shorthands will only accept values that are supported in React Native, so `background` will only accept a colour, `backgroundColor` will not accept an image, and `font` will not accept font-variant values that React Native does not support.
 
-There is also support for the `box-shadow` shorthand, and this converts into `shadow-` properties. Note that these only work on iOS.
+React Native's `box-shadow` and `filter` properties are passed through as
+`boxShadow` and `filter`, so support depends on your React Native version.
 
 #### Shorthand Notes
 

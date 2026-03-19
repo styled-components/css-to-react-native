@@ -8,7 +8,6 @@ import {
 } from '../tokenTypes'
 import aspectRatio from './aspectRatio'
 import border from './border'
-import boxShadow from './boxShadow'
 import flex from './flex'
 import flexFlow from './flexFlow'
 import font from './font'
@@ -58,7 +57,6 @@ export default {
   borderColor,
   borderRadius,
   borderWidth,
-  boxShadow,
   flex,
   flexFlow,
   font,
