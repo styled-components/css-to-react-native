@@ -1,3 +1,5 @@
+import { expect, it } from 'vitest'
+
 import transformCss from '..'
 
 it('transforms font-family with double quotes', () => {

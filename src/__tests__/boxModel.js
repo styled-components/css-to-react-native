@@ -1,3 +1,5 @@
+import { expect, it } from 'vitest'
+
 import transformCss from '..'
 
 it('transforms margin, padding with 1 value', () => {
