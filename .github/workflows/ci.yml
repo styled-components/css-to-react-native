@@ -22,10 +22,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          cache: yarn
+
+      - name: Install Corepack
+        run: npm install -g corepack
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn --immutable
 
       - name: Run lint
         run: yarn lint
@@ -42,10 +44,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          cache: yarn
+
+      - name: Install Corepack
+        run: npm install -g corepack
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn --immutable
 
       - name: Run tests
         run: yarn test
@@ -62,10 +66,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          cache: yarn
+
+      - name: Install Corepack
+        run: npm install -g corepack
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn --immutable
 
       - name: Run build
         run: yarn build

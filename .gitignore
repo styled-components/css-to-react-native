@@ -1,3 +1,34 @@
+# OS
 .DS_Store
-/node_modules
+
+# Cache
+.cache
+.tmp
+.eslintcache
+
+# Yarn
+.pnp.*
+**/.yarn/*
+!**/.yarn/cache
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
+
+# Project-generated directories and files
+coverage
+dist
+node_modules
+playwright-report
+test-results
+package.tgz
+
+# Logs
+logs
+npm-debug.log
+yarn-error.log
+
+# Built files
 /index.js
+

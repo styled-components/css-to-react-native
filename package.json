@@ -59,5 +59,6 @@
       "eslint --fix",
       "git add"
     ]
-  }
+  },
+  "packageManager": "yarn@4.13.0"
 }
