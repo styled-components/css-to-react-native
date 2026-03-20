@@ -71,7 +71,12 @@ it('allows boolean values', () => {
 })
 
 it('allows null values', () => {
-  expect(transformCss([['null1', 'null'], ['null2', 'NULL']])).toEqual({
+  expect(
+    transformCss([
+      ['null1', 'null'],
+      ['null2', 'NULL'],
+    ])
+  ).toEqual({
     null1: null,
     null2: null,
   })
@@ -79,7 +84,10 @@ it('allows null values', () => {
 
 it('allows undefined values', () => {
   expect(
-    transformCss([['undefined1', 'undefined'], ['undefined2', 'UNDEFINED']])
+    transformCss([
+      ['undefined1', 'undefined'],
+      ['undefined2', 'UNDEFINED'],
+    ])
   ).toEqual({
     undefined1: undefined,
     undefined2: undefined,

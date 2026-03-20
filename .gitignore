@@ -1,3 +1,23 @@
+# OS
 .DS_Store
-/node_modules
+
+# Cache
+.cache
+.tmp
+.eslintcache
+
+# Project-generated directories and files
+coverage
+dist
+node_modules
+playwright-report
+test-results
+package.tgz
+
+# Logs
+logs
+npm-debug.log
+
+# Built files
 /index.js
+
