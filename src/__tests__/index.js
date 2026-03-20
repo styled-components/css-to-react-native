@@ -1,3 +1,5 @@
+import { expect, it, vi } from 'vitest'
+
 import transformCss, { getStylesForProperty } from '..'
 
 it('transforms numbers', () => {
@@ -5,11 +7,9 @@ it('transforms numbers', () => {
 })
 
 it('warns if missing units on unspecialized transform', () => {
-  const consoleSpy = jest
-    .spyOn(global.console, 'warn')
-    .mockImplementation(() => {
-      // Silence the warning from the test output
-    })
+  const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {
+    // Silence the warning from the test output
+  })
 
   transformCss([['top', '1']])
   expect(consoleSpy).toHaveBeenCalledWith(
@@ -20,7 +20,7 @@ it('warns if missing units on unspecialized transform', () => {
 })
 
 it('does not warn for unitless 0 length on unspecialized transform', () => {
-  const consoleSpy = jest.spyOn(global.console, 'warn')
+  const consoleSpy = vi.spyOn(console, 'warn')
 
   transformCss([['top', '0']])
   expect(consoleSpy).not.toHaveBeenCalled()
@@ -29,11 +29,9 @@ it('does not warn for unitless 0 length on unspecialized transform', () => {
 })
 
 it('warns if adding etraneous units on unspecialized transform', () => {
-  const consoleSpy = jest
-    .spyOn(global.console, 'warn')
-    .mockImplementation(() => {
-      // Silence the warning from the test output
-    })
+  const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {
+    // Silence the warning from the test output
+  })
 
   transformCss([['opacity', '1px']])
   expect(consoleSpy).toHaveBeenCalledWith(
@@ -44,7 +42,7 @@ it('warns if adding etraneous units on unspecialized transform', () => {
 })
 
 it('does not warn for unitless 0 length on unitless transform', () => {
-  const consoleSpy = jest.spyOn(global.console, 'warn')
+  const consoleSpy = vi.spyOn(console, 'warn')
 
   transformCss([['opacity', '0']])
   expect(consoleSpy).not.toHaveBeenCalled()

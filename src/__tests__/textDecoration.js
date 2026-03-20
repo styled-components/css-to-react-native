@@ -1,3 +1,5 @@
+import { expect, it } from 'vitest'
+
 import transformCss from '..'
 
 it('transforms text-decoration into text-decoration- properties', () => {
