@@ -115,14 +115,11 @@ lengthUnits.forEach(unit => {
     })
   })
 
-  it('allows untis to be used with box-shadow', () => {
+  it('allows units to be used with box-shadow', () => {
     expect(
       transformCss([['box-shadow', `10px ${value} ${value} red`]])
     ).toEqual({
-      shadowOffset: { width: 10, height: value },
-      shadowRadius: value,
-      shadowColor: 'red',
-      shadowOpacity: 1,
+      boxShadow: `10px ${value} ${value} red`,
     })
   })
 })

@@ -98,6 +98,32 @@ it('allows CSS custom properties to pass through', () => {
   expect(transformCss([['--my-prop', '0%']])).toEqual({ '--my-prop': '0%' })
 })
 
+it('passes filter through as a raw React Native property', () => {
+  expect(transformCss([['filter', 'opacity(0.5)']])).toEqual({
+    filter: 'opacity(0.5)',
+  })
+})
+
+it('passes multiple filter functions through unchanged', () => {
+  expect(transformCss([['filter', 'opacity(0.5) blur(5px)']])).toEqual({
+    filter: 'opacity(0.5) blur(5px)',
+  })
+})
+
+it('passes box-shadow through as a raw React Native property', () => {
+  expect(transformCss([['box-shadow', '10px 20px 30px red']])).toEqual({
+    boxShadow: '10px 20px 30px red',
+  })
+})
+
+it('passes multiple box-shadow values through unchanged', () => {
+  expect(
+    transformCss([['box-shadow', '5px 5px 5px red, -5px -5px 5px green']])
+  ).toEqual({
+    boxShadow: '5px 5px 5px red, -5px -5px 5px green',
+  })
+})
+
 it('allows percent in unspecialized transform', () => {
   expect(transformCss([['top', '0%']])).toEqual({ top: '0%' })
 })
