@@ -59,5 +59,6 @@
       "eslint --fix",
       "git add"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.32.1"
 }

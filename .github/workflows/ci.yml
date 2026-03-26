@@ -18,17 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Use pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          cache: yarn
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run lint
-        run: yarn lint
+        run: pnpm lint
 
   unit:
     name: Unit tests
@@ -38,17 +41,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Use pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          cache: yarn
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests
-        run: yarn test
+        run: pnpm test
 
   build:
     name: Build
@@ -58,14 +64,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Use pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
           node-version: "24"
-          cache: yarn
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Run build
-        run: yarn build
+        run: pnpm build

@@ -78,7 +78,12 @@ it('transforms margin, allowing unitless zero, percentages', () => {
 })
 
 it('transforms shorthand and overrides previous values', () => {
-  expect(transformCss([['margin-top', '2px'], ['margin', '1px']])).toEqual({
+  expect(
+    transformCss([
+      ['margin-top', '2px'],
+      ['margin', '1px'],
+    ])
+  ).toEqual({
     marginTop: 1,
     marginRight: 1,
     marginBottom: 1,
