@@ -7,7 +7,7 @@ const JUSTIFY_CONTENT = regExpToken(
   /(flex-(?:start|end)|center|space-(?:between|around|evenly))/
 )
 
-export default tokenStream => {
+export default (tokenStream) => {
   const alignContent = tokenStream.expect(ALIGN_CONTENT)
 
   let justifyContent

@@ -1,50 +1,52 @@
 import {
-  LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
-  PERCENT,
   COLOR,
-  SPACE,
+  LENGTH,
   NONE,
+  PERCENT,
+  SPACE,
+  UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
 
-export const directionFactory = ({
-  types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
-  directions = ['Top', 'Right', 'Bottom', 'Left'],
-  prefix = '',
-  suffix = '',
-}) => tokenStream => {
-  const values = []
+export const directionFactory =
+  ({
+    types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
+    directions = ['Top', 'Right', 'Bottom', 'Left'],
+    prefix = '',
+    suffix = '',
+  }) =>
+  (tokenStream) => {
+    const values = []
 
-  // borderWidth doesn't currently allow a percent value, but may do in the future
-  values.push(tokenStream.expect(...types))
-
-  while (values.length < 4 && tokenStream.hasTokens()) {
-    tokenStream.expect(SPACE)
+    // borderWidth doesn't currently allow a percent value, but may do in the future
     values.push(tokenStream.expect(...types))
+
+    while (values.length < 4 && tokenStream.hasTokens()) {
+      tokenStream.expect(SPACE)
+      values.push(tokenStream.expect(...types))
+    }
+
+    tokenStream.expectEmpty()
+
+    const [top, right = top, bottom = top, left = right] = values
+
+    const keyFor = (n) => `${prefix}${directions[n]}${suffix}`
+
+    return {
+      [keyFor(0)]: top,
+      [keyFor(1)]: right,
+      [keyFor(2)]: bottom,
+      [keyFor(3)]: left,
+    }
   }
 
-  tokenStream.expectEmpty()
-
-  const [top, right = top, bottom = top, left = right] = values
-
-  const keyFor = n => `${prefix}${directions[n]}${suffix}`
-
-  return {
-    [keyFor(0)]: top,
-    [keyFor(1)]: right,
-    [keyFor(2)]: bottom,
-    [keyFor(3)]: left,
-  }
-}
-
-export const parseShadowOffset = tokenStream => {
+export const parseShadowOffset = (tokenStream) => {
   const width = tokenStream.expect(LENGTH)
   const height = tokenStream.matches(SPACE) ? tokenStream.expect(LENGTH) : width
   tokenStream.expectEmpty()
   return { width, height }
 }
 
-export const parseShadow = tokenStream => {
+export const parseShadow = (tokenStream) => {
   let offsetX
   let offsetY
   let radius

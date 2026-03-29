@@ -1,9 +1,8 @@
-/* eslint-disable no-param-reassign */
-import parse from 'postcss-value-parser'
 import camelizeStyleName from 'camelize'
-import transforms from './transforms/index'
+import parse from 'postcss-value-parser'
 import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
+import transforms from './transforms/index'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?:px)?$/i
@@ -18,11 +17,11 @@ export const transformRawValue = (propName, value) => {
     const needsUnit = !devPropertiesWithoutUnitsRegExp.test(propName)
     const isNumberWithoutUnit = numberOnlyRe.test(value)
     if (needsUnit && isNumberWithoutUnit) {
-      // eslint-disable-next-line no-console
+      // biome-ignore lint/suspicious/noConsole: Intentional warning
       console.warn(`Expected style "${propName}: ${value}" to contain units`)
     }
     if (!needsUnit && value !== '0' && !isNumberWithoutUnit) {
-      // eslint-disable-next-line no-console
+      // biome-ignore lint/suspicious/noConsole: Intentional warning
       console.warn(`Expected style "${propName}: ${value}" to be unitless`)
     }
   }
@@ -54,7 +53,7 @@ const transformShorthandValue =
     : (propName, value) => {
         try {
           return baseTransformShorthandValue(propName, value)
-        } catch (e) {
+        } catch (_e) {
           throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
         }
       }
@@ -70,7 +69,7 @@ export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   return propValues
 }
 
-export const getPropertyName = propName => {
+export const getPropertyName = (propName) => {
   const isCustomProp = /^--\w+/.test(propName)
   if (isCustomProp) {
     return propName

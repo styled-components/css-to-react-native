@@ -6,7 +6,7 @@ const FLEX_DIRECTION = regExpToken(/(row|row-reverse|column|column-reverse)/)
 const defaultFlexWrap = 'nowrap'
 const defaultFlexDirection = 'row'
 
-export default tokenStream => {
+export default (tokenStream) => {
   let flexWrap
   let flexDirection
 

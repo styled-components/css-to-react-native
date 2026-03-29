@@ -1,10 +1,10 @@
 import {
-  regExpToken,
-  NONE,
   COLOR,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  NONE,
+  regExpToken,
   SPACE,
+  UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
 
 const BORDER_STYLE = regExpToken(/^(solid|dashed|dotted)$/)
@@ -13,7 +13,7 @@ const defaultBorderWidth = 1
 const defaultBorderColor = 'black'
 const defaultBorderStyle = 'solid'
 
-export default tokenStream => {
+export default (tokenStream) => {
   let borderWidth
   let borderColor
   let borderStyle

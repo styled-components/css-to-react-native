@@ -1,6 +1,6 @@
-import { SPACE, COMMA, LENGTH, NUMBER, ANGLE, PERCENT } from '../tokenTypes'
+import { ANGLE, COMMA, LENGTH, NUMBER, PERCENT, SPACE } from '../tokenTypes'
 
-const oneOfTypes = tokenTypes => functionStream => {
+const oneOfTypes = (tokenTypes) => (functionStream) => {
   const value = functionStream.expect(...tokenTypes)
   functionStream.expectEmpty()
   return value
@@ -9,28 +9,26 @@ const oneOfTypes = tokenTypes => functionStream => {
 const singleNumber = oneOfTypes([NUMBER])
 const singleLengthOrPercent = oneOfTypes([LENGTH, PERCENT])
 const singleAngle = oneOfTypes([ANGLE])
-const xyTransformFactory = tokenTypes => (
-  key,
-  valueIfOmitted
-) => functionStream => {
-  const x = functionStream.expect(...tokenTypes)
+const xyTransformFactory =
+  (tokenTypes) => (key, valueIfOmitted) => (functionStream) => {
+    const x = functionStream.expect(...tokenTypes)
 
-  let y
-  if (functionStream.hasTokens()) {
-    functionStream.expect(COMMA)
-    y = functionStream.expect(...tokenTypes)
-  } else if (valueIfOmitted !== undefined) {
-    y = valueIfOmitted
-  } else {
-    // Assumption, if x === y, then we can omit XY
-    // I.e. scale(5) => [{ scale: 5 }] rather than [{ scaleX: 5 }, { scaleY: 5 }]
-    return x
+    let y
+    if (functionStream.hasTokens()) {
+      functionStream.expect(COMMA)
+      y = functionStream.expect(...tokenTypes)
+    } else if (valueIfOmitted !== undefined) {
+      y = valueIfOmitted
+    } else {
+      // Assumption, if x === y, then we can omit XY
+      // I.e. scale(5) => [{ scale: 5 }] rather than [{ scaleX: 5 }, { scaleY: 5 }]
+      return x
+    }
+
+    functionStream.expectEmpty()
+
+    return [{ [`${key}Y`]: y }, { [`${key}X`]: x }]
   }
-
-  functionStream.expectEmpty()
-
-  return [{ [`${key}Y`]: y }, { [`${key}X`]: x }]
-}
 const xyNumber = xyTransformFactory([NUMBER])
 const xyLengthOrPercent = xyTransformFactory([LENGTH, PERCENT])
 const xyAngle = xyTransformFactory([ANGLE])
@@ -52,7 +50,7 @@ const partTransforms = {
   skew: xyAngle('skew', '0deg'),
 }
 
-export default tokenStream => {
+export default (tokenStream) => {
   let transforms = []
 
   let didParseFirst = false

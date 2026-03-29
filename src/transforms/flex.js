@@ -1,18 +1,18 @@
 import {
-  NONE,
   AUTO,
-  NUMBER,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  NONE,
+  NUMBER,
   PERCENT,
   SPACE,
+  UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
 
 const defaultFlexGrow = 1
 const defaultFlexShrink = 1
 const defaultFlexBasis = 0
 
-export default tokenStream => {
+export default (tokenStream) => {
   let flexGrow
   let flexShrink
   let flexBasis

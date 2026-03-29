@@ -1,10 +1,10 @@
-import { stringify } from 'postcss-value-parser'
 import cssColorKeywords from 'css-color-keywords'
+import { stringify } from 'postcss-value-parser'
 
-const matchString = node => {
+const matchString = (node) => {
   if (node.type !== 'string') return null
   return node.value
-    .replace(/\\([0-9a-f]{1,6})(?:\s|$)/gi, (match, charCode) =>
+    .replace(/\\([0-9a-f]{1,6})(?:\s|$)/gi, (_match, charCode) =>
       String.fromCharCode(parseInt(charCode, 16))
     )
     .replace(/\\/g, '')
@@ -13,7 +13,7 @@ const matchString = node => {
 const hexColorRe = /^(#(?:[0-9a-f]{3,4}){1,2})$/i
 const cssFunctionNameRe = /^(rgba?|hsla?|hwb|lab|lch|gray|color)$/
 
-const matchColor = node => {
+const matchColor = (node) => {
   if (
     node.type === 'word' &&
     (hexColorRe.test(node.value) ||
@@ -34,32 +34,35 @@ const identRe = /(^-?[_a-z][_a-z0-9-]*$)/i
 const numberRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)$/i
 // Note lengthRe is sneaky: you can omit units for 0
 const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?=px$))/i
-const unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/i
+const unsupportedUnitRe =
+  /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/i
 const angleRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(?:deg|rad|grad|turn))$/i
 const percentRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?%)$/i
 
-const noopToken = predicate => node => (predicate(node) ? '<token>' : null)
+const noopToken = (predicate) => (node) => (predicate(node) ? '<token>' : null)
 
-const valueForTypeToken = type => node =>
+const valueForTypeToken = (type) => (node) =>
   node.type === type ? node.value : null
 
-export const regExpToken = (regExp, transform = String) => node => {
-  if (node.type !== 'word') return null
+export const regExpToken =
+  (regExp, transform = String) =>
+  (node) => {
+    if (node.type !== 'word') return null
 
-  const match = node.value.match(regExp)
-  if (match === null) return null
+    const match = node.value.match(regExp)
+    if (match === null) return null
 
-  const value = transform(match[1])
+    const value = transform(match[1])
 
-  return value
-}
+    return value
+  }
 
-export const SPACE = noopToken(node => node.type === 'space')
+export const SPACE = noopToken((node) => node.type === 'space')
 export const SLASH = noopToken(
-  node => node.type === 'div' && node.value === '/'
+  (node) => node.type === 'div' && node.value === '/'
 )
 export const COMMA = noopToken(
-  node => node.type === 'div' && node.value === ','
+  (node) => node.type === 'div' && node.value === ','
 )
 export const WORD = valueForTypeToken('word')
 export const NONE = regExpToken(noneRe)
@@ -67,7 +70,7 @@ export const AUTO = regExpToken(autoRe)
 export const NUMBER = regExpToken(numberRe, Number)
 export const LENGTH = regExpToken(lengthRe, Number)
 export const UNSUPPORTED_LENGTH_UNIT = regExpToken(unsupportedUnitRe)
-export const ANGLE = regExpToken(angleRe, angle => angle.toLowerCase())
+export const ANGLE = regExpToken(angleRe, (angle) => angle.toLowerCase())
 export const PERCENT = regExpToken(percentRe)
 export const IDENT = regExpToken(identRe)
 export const STRING = matchString

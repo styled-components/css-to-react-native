@@ -1,6 +1,6 @@
-import { SPACE, IDENT } from '../tokenTypes'
+import { IDENT, SPACE } from '../tokenTypes'
 
-export default tokenStream => {
+export default (tokenStream) => {
   const values = [tokenStream.expect(IDENT)]
 
   while (tokenStream.hasTokens()) {

@@ -1,6 +1,6 @@
-import { SPACE, LINE } from '../tokenTypes'
+import { LINE, SPACE } from '../tokenTypes'
 
-export default tokenStream => {
+export default (tokenStream) => {
   const lines = []
 
   let didParseFirst = false

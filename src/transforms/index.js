@@ -20,7 +20,7 @@ import textShadow from './textShadow'
 import transform from './transform'
 import { directionFactory, parseShadowOffset } from './util'
 
-const background = tokenStream => ({
+const background = (tokenStream) => ({
   backgroundColor: tokenStream.expect(COLOR),
 })
 const borderColor = directionFactory({
@@ -40,13 +40,13 @@ const margin = directionFactory({
 })
 const padding = directionFactory({ prefix: 'padding' })
 
-const fontWeight = tokenStream => ({
+const fontWeight = (tokenStream) => ({
   fontWeight: tokenStream.expect(WORD), // Also match numbers as strings
 })
-const shadowOffset = tokenStream => ({
+const shadowOffset = (tokenStream) => ({
   shadowOffset: parseShadowOffset(tokenStream),
 })
-const textShadowOffset = tokenStream => ({
+const textShadowOffset = (tokenStream) => ({
   textShadowOffset: parseShadowOffset(tokenStream),
 })
 

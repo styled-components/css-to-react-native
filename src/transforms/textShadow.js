@@ -1,6 +1,6 @@
 import { parseShadow } from './util'
 
-export default tokenStream => {
+export default (tokenStream) => {
   const { offset, radius, color } = parseShadow(tokenStream)
   return {
     textShadowOffset: offset,

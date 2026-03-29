@@ -1,6 +1,6 @@
-import { SPACE, IDENT, STRING } from '../tokenTypes'
+import { IDENT, SPACE, STRING } from '../tokenTypes'
 
-export default tokenStream => {
+export default (tokenStream) => {
   let fontFamily
 
   if (tokenStream.matches(STRING)) {

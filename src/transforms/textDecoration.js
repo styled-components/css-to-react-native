@@ -1,4 +1,4 @@
-import { regExpToken, SPACE, LINE, COLOR } from '../tokenTypes'
+import { COLOR, LINE, regExpToken, SPACE } from '../tokenTypes'
 
 const STYLE = regExpToken(/^(solid|double|dotted|dashed)$/)
 
@@ -6,7 +6,7 @@ const defaultTextDecorationLine = 'none'
 const defaultTextDecorationStyle = 'solid'
 const defaultTextDecorationColor = 'black'
 
-export default tokenStream => {
+export default (tokenStream) => {
   let line
   let style
   let color

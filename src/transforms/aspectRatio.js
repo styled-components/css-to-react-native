@@ -1,6 +1,6 @@
 import { NUMBER, SLASH } from '../tokenTypes'
 
-export default tokenStream => {
+export default (tokenStream) => {
   let aspectRatio = tokenStream.expect(NUMBER)
 
   if (tokenStream.hasTokens()) {

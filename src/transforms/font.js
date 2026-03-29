@@ -1,11 +1,11 @@
-import parseFontFamily from './fontFamily'
 import {
-  regExpToken,
-  SPACE,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  regExpToken,
   SLASH,
+  SPACE,
+  UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
+import parseFontFamily from './fontFamily'
 
 const NORMAL = regExpToken(/^(normal)$/)
 const STYLE = regExpToken(/^(italic)$/)
@@ -16,7 +16,7 @@ const defaultFontStyle = 'normal'
 const defaultFontWeight = 'normal'
 const defaultFontVariant = []
 
-export default tokenStream => {
+export default (tokenStream) => {
   let fontStyle
   let fontWeight
   let fontVariant
