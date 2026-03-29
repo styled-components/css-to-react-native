@@ -69,3 +69,27 @@ it('transforms skew(angle) to skewX and skewY', () => {
     transform: [{ skewY: '0deg' }, { skewX: '5deg' }],
   })
 })
+
+it('transforms translate(0) to translateX and translateY', () => {
+  expect(transformCss([['transform', 'translate(0)']])).toEqual({
+    transform: [{ translateY: 0 }, { translateX: 0 }],
+  })
+})
+
+it('transforms rotate(0) to rotate', () => {
+  expect(transformCss([['transform', 'rotate(0)']])).toEqual({
+    transform: [{ rotate: '0deg' }],
+  })
+})
+
+it('transforms skewX(0) to skewX', () => {
+  expect(transformCss([['transform', 'skewX(0)']])).toEqual({
+    transform: [{ skewX: '0deg' }],
+  })
+})
+
+it('transforms skewY(0) to skewY', () => {
+  expect(transformCss([['transform', 'skewY(0)']])).toEqual({
+    transform: [{ skewY: '0deg' }],
+  })
+})
