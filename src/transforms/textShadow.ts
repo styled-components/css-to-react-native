@@ -1,6 +1,8 @@
+import type TokenStream from '../TokenStream'
+import type { Style } from '../types'
 import { parseShadow } from './util'
 
-export default (tokenStream) => {
+export default (tokenStream: TokenStream): Style => {
   const { offset, radius, color } = parseShadow(tokenStream)
   return {
     textShadowOffset: offset,

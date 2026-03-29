@@ -1,3 +1,5 @@
+import type TokenStream from '../TokenStream'
+import type { TokenDescriptor } from '../TokenStream'
 import {
   COLOR,
   LENGTH,
@@ -6,6 +8,7 @@ import {
   SPACE,
   UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
+import type { ParsedShadow, ShadowOffset, Style } from '../types'
 
 export const directionFactory =
   ({
@@ -13,9 +16,14 @@ export const directionFactory =
     directions = ['Top', 'Right', 'Bottom', 'Left'],
     prefix = '',
     suffix = '',
+  }: {
+    types?: TokenDescriptor[]
+    directions?: string[]
+    prefix?: string
+    suffix?: string
   }) =>
-  (tokenStream) => {
-    const values = []
+  (tokenStream: TokenStream): Style => {
+    const values: Array<string | number> = []
 
     // borderWidth doesn't currently allow a percent value, but may do in the future
     values.push(tokenStream.expect(...types))
@@ -29,7 +37,7 @@ export const directionFactory =
 
     const [top, right = top, bottom = top, left = right] = values
 
-    const keyFor = (n) => `${prefix}${directions[n]}${suffix}`
+    const keyFor = (n: number) => `${prefix}${directions[n]}${suffix}`
 
     return {
       [keyFor(0)]: top,
@@ -39,18 +47,18 @@ export const directionFactory =
     }
   }
 
-export const parseShadowOffset = (tokenStream) => {
+export const parseShadowOffset = (tokenStream: TokenStream): ShadowOffset => {
   const width = tokenStream.expect(LENGTH)
   const height = tokenStream.matches(SPACE) ? tokenStream.expect(LENGTH) : width
   tokenStream.expectEmpty()
   return { width, height }
 }
 
-export const parseShadow = (tokenStream) => {
-  let offsetX
-  let offsetY
-  let radius
-  let color
+export const parseShadow = (tokenStream: TokenStream): ParsedShadow => {
+  let offsetX: string | number | undefined
+  let offsetY: string | number | undefined
+  let radius: string | number | undefined
+  let color: string | undefined
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
@@ -69,7 +77,7 @@ export const parseShadow = (tokenStream) => {
       offsetX === undefined &&
       tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)
     ) {
-      offsetX = tokenStream.lastValue
+      offsetX = tokenStream.lastValue ?? undefined
       tokenStream.expect(SPACE)
       offsetY = tokenStream.expect(LENGTH, UNSUPPORTED_LENGTH_UNIT)
 
@@ -78,12 +86,12 @@ export const parseShadow = (tokenStream) => {
         tokenStream.matches(SPACE) &&
         tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT)
       ) {
-        radius = tokenStream.lastValue
+        radius = tokenStream.lastValue ?? undefined
       } else {
         tokenStream.rewind()
       }
     } else if (color === undefined && tokenStream.matches(COLOR)) {
-      color = tokenStream.lastValue
+      color = String(tokenStream.lastValue)
     } else {
       tokenStream.throw()
     }
@@ -94,7 +102,7 @@ export const parseShadow = (tokenStream) => {
   if (offsetX === undefined) tokenStream.throw()
 
   return {
-    offset: { width: offsetX, height: offsetY },
+    offset: { width: offsetX, height: offsetY ?? offsetX },
     radius: radius !== undefined ? radius : 0,
     color: color !== undefined ? color : 'black',
   }

@@ -1,7 +1,16 @@
-const SYMBOL_MATCH = 'SYMBOL_MATCH'
+import type { Node } from 'postcss-value-parser'
+
+type TokenMatch = string | number
+export type TokenDescriptor = (node: Node) => TokenMatch | null
 
 export default class TokenStream {
-  constructor(nodes, parent) {
+  index: number
+  nodes: Node[]
+  functionName: string | null
+  lastValue: TokenMatch | null
+  rewindIndex: number
+
+  constructor(nodes: Node[], parent?: Node) {
     this.index = 0
     this.nodes = nodes
     this.functionName = parent != null ? parent.value : null
@@ -9,11 +18,11 @@ export default class TokenStream {
     this.rewindIndex = -1
   }
 
-  hasTokens() {
+  hasTokens(): boolean {
     return this.index <= this.nodes.length - 1
   }
 
-  [SYMBOL_MATCH](...tokenDescriptors) {
+  matchToken(...tokenDescriptors: TokenDescriptor[]): TokenMatch | null {
     if (!this.hasTokens()) return null
 
     const node = this.nodes[this.index]
@@ -31,42 +40,42 @@ export default class TokenStream {
     return null
   }
 
-  matches(...tokenDescriptors) {
-    return this[SYMBOL_MATCH](...tokenDescriptors) !== null
+  matches(...tokenDescriptors: TokenDescriptor[]): boolean {
+    return this.matchToken(...tokenDescriptors) !== null
   }
 
-  expect(...tokenDescriptors) {
-    const value = this[SYMBOL_MATCH](...tokenDescriptors)
+  expect(...tokenDescriptors: TokenDescriptor[]): TokenMatch {
+    const value = this.matchToken(...tokenDescriptors)
     return value !== null ? value : this.throw()
   }
 
-  matchesFunction() {
+  matchesFunction(): TokenStream | null {
     const node = this.nodes[this.index]
     if (node.type !== 'function') return null
-    const value = new TokenStream(node.nodes, node)
+    const value = new TokenStream(node.nodes ?? [], node)
     this.index += 1
     this.lastValue = null
     return value
   }
 
-  expectFunction() {
+  expectFunction(): TokenStream {
     const value = this.matchesFunction()
     return value !== null ? value : this.throw()
   }
 
-  expectEmpty() {
+  expectEmpty(): void {
     if (this.hasTokens()) this.throw()
   }
 
-  throw() {
+  throw(): never {
     throw new Error(`Unexpected token type: ${this.nodes[this.index].type}`)
   }
 
-  saveRewindPoint() {
+  saveRewindPoint(): void {
     this.rewindIndex = this.index
   }
 
-  rewind() {
+  rewind(): void {
     if (this.rewindIndex === -1) throw new Error('Internal error')
     this.index = this.rewindIndex
     this.lastValue = null

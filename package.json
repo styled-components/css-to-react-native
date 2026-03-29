@@ -4,13 +4,17 @@
   "description": "Convert CSS text to a React Native stylesheet object",
   "main": "index.js",
   "types": "index.d.ts",
+  "sideEffects": false,
   "scripts": {
-    "build": "rollup ./src/index.js -o index.js --f cjs && babel index.js -o index.js",
+    "build": "rollup -c",
+    "clean": "node -e \"fs.rmSync('./index.js', { force: true }); fs.rmSync('./index.d.ts', { force: true })\"",
     "format": "biome format",
     "lint": "biome lint",
     "precommit": "lint-staged",
-    "prepublish": "npm run build",
-    "test": "pnpm lint && pnpm format && pnpm unit",
+    "prebuild": "pnpm clean && pnpm tsc",
+    "prepack": "pnpm build",
+    "test": "pnpm lint && pnpm tsc && pnpm format && pnpm unit",
+    "tsc": "tsc",
     "unit": "vitest",
     "unit:watch": "vitest --watch"
   },
@@ -37,12 +41,14 @@
   },
   "homepage": "https://github.com/styled-components/css-to-react-native#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.6.2",
+    "@types/node": "^24.7.2",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@biomejs/biome": "2.4.9",
     "lint-staged": "^6.1.0",
-    "rollup": "^1.22.0",
+    "rollup": "^4.40.2",
+    "rollup-plugin-dts": "^6.2.1",
+    "tslib": "^2.8.1",
+    "typescript": "^6.0.2",
     "vitest": "^4.0.1"
   },
   "dependencies": {
@@ -51,7 +57,7 @@
     "postcss-value-parser": "^4.0.2"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,ts}": [
       "biome check",
       "git add"
     ]

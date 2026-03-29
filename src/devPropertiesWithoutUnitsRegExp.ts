@@ -1,4 +1,4 @@
-let propertiesWithoutUnits
+let propertiesWithoutUnits: string[] | undefined
 if (process.env.NODE_ENV !== 'production') {
   propertiesWithoutUnits = [
     'aspectRatio',
@@ -16,4 +16,7 @@ const devPropertiesWithUnitsRegExp =
     ? new RegExp(propertiesWithoutUnits.join('|'))
     : null
 
-export default devPropertiesWithUnitsRegExp
+const devPropertiesWithoutUnitsRegExp: RegExp | null =
+  devPropertiesWithUnitsRegExp
+
+export default devPropertiesWithoutUnitsRegExp
