@@ -72,6 +72,55 @@ React Native's `box-shadow` and `filter` properties are passed through as
 
 `border{Top,Right,Bottom,Left}` shorthands are not supported, because `borderStyle` cannot be applied to individual border sides.
 
+## Supported Properties
+
+Most React Native style properties work without a custom mapping table. Write the
+React Native property name in kebab-case and this library will convert it back to
+the camel-cased React Native key for you.
+
+| CSS input | React Native output |
+| --- | --- |
+| `align-content` | `alignContent` |
+| `background-color` | `backgroundColor` |
+| `border-top-left-radius` | `borderTopLeftRadius` |
+| `font-size` | `fontSize` |
+| `justify-content` | `justifyContent` |
+| `text-decoration-color` | `textDecorationColor` |
+| `text-shadow-radius` | `textShadowRadius` |
+
+That rule covers the standard one-to-one mappings. The library also supports the
+following shorthand and special-case transforms:
+
+| CSS input | React Native output |
+| --- | --- |
+| `aspect-ratio` | `aspectRatio` |
+| `background` | `backgroundColor` |
+| `border` | `borderWidth`, `borderColor`, `borderStyle` |
+| `border-color` | `borderTopColor`, `borderRightColor`, `borderBottomColor`, `borderLeftColor` |
+| `border-radius` | `borderTopLeftRadius`, `borderTopRightRadius`, `borderBottomRightRadius`, `borderBottomLeftRadius` |
+| `border-width` | `borderTopWidth`, `borderRightWidth`, `borderBottomWidth`, `borderLeftWidth` |
+| `flex` | `flexGrow`, `flexShrink`, `flexBasis` |
+| `flex-flow` | `flexDirection`, `flexWrap` |
+| `font` | `fontStyle`, `fontWeight`, `fontVariant`, `fontSize`, `lineHeight`, `fontFamily` |
+| `font-family` | `fontFamily` |
+| `font-variant` | `fontVariant` |
+| `font-weight` | `fontWeight` |
+| `margin` | `marginTop`, `marginRight`, `marginBottom`, `marginLeft` |
+| `padding` | `paddingTop`, `paddingRight`, `paddingBottom`, `paddingLeft` |
+| `place-content` | `alignContent`, `justifyContent` |
+| `shadow-offset` | `shadowOffset` |
+| `text-decoration` | `textDecorationLine`, `textDecorationColor`, `textDecorationStyle` |
+| `text-decoration-line` | `textDecorationLine` |
+| `text-shadow` | `textShadowOffset`, `textShadowRadius`, `textShadowColor` |
+| `text-shadow-offset` | `textShadowOffset` |
+| `transform` | `transform` |
+| `box-shadow` | `boxShadow` passthrough |
+| `filter` | `filter` passthrough |
+
+If you are unsure whether a property is available in React Native itself, check
+the React Native style docs and convert the property name to kebab-case when you
+write it in CSS.
+
 # API
 
 The API is mostly for implementors. However, the main API may be useful for non-implementors. The main API is an array of `[property, value]` tuples.
