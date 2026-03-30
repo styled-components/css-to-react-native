@@ -105,15 +105,20 @@ export const getPropertyName = (propName: string): string => {
 const transform = (
   rules: StyleTuple[],
   shorthandBlacklist: string[] = []
-): Style =>
-  rules.reduce<Style>((accum, rule) => {
+): Style => {
+  const result: Style = {}
+
+  for (const rule of rules) {
     const propertyName = getPropertyName(rule[0])
     const value = rule[1]
     const allowShorthand = shorthandBlacklist.indexOf(propertyName) === -1
-    return Object.assign(
-      accum,
+    Object.assign(
+      result,
       getStylesForProperty(propertyName, value, allowShorthand)
     )
-  }, {})
+  }
+
+  return result
+}
 
 export default transform
