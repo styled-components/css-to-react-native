@@ -39,7 +39,7 @@ const numberRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)$/i
 const lengthRe = /^(0$|(?:[+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?=px$))/i
 const unsupportedUnitRe =
   /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(ch|em|ex|rem|vh|vw|vmin|vmax|cm|mm|in|pc|pt))$/i
-const angleRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(?:deg|rad|grad|turn))$/i
+const angleRe = /^(0|[+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?(?:deg|rad|grad|turn))$/i
 const percentRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?%)$/i
 
 const noopToken =
@@ -83,7 +83,7 @@ export const LENGTH: TokenDescriptor = regExpToken(lengthRe, Number)
 export const UNSUPPORTED_LENGTH_UNIT: TokenDescriptor =
   regExpToken(unsupportedUnitRe)
 export const ANGLE: TokenDescriptor = regExpToken(angleRe, (angle) =>
-  angle.toLowerCase()
+  angle === '0' ? '0deg' : angle.toLowerCase()
 )
 export const PERCENT: TokenDescriptor = regExpToken(percentRe)
 export const IDENT: TokenDescriptor = regExpToken(identRe)
