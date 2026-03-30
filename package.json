@@ -4,14 +4,19 @@
   "description": "Convert CSS text to a React Native stylesheet object",
   "main": "index.js",
   "types": "index.d.ts",
+  "sideEffects": false,
   "scripts": {
-    "build": "rollup ./src/index.js -o index.js --f cjs && babel index.js -o index.js",
-    "test": "vitest",
-    "test:watch": "vitest --watch",
-    "lint": "eslint src",
-    "prepublish": "npm run build",
+    "build": "rollup -c",
+    "clean": "node -e \"fs.rmSync('./index.js', { force: true }); fs.rmSync('./index.d.ts', { force: true })\"",
+    "format": "biome format",
+    "lint": "biome lint",
     "precommit": "lint-staged",
-    "lint-staged": "lint-staged"
+    "prebuild": "pnpm clean && pnpm tsc",
+    "prepack": "pnpm build",
+    "test": "pnpm lint && pnpm tsc && pnpm format && pnpm unit",
+    "tsc": "tsc",
+    "unit": "vitest",
+    "unit:watch": "vitest --watch"
   },
   "files": [
     "index.js",
@@ -36,17 +41,14 @@
   },
   "homepage": "https://github.com/styled-components/css-to-react-native#readme",
   "devDependencies": {
-    "@babel/cli": "^7.6.2",
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.6.2",
-    "eslint": "^4.17.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-prettier": "^2.6.0",
+    "@types/node": "^24.7.2",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@biomejs/biome": "2.4.9",
     "lint-staged": "^6.1.0",
-    "prettier": "^1.18.2",
-    "rollup": "^1.22.0",
+    "rollup": "^4.40.2",
+    "rollup-plugin-dts": "^6.2.1",
+    "tslib": "^2.8.1",
+    "typescript": "^6.0.2",
     "vitest": "^4.0.1"
   },
   "dependencies": {
@@ -55,8 +57,8 @@
     "postcss-value-parser": "^4.0.2"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
+    "*.{js,ts}": [
+      "biome check",
       "git add"
     ]
   },

@@ -1,4 +1,6 @@
-import { regExpToken, SPACE, LINE, COLOR } from '../tokenTypes'
+import type TokenStream from '../TokenStream'
+import { COLOR, LINE, regExpToken, SPACE } from '../tokenTypes'
+import type { Style } from '../types'
 
 const STYLE = regExpToken(/^(solid|double|dotted|dashed)$/)
 
@@ -6,17 +8,17 @@ const defaultTextDecorationLine = 'none'
 const defaultTextDecorationStyle = 'solid'
 const defaultTextDecorationColor = 'black'
 
-export default tokenStream => {
-  let line
-  let style
-  let color
+export default (tokenStream: TokenStream): Style => {
+  let line: string | undefined
+  let style: string | undefined
+  let color: string | undefined
 
   let didParseFirst = false
   while (tokenStream.hasTokens()) {
     if (didParseFirst) tokenStream.expect(SPACE)
 
     if (line === undefined && tokenStream.matches(LINE)) {
-      const lines = [tokenStream.lastValue.toLowerCase()]
+      const lines = [String(tokenStream.lastValue).toLowerCase()]
 
       tokenStream.saveRewindPoint()
       if (
@@ -24,7 +26,7 @@ export default tokenStream => {
         tokenStream.matches(SPACE) &&
         tokenStream.matches(LINE)
       ) {
-        lines.push(tokenStream.lastValue.toLowerCase())
+        lines.push(String(tokenStream.lastValue).toLowerCase())
         // Underline comes before line-through
         lines.sort().reverse()
       } else {
@@ -33,9 +35,9 @@ export default tokenStream => {
 
       line = lines.join(' ')
     } else if (style === undefined && tokenStream.matches(STYLE)) {
-      style = tokenStream.lastValue
+      style = String(tokenStream.lastValue)
     } else if (color === undefined && tokenStream.matches(COLOR)) {
-      color = tokenStream.lastValue
+      color = String(tokenStream.lastValue)
     } else {
       tokenStream.throw()
     }

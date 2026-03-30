@@ -1,9 +1,19 @@
-/* eslint-disable no-param-reassign */
-import parse from 'postcss-value-parser'
 import camelizeStyleName from 'camelize'
-import transforms from './transforms/index'
+import parse from 'postcss-value-parser'
 import devPropertiesWithoutUnitsRegExp from './devPropertiesWithoutUnitsRegExp'
 import TokenStream from './TokenStream'
+import transforms from './transforms/index'
+import type { Style, StylePrimitive, StyleTuple } from './types'
+
+export type {
+  ParsedShadow,
+  ShadowOffset,
+  Style,
+  StylePrimitive,
+  StyleTuple,
+  StyleValue,
+  TransformStyleValue,
+} from './types'
 
 // Note if this is wrong, you'll need to change tokenTypes.js too
 const numberOrLengthRe = /^([+-]?(?:\d*\.)?\d+(?:e[+-]?\d+)?)(?:px)?$/i
@@ -13,16 +23,19 @@ const nullRe = /^null$/i
 const undefinedRe = /^undefined$/i
 
 // Undocumented export
-export const transformRawValue = (propName, value) => {
+export const transformRawValue = (
+  propName: string,
+  value: string
+): StylePrimitive => {
   if (process.env.NODE_ENV !== 'production') {
-    const needsUnit = !devPropertiesWithoutUnitsRegExp.test(propName)
+    const needsUnit = !devPropertiesWithoutUnitsRegExp?.test(propName)
     const isNumberWithoutUnit = numberOnlyRe.test(value)
     if (needsUnit && isNumberWithoutUnit) {
-      // eslint-disable-next-line no-console
+      // biome-ignore lint/suspicious/noConsole: Intentional warning
       console.warn(`Expected style "${propName}: ${value}" to contain units`)
     }
     if (!needsUnit && value !== '0' && !isNumberWithoutUnit) {
-      // eslint-disable-next-line no-console
+      // biome-ignore lint/suspicious/noConsole: Intentional warning
       console.warn(`Expected style "${propName}: ${value}" to be unitless`)
     }
   }
@@ -42,24 +55,35 @@ export const transformRawValue = (propName, value) => {
   return value
 }
 
-const baseTransformShorthandValue = (propName, value) => {
+const baseTransformShorthandValue = (
+  propName: string,
+  value: string
+): Style => {
   const ast = parse(value)
   const tokenStream = new TokenStream(ast.nodes)
-  return transforms[propName](tokenStream)
+  const transform = transforms[propName]
+  if (transform === undefined) {
+    throw new Error(`No transform registered for "${propName}"`)
+  }
+  return transform(tokenStream)
 }
 
 const transformShorthandValue =
   process.env.NODE_ENV === 'production'
     ? baseTransformShorthandValue
-    : (propName, value) => {
+    : (propName: string, value: string): Style => {
         try {
           return baseTransformShorthandValue(propName, value)
-        } catch (e) {
+        } catch (_e) {
           throw new Error(`Failed to parse declaration "${propName}: ${value}"`)
         }
       }
 
-export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
+export const getStylesForProperty = (
+  propName: string,
+  inputValue: string,
+  allowShorthand = true
+): Style => {
   const isRawValue = allowShorthand === false || !(propName in transforms)
   const value = inputValue.trim()
 
@@ -70,7 +94,7 @@ export const getStylesForProperty = (propName, inputValue, allowShorthand) => {
   return propValues
 }
 
-export const getPropertyName = propName => {
+export const getPropertyName = (propName: string): string => {
   const isCustomProp = /^--\w+/.test(propName)
   if (isCustomProp) {
     return propName
@@ -78,8 +102,11 @@ export const getPropertyName = propName => {
   return camelizeStyleName(propName)
 }
 
-export default (rules, shorthandBlacklist = []) =>
-  rules.reduce((accum, rule) => {
+const transform = (
+  rules: StyleTuple[],
+  shorthandBlacklist: string[] = []
+): Style =>
+  rules.reduce<Style>((accum, rule) => {
     const propertyName = getPropertyName(rule[0])
     const value = rule[1]
     const allowShorthand = shorthandBlacklist.indexOf(propertyName) === -1
@@ -88,3 +115,5 @@ export default (rules, shorthandBlacklist = []) =>
       getStylesForProperty(propertyName, value, allowShorthand)
     )
   }, {})
+
+export default transform

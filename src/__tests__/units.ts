@@ -20,7 +20,7 @@ const lengthUnits = [
   'pt',
 ]
 
-lengthUnits.forEach(unit => {
+lengthUnits.forEach((unit) => {
   const value = `2${unit}`
 
   it('allows CSS length units in transformed values', () => {

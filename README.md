@@ -94,10 +94,15 @@ For implementors, there is also a few extra APIs available.
 These are for specific use-cases, and most people should just be using the API above.
 
 ```js
-import { getPropertyName, getStylesForProperty } from 'css-to-react-native';
+import {
+  getPropertyName,
+  getStylesForProperty,
+  transformRawValue,
+} from 'css-to-react-native';
 
 getPropertyName('border-width'); // => 'borderWidth'
 getStylesForProperty('borderWidth', '1px 0px 2px 0px'); // => { borderTopWidth: 1, ... }
+transformRawValue('opacity', '0.5'); // => 0.5
 ```
 
 Should you wish to opt-out of transforming certain shorthands, an array of property names in camelCase can be passed as a second argument to `transform`.
@@ -108,6 +113,8 @@ transform([['border-radius', '50px']], ['borderRadius']);
 ```
 
 This can also be done by passing a third argument, `false` to `getStylesForProperty`.
+
+`transformRawValue` is a lower-level helper that parses a single raw value without applying shorthand expansion.
 
 ## License
 

@@ -1,21 +1,23 @@
+import type TokenStream from '../TokenStream'
 import {
-  NONE,
   AUTO,
-  NUMBER,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  NONE,
+  NUMBER,
   PERCENT,
   SPACE,
+  UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
+import type { Style } from '../types'
 
 const defaultFlexGrow = 1
 const defaultFlexShrink = 1
 const defaultFlexBasis = 0
 
-export default tokenStream => {
-  let flexGrow
-  let flexShrink
-  let flexBasis
+export default (tokenStream: TokenStream): Style => {
+  let flexGrow: number | undefined
+  let flexShrink: number | undefined
+  let flexBasis: string | number | undefined
 
   if (tokenStream.matches(NONE)) {
     tokenStream.expectEmpty()
@@ -33,11 +35,11 @@ export default tokenStream => {
     if (partsParsed !== 0) tokenStream.expect(SPACE)
 
     if (flexGrow === undefined && tokenStream.matches(NUMBER)) {
-      flexGrow = tokenStream.lastValue
+      flexGrow = Number(tokenStream.lastValue)
 
       tokenStream.saveRewindPoint()
       if (tokenStream.matches(SPACE) && tokenStream.matches(NUMBER)) {
-        flexShrink = tokenStream.lastValue
+        flexShrink = Number(tokenStream.lastValue)
       } else {
         tokenStream.rewind()
       }
@@ -45,7 +47,7 @@ export default tokenStream => {
       flexBasis === undefined &&
       tokenStream.matches(LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT)
     ) {
-      flexBasis = tokenStream.lastValue
+      flexBasis = tokenStream.lastValue ?? undefined
     } else if (flexBasis === undefined && tokenStream.matches(AUTO)) {
       flexBasis = 'auto'
     } else {

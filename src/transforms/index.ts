@@ -1,3 +1,4 @@
+import type TokenStream from '../TokenStream'
 import {
   AUTO,
   COLOR,
@@ -6,6 +7,7 @@ import {
   UNSUPPORTED_LENGTH_UNIT,
   WORD,
 } from '../tokenTypes'
+import type { Style } from '../types'
 import aspectRatio from './aspectRatio'
 import border from './border'
 import flex from './flex'
@@ -20,7 +22,9 @@ import textShadow from './textShadow'
 import transform from './transform'
 import { directionFactory, parseShadowOffset } from './util'
 
-const background = tokenStream => ({
+type TransformFunction = (tokenStream: TokenStream) => Style
+
+const background: TransformFunction = (tokenStream) => ({
   backgroundColor: tokenStream.expect(COLOR),
 })
 const borderColor = directionFactory({
@@ -40,17 +44,17 @@ const margin = directionFactory({
 })
 const padding = directionFactory({ prefix: 'padding' })
 
-const fontWeight = tokenStream => ({
-  fontWeight: tokenStream.expect(WORD), // Also match numbers as strings
+const fontWeight: TransformFunction = (tokenStream) => ({
+  fontWeight: String(tokenStream.expect(WORD)), // Also match numbers as strings
 })
-const shadowOffset = tokenStream => ({
+const shadowOffset: TransformFunction = (tokenStream) => ({
   shadowOffset: parseShadowOffset(tokenStream),
 })
-const textShadowOffset = tokenStream => ({
+const textShadowOffset: TransformFunction = (tokenStream) => ({
   textShadowOffset: parseShadowOffset(tokenStream),
 })
 
-export default {
+const transforms: Record<string, TransformFunction> = {
   aspectRatio,
   background,
   border,
@@ -73,3 +77,5 @@ export default {
   textDecorationLine,
   transform,
 }
+
+export default transforms

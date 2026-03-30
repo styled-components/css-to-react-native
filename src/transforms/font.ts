@@ -1,11 +1,13 @@
-import parseFontFamily from './fontFamily'
+import type TokenStream from '../TokenStream'
 import {
-  regExpToken,
-  SPACE,
   LENGTH,
-  UNSUPPORTED_LENGTH_UNIT,
+  regExpToken,
   SLASH,
+  SPACE,
+  UNSUPPORTED_LENGTH_UNIT,
 } from '../tokenTypes'
+import type { Style } from '../types'
+import parseFontFamily from './fontFamily'
 
 const NORMAL = regExpToken(/^(normal)$/)
 const STYLE = regExpToken(/^(italic)$/)
@@ -14,14 +16,14 @@ const VARIANT = regExpToken(/^(small-caps)$/)
 
 const defaultFontStyle = 'normal'
 const defaultFontWeight = 'normal'
-const defaultFontVariant = []
+const defaultFontVariant: string[] = []
 
-export default tokenStream => {
-  let fontStyle
-  let fontWeight
-  let fontVariant
+export default (tokenStream: TokenStream): Style => {
+  let fontStyle: string | undefined
+  let fontWeight: string | undefined
+  let fontVariant: string[] | undefined
   // let fontSize;
-  let lineHeight
+  let lineHeight: string | number | undefined
   // let fontFamily;
 
   let numStyleWeightVariantMatched = 0
@@ -29,11 +31,11 @@ export default tokenStream => {
     if (tokenStream.matches(NORMAL)) {
       /* pass */
     } else if (fontStyle === undefined && tokenStream.matches(STYLE)) {
-      fontStyle = tokenStream.lastValue
+      fontStyle = String(tokenStream.lastValue)
     } else if (fontWeight === undefined && tokenStream.matches(WEIGHT)) {
-      fontWeight = tokenStream.lastValue
+      fontWeight = String(tokenStream.lastValue)
     } else if (fontVariant === undefined && tokenStream.matches(VARIANT)) {
-      fontVariant = [tokenStream.lastValue]
+      fontVariant = [String(tokenStream.lastValue)]
     } else {
       break
     }
@@ -50,13 +52,19 @@ export default tokenStream => {
 
   tokenStream.expect(SPACE)
 
-  const { fontFamily } = parseFontFamily(tokenStream)
+  const { fontFamily } = parseFontFamily(tokenStream) as { fontFamily: string }
 
   if (fontStyle === undefined) fontStyle = defaultFontStyle
   if (fontWeight === undefined) fontWeight = defaultFontWeight
   if (fontVariant === undefined) fontVariant = defaultFontVariant
 
-  const out = { fontStyle, fontWeight, fontVariant, fontSize, fontFamily }
+  const out: Style = {
+    fontStyle,
+    fontWeight,
+    fontVariant,
+    fontSize,
+    fontFamily,
+  }
   if (lineHeight !== undefined) out.lineHeight = lineHeight
 
   return out
