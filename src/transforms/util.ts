@@ -42,12 +42,12 @@ export const directionFactory = ({
 
     const [top, right = top, bottom = top, left = right] = values
 
-    return {
-      [key0]: top,
-      [key1]: right,
-      [key2]: bottom,
-      [key3]: left,
-    }
+    const style: Style = {}
+    style[key0] = top
+    style[key1] = right
+    style[key2] = bottom
+    style[key3] = left
+    return style
   }
 }
 
