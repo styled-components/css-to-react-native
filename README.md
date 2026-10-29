@@ -32,11 +32,11 @@ transform: translate(10px, 5px) scale(5);
 {
   textShadowOffset: { width: 10, height: 5 },
   fontVariant: ['small-caps'],
-  // Fixes backwards transform order
+  // The list is reversed from the CSS source order: each function is prepended.
   transform: [
+    { scale: 5 },
     { translateY: 5 },
     { translateX: 10 },
-    { scale: 5 },
   ]
 }
 ```
@@ -50,11 +50,11 @@ margin: 5px 7px 2px;
 
 ```js
 {
-  fontFamily: 'Helvetica',
-  fontSize: 14,
-  fontWeight: 'bold',
   fontStyle: 'normal',
+  fontWeight: 'bold',
   fontVariant: [],
+  fontSize: 14,
+  fontFamily: 'Helvetica',
   lineHeight: 16,
   marginTop: 5,
   marginRight: 7,
@@ -158,7 +158,8 @@ Should you wish to opt-out of transforming certain shorthands, an array of prope
 
 ```js
 transform([['border-radius', '50px']], ['borderRadius']);
-// { borderRadius: 50 } rather than { borderTopLeft: ... }
+// { borderRadius: 50 } rather than
+// { borderTopLeftRadius: 50, borderTopRightRadius: 50, borderBottomRightRadius: 50, borderBottomLeftRadius: 50 }
 ```
 
 This can also be done by passing a third argument, `false` to `getStylesForProperty`.
