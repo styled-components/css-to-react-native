@@ -94,12 +94,18 @@ export const getStylesForProperty = (
   return propValues
 }
 
+// One string per property name. A fresh camelized string is slow when it is
+// used as a computed property key on every declaration.
+const propertyNameCache = new Map<string, string>()
+
 export const getPropertyName = (propName: string): string => {
+  const cached = propertyNameCache.get(propName)
+  if (cached !== undefined) return cached
+
   const isCustomProp = /^--\w+/.test(propName)
-  if (isCustomProp) {
-    return propName
-  }
-  return camelizeStyleName(propName)
+  const result = isCustomProp ? propName : camelizeStyleName(propName)
+  propertyNameCache.set(propName, result)
+  return result
 }
 
 const transform = (
