@@ -100,8 +100,8 @@ following shorthand and special-case transforms:
 | `border-radius` | `borderTopLeftRadius`, `borderTopRightRadius`, `borderBottomRightRadius`, `borderBottomLeftRadius` |
 | `border-width` | `borderTopWidth`, `borderRightWidth`, `borderBottomWidth`, `borderLeftWidth` |
 | `flex` | `flexGrow`, `flexShrink`, `flexBasis` |
-| `flex-flow` | `flexDirection`, `flexWrap` |
-| `font` | `fontStyle`, `fontWeight`, `fontVariant`, `fontSize`, `lineHeight`, `fontFamily` |
+| `flex-flow` | `flexWrap`, `flexDirection` |
+| `font` | `fontStyle`, `fontWeight`, `fontVariant`, `fontSize`, `fontFamily`, `lineHeight` |
 | `font-family` | `fontFamily` |
 | `font-variant` | `fontVariant` |
 | `font-weight` | `fontWeight` |
