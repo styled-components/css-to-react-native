@@ -18,25 +18,33 @@ const singleLengthOrPercent = oneOfTypes([LENGTH, PERCENT])
 const singleAngle = oneOfTypes([ANGLE])
 const xyTransformFactory =
   (tokenTypes: TokenDescriptor[]) =>
-  (key: string, valueIfOmitted?: string | number) =>
-  (functionStream: TokenStream): TransformPartValue => {
-    const x = functionStream.expect(...tokenTypes)
+  (key: string, valueIfOmitted?: string | number) => {
+    const keyY = `${key}Y`
+    const keyX = `${key}X`
 
-    let y: string | number | undefined
-    if (functionStream.hasTokens()) {
-      functionStream.expect(COMMA)
-      y = functionStream.expect(...tokenTypes)
-    } else if (valueIfOmitted !== undefined) {
-      y = valueIfOmitted
-    } else {
-      // Assumption, if x === y, then we can omit XY
-      // I.e. scale(5) => [{ scale: 5 }] rather than [{ scaleX: 5 }, { scaleY: 5 }]
-      return x
+    return (functionStream: TokenStream): TransformPartValue => {
+      const x = functionStream.expect(...tokenTypes)
+
+      let y: string | number | undefined
+      if (functionStream.hasTokens()) {
+        functionStream.expect(COMMA)
+        y = functionStream.expect(...tokenTypes)
+      } else if (valueIfOmitted !== undefined) {
+        y = valueIfOmitted
+      } else {
+        // Assumption, if x === y, then we can omit XY
+        // I.e. scale(5) => [{ scale: 5 }] rather than [{ scaleX: 5 }, { scaleY: 5 }]
+        return x
+      }
+
+      functionStream.expectEmpty()
+
+      const yPart: TransformStyleValue = {}
+      yPart[keyY] = y
+      const xPart: TransformStyleValue = {}
+      xPart[keyX] = x
+      return [yPart, xPart]
     }
-
-    functionStream.expectEmpty()
-
-    return [{ [`${key}Y`]: y }, { [`${key}X`]: x }]
   }
 const xyNumber = xyTransformFactory([NUMBER])
 const xyLengthOrPercent = xyTransformFactory([LENGTH, PERCENT])
@@ -78,7 +86,9 @@ export default (tokenStream: TokenStream): Style => {
 
     let transformedValues = partTransform(functionStream)
     if (!Array.isArray(transformedValues)) {
-      transformedValues = [{ [functionName]: transformedValues }]
+      const part: TransformStyleValue = {}
+      part[functionName] = transformedValues
+      transformedValues = [part]
     }
     transforms = transformedValues.concat(transforms)
 

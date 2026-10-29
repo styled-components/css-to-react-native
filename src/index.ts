@@ -87,19 +87,170 @@ export const getStylesForProperty = (
   const isRawValue = allowShorthand === false || !(propName in transforms)
   const value = inputValue.trim()
 
-  const propValues = isRawValue
-    ? { [propName]: transformRawValue(propName, value) }
-    : transformShorthandValue(propName, value)
+  if (!isRawValue) return transformShorthandValue(propName, value)
 
+  const propValues: Style = {}
+  propValues[propName] = transformRawValue(propName, value)
   return propValues
 }
 
+// Known stylesheet names. Other names are camelized and not retained.
+const knownPropertyNames: { [name: string]: string } = Object.create(null)
+
+for (const name of [
+  'align-content',
+  'align-items',
+  'align-self',
+  'aspect-ratio',
+  'backface-visibility',
+  'background',
+  'background-color',
+  'border',
+  'border-bottom-color',
+  'border-bottom-end-radius',
+  'border-bottom-left-radius',
+  'border-bottom-right-radius',
+  'border-bottom-start-radius',
+  'border-bottom-width',
+  'border-color',
+  'border-curve',
+  'border-end-color',
+  'border-end-end-radius',
+  'border-end-start-radius',
+  'border-end-width',
+  'border-left-color',
+  'border-left-width',
+  'border-radius',
+  'border-right-color',
+  'border-right-width',
+  'border-start-color',
+  'border-start-end-radius',
+  'border-start-start-radius',
+  'border-start-width',
+  'border-style',
+  'border-top-color',
+  'border-top-end-radius',
+  'border-top-left-radius',
+  'border-top-right-radius',
+  'border-top-start-radius',
+  'border-top-width',
+  'border-width',
+  'bottom',
+  'box-shadow',
+  'color',
+  'column-gap',
+  'direction',
+  'display',
+  'elevation',
+  'end',
+  'filter',
+  'flex',
+  'flex-basis',
+  'flex-direction',
+  'flex-flow',
+  'flex-grow',
+  'flex-shrink',
+  'flex-wrap',
+  'font',
+  'font-family',
+  'font-size',
+  'font-style',
+  'font-variant',
+  'font-weight',
+  'gap',
+  'height',
+  'include-font-padding',
+  'inset',
+  'inset-block',
+  'inset-block-end',
+  'inset-block-start',
+  'inset-inline',
+  'inset-inline-end',
+  'inset-inline-start',
+  'justify-content',
+  'left',
+  'letter-spacing',
+  'line-height',
+  'margin',
+  'margin-block',
+  'margin-block-end',
+  'margin-block-start',
+  'margin-bottom',
+  'margin-end',
+  'margin-horizontal',
+  'margin-inline',
+  'margin-inline-end',
+  'margin-inline-start',
+  'margin-left',
+  'margin-right',
+  'margin-start',
+  'margin-top',
+  'margin-vertical',
+  'max-height',
+  'max-width',
+  'min-height',
+  'min-width',
+  'mix-blend-mode',
+  'object-fit',
+  'opacity',
+  'overflow',
+  'overlay-color',
+  'padding',
+  'padding-block',
+  'padding-block-end',
+  'padding-block-start',
+  'padding-bottom',
+  'padding-end',
+  'padding-horizontal',
+  'padding-inline',
+  'padding-inline-end',
+  'padding-inline-start',
+  'padding-left',
+  'padding-right',
+  'padding-start',
+  'padding-top',
+  'padding-vertical',
+  'place-content',
+  'pointer-events',
+  'position',
+  'resize-mode',
+  'right',
+  'row-gap',
+  'shadow-color',
+  'shadow-offset',
+  'shadow-opacity',
+  'shadow-radius',
+  'start',
+  'text-align',
+  'text-align-vertical',
+  'text-decoration',
+  'text-decoration-color',
+  'text-decoration-line',
+  'text-decoration-style',
+  'text-shadow',
+  'text-shadow-color',
+  'text-shadow-offset',
+  'text-shadow-radius',
+  'text-transform',
+  'tint-color',
+  'top',
+  'transform',
+  'transform-origin',
+  'user-select',
+  'vertical-align',
+  'width',
+  'writing-direction',
+  'z-index',
+]) {
+  knownPropertyNames[name] = camelizeStyleName(name)
+}
+
 export const getPropertyName = (propName: string): string => {
+  const cached = knownPropertyNames[propName]
+  if (cached !== undefined) return cached
+
   const isCustomProp = /^--\w+/.test(propName)
-  if (isCustomProp) {
-    return propName
-  }
-  return camelizeStyleName(propName)
+  return isCustomProp ? propName : camelizeStyleName(propName)
 }
 
 const transform = (

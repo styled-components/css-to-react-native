@@ -10,19 +10,24 @@ import {
 } from '../tokenTypes'
 import type { ParsedShadow, ShadowOffset, Style } from '../types'
 
-export const directionFactory =
-  ({
-    types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
-    directions = ['Top', 'Right', 'Bottom', 'Left'],
-    prefix = '',
-    suffix = '',
-  }: {
-    types?: TokenDescriptor[]
-    directions?: string[]
-    prefix?: string
-    suffix?: string
-  }) =>
-  (tokenStream: TokenStream): Style => {
+export const directionFactory = ({
+  types = [LENGTH, UNSUPPORTED_LENGTH_UNIT, PERCENT],
+  directions = ['Top', 'Right', 'Bottom', 'Left'],
+  prefix = '',
+  suffix = '',
+}: {
+  types?: TokenDescriptor[]
+  directions?: string[]
+  prefix?: string
+  suffix?: string
+}) => {
+  // Stable keys. Building a new string per value makes the result object slow.
+  const key0 = `${prefix}${directions[0]}${suffix}`
+  const key1 = `${prefix}${directions[1]}${suffix}`
+  const key2 = `${prefix}${directions[2]}${suffix}`
+  const key3 = `${prefix}${directions[3]}${suffix}`
+
+  return (tokenStream: TokenStream): Style => {
     const values: Array<string | number> = []
 
     // borderWidth doesn't currently allow a percent value, but may do in the future
@@ -37,15 +42,14 @@ export const directionFactory =
 
     const [top, right = top, bottom = top, left = right] = values
 
-    const keyFor = (n: number) => `${prefix}${directions[n]}${suffix}`
-
-    return {
-      [keyFor(0)]: top,
-      [keyFor(1)]: right,
-      [keyFor(2)]: bottom,
-      [keyFor(3)]: left,
-    }
+    const style: Style = {}
+    style[key0] = top
+    style[key1] = right
+    style[key2] = bottom
+    style[key3] = left
+    return style
   }
+}
 
 export const parseShadowOffset = (tokenStream: TokenStream): ShadowOffset => {
   const width = tokenStream.expect(LENGTH)
