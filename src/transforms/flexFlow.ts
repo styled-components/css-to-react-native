@@ -2,8 +2,8 @@ import type TokenStream from '../TokenStream'
 import { regExpToken, SPACE } from '../tokenTypes'
 import type { Style } from '../types'
 
-const FLEX_WRAP = regExpToken(/(nowrap|wrap|wrap-reverse)/)
-const FLEX_DIRECTION = regExpToken(/(row|row-reverse|column|column-reverse)/)
+const FLEX_WRAP = regExpToken(/^(nowrap|wrap|wrap-reverse)$/)
+const FLEX_DIRECTION = regExpToken(/^(row|row-reverse|column|column-reverse)$/)
 
 const defaultFlexWrap = 'nowrap'
 const defaultFlexDirection = 'row'
