@@ -22,3 +22,24 @@ it('transforms flexFlow shorthand missing flexWrap', () => {
     flexWrap: 'nowrap',
   })
 })
+
+it.each([
+  ['column-reverse', 'column-reverse', 'nowrap'],
+  ['row-reverse', 'row-reverse', 'nowrap'],
+  ['wrap-reverse', 'row', 'wrap-reverse'],
+  ['row-reverse wrap', 'row-reverse', 'wrap'],
+  ['column-reverse wrap-reverse', 'column-reverse', 'wrap-reverse'],
+  ['wrap-reverse column-reverse', 'column-reverse', 'wrap-reverse'],
+])('transforms flex-flow: %s', (value, flexDirection, flexWrap) => {
+  expect(transformCss([['flex-flow', value]])).toEqual({
+    flexDirection,
+    flexWrap,
+  })
+})
+
+it.each(['row-reversed', 'prefix-column', 'wrap-reversed', 'prefix-nowrap'])(
+  'does not transform invalid flex-flow: %s',
+  (value) => {
+    expect(() => transformCss([['flex-flow', value]])).toThrow()
+  }
+)
