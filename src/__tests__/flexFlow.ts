@@ -37,9 +37,11 @@ it.each([
   })
 })
 
-it.each(['row-reversed', 'prefix-column', 'wrap-reversed', 'prefix-nowrap'])(
-  'does not transform invalid flex-flow: %s',
-  (value) => {
-    expect(() => transformCss([['flex-flow', value]])).toThrow()
-  }
-)
+it.each([
+  'row-reversed',
+  'prefix-column',
+  'wrap-reversed',
+  'prefix-nowrap',
+])('does not transform invalid flex-flow: %s', (value) => {
+  expect(() => transformCss([['flex-flow', value]])).toThrow()
+})
